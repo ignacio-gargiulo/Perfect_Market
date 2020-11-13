@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="55dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <ProgressBar
+        android:id="@+id/pb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:indeterminate="true"
+        />
+
+    <TextView
+        android:id="@+id/txtCargando"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cargando datos del menú principal..."
+        android:textColor="@color/azul_perfect"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        >
+    </TextView>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+
+
+        <LinearLayout
+            android:id="@+id/LinearPrincipal"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blanco"
+            android:orientation="vertical" >
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/azul_perfect"
+                android:visibility="visible"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/celeste_perfect"
+                android:visibility="visible"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/azul_perfect"
+                android:visibility="visible"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                >
+                <ImageButton
+                    android:id="@+id/btnImagenAnterior"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_flecha_izda"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/blanco"
+                    android:layout_weight="1"/>
+                <ViewFlipper
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/viewFlipper"
+                    android:layout_width="350dp"
+                    android:layout_height="208dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_weight="1"/>
+                <ImageButton
+                    android:id="@+id/btnImagenSiguiente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/blanco"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_flecha_derecha"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/celeste_perfect"
+                android:visibility="visible"
+                />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                >
+
+            <Button
+                android:id="@+id/btnIrCategorias"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@color/azul_perfect"
+                android:layout_gravity="center_vertical"
+                android:text="Productos por categoria"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold|italic"
+                />
+
+            <Button
+                android:id="@+id/btnIrCesta"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/celeste_perfect"
+                android:text="Cesta"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold|italic"
+                />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/celeste_perfect"
+                android:visibility="visible"
+                />
+
+
+
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Productos en Oferta"
+                android:textStyle="bold|italic"
+                android:textColor="@color/azul_perfect"
+                android:textSize="20dp"
+                 />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/azul_perfect"
+                android:visibility="visible"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/celeste_perfect"
+                android:visibility="visible"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerPrincipal1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/azul_perfect"
+                android:text="Productos añadidos recientemente"
+                android:textSize="20dp"
+                android:textStyle="bold|italic" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/azul_perfect"
+                android:visibility="visible"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/celeste_perfect"
+                android:visibility="visible"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerPrincipal2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/azul_perfect"
+                android:text="Productos Populares"
+                android:textSize="20dp"
+                android:textStyle="bold|italic" />
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/azul_perfect"
+                android:visibility="visible"
+                />
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/celeste_perfect"
+                android:visibility="visible"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerPrincipal3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/azul_perfect"
+                android:text="Productos increíbles"
+                android:textSize="20dp"
+                android:textStyle="bold|italic" />
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/azul_perfect"
+                android:visibility="visible"
+                />
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/celeste_perfect"
+                android:visibility="visible"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerPrincipal4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

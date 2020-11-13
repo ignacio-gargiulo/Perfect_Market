@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Perfect Market - Tienda Virtual</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Perfect Market</string>
+    <string name="nav_header_subtitle">Tienda Online</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Ajustes</string>
+
+    <string name="menu_principal">Principal</string>
+    <string name="menu_categorias">Categorías</string>
+    <string name="menu_cesta">Cesta</string>
+    <string name="menu_informacion">Información</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+
+    <string name="p11">Diseñado para un rendimiento duradero, el IdeaPad S145 ofrece un potente procesador AMD con un diseño elegante y ligero. Perfecto para realizar tus tareas informáticas diarias desde cualquier parte, este portátil duradero de 39,62 cm (15,6") ofrece un magnífico sonido con una variedad de opciones de almacenamiento seguras y rápidas.</string>
+    <string name="p12">Pantalla de 15,6" HD 1366x768 pixeles con procesador AMD A6-9225 DualCore disponible de 2.6GHz hasta 3GHz, 1MB. Memoria RAM de 4GB, DDR4-2133. Almacenamiento de 128GB SSD 2.5" SATA6Gb/s. Tarjeta gráfica AMD Radeon R4 Graphics. Sin sistema operativo.</string>
+
+    <string name="p21">El ZenBook 14 está fabricado de acuerdo al exigente estándar militar MIL-STD 810G. Para contrastar su fiabilidad y durabilidad, lo hemos sometido a un conjunto de pruebas de estrés que atestiguan su correcto funcionamiento en rangos extremos de altitud, temperatura y humedad. También ha superado las pruebas internas de ASUS, las cuales exceden ampliamente los estándares de la industria.</string>
+    <string name="p22">Pantalla de 14" FullHD (1920x1080). Procesador Intel Core i5-10210u (4 núcleos, 8 subprocesos, caché: 6MB smartcache, 1.60GHz hasta 4.20GHz, 64-bit). Memoria RAM de 8GB (8GB en placa) LPDDR3 2133MHz. Almacenamiento de 512GB SSD M.2 PCIE gen3 x2 NVME. Tarjeta gráfica integrada Intel UHD. Sistema operativo: Windows 10 Home (64Bits).</string>
+
+    <string name="p31">Nuevo Mac Book Pro. Con mejoras de todo tipo. Hechale un vistazo a sus nuevas prestaciones.</string>
+    <string name="p32">Procesador Intel Core i7 de seis núcleos de novena generación. Espectacular pantalla Retina de 16 pulgadas con tecnología True Tone. Touch Bar y Touch ID. Gráficos AMD Radeon Pro 5300M con memoria GDDR6. Almacenamiento SSD ultrarrápido. Intel UHD Graphics 630. Sistema de seis altavoces, incluidos dos altavoces de graves con cancelación de fuerzas</string>
+
+    <string name="p41"></string>
+    <string name="p42"></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

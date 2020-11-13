@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="55dp">
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/celeste_perfect"
+            ></TextView>
+    <TextView
+        android:id="@+id/txtNumProductosEnCesta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="0/16 productos en la cesta"
+        android:textColor="@color/blanco"
+        android:background="@color/azul_perfect"
+        android:textStyle="bold"
+        >
+    </TextView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/celeste_perfect"
+            />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/nombre_producto_detalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Nombre del Producto"
+                android:textSize="28dp"
+                android:textColor="@color/azul_perfect"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                >
+                <ImageButton
+                    android:id="@+id/btnImagenAnteriorProductos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_flecha_izda"
+                    android:layout_gravity="center_vertical"
+                    android:backgroundTint="@color/blanco"
+                    android:layout_weight="1"/>
+                <ViewFlipper
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/viewFlipperProductos"
+                    android:layout_width="350dp"
+                    android:layout_height="208dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_weight="1"/>
+                <ImageButton
+                    android:id="@+id/btnImagenSiguienteProductos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/blanco"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_flecha_derecha"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+
+            <!--
+            <ImageView
+                android:id="@+id/imagen_producto_detalle"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:paddingTop="10dp"
+                android:src="@drawable/ic_launcher_background" />
+-->
+
+            <TextView
+                android:id="@+id/dato_adicional_detalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text="Información del Producto:"
+                android:textSize="23dp"
+                android:textColor="@color/azul_perfect"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/dato_adicional_detalle2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:justificationMode="inter_word"
+                android:text="Información del producto"
+                android:textColor="@color/negro"
+                android:textSize="18dp" />
+
+
+
+            <TextView
+                android:id="@+id/dato_adicional_detalle3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="Otros Datos:"
+                android:textSize="20dp"
+                android:textColor="@color/azul_perfect"
+                android:textStyle="italic|bold" />
+
+            <TextView
+                android:id="@+id/dato_adicional_detalle4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="left"
+                android:text="Otros Datos"
+                android:justificationMode="inter_word"
+                android:textAlignment="gravity"
+                android:textColor="@color/negro"
+                android:textSize="18dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:textColor="@color/azul_perfect"
+                    android:text="PVP:"
+                />
+                <TextView
+                    android:id="@+id/precio_detalle_producto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:textColor="@color/celeste_perfect"
+                    android:text="0 €"
+                    />
+            </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:textColor="@color/azul_perfect"
+                android:textSize="18dp"
+                android:text="Cantidad a comprar:"
+                />
+
+            <Button
+                android:id="@+id/btnRestarCantidad"
+                android:layout_marginLeft="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="-"
+                android:backgroundTint="@color/azul_perfect"
+                android:textColor="@color/blanco"
+                />
+
+            <EditText
+                android:id="@+id/edtCantidad"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textSize="18dp"
+                android:hint="Cantidad"
+                android:textAlignment="center"
+                android:ems="10"
+                android:textColor="@color/azul_perfect"
+                android:inputType="number" />
+
+            <Button
+                android:id="@+id/btnSumarCantidad"
+                android:layout_marginLeft="5dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="+"
+                android:backgroundTint="@color/azul_perfect"
+                android:textColor="@color/blanco"
+                />
+
+        </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:paddingTop="10dp"
+                android:gravity="center"
+
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:textColor="@color/azul_perfect"
+                    android:text="Precio Total:"
+                    />
+                <TextView
+                    android:id="@+id/precio_detalle_producto_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:textColor="@color/verde_oscuro"
+                    android:text="0 €"
+                    />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnAñadirCesta"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/celeste_perfect"
+                android:textColor="@color/blanco"
+                android:layout_marginTop="10dp"
+                android:text="Añadir a la cesta"
+                android:drawableLeft="@drawable/ic_cesta"
+                />
+
+            <Button
+                android:id="@+id/btnComprarYa"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/azul_perfect"
+                android:textColor="@color/blanco"
+                android:text="Comprar Ya"
+                android:drawableLeft="@drawable/ic_compra"
+                />
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:background="@color/celeste_perfect_claro"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@color/celeste_perfect"
+                    />
+            <TextView
+                android:id="@+id/valoracion_detalle1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Cuentanos tú opinion y valoración:"
+                android:textColor="@color/azul_perfect"
+                android:textSize="21dp"
+                android:textStyle="italic|bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/celeste_perfect"
+                android:textStyle="bold"
+                android:text="Nombre de Usuario:"
+                />
+
+            <EditText
+                android:id="@+id/edtNombreDeUsuario"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:justificationMode="inter_word"
+                android:textColor="@color/negro"
+                android:hint="Usuario"
+                >
+            </EditText>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/celeste_perfect"
+                android:textStyle="bold"
+                android:text="Comentario:"
+                />
+
+            <EditText
+                android:id="@+id/edtComentario"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:justificationMode="inter_word"
+                android:textColor="@color/negro"
+                android:hint="Comentario"
+                >
+            </EditText>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/celeste_perfect"
+                android:textStyle="bold"
+                android:text="Valoración en estrellas:"
+                />
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:numStars="5">
+            </RatingBar>
+
+            <TextView
+                android:id="@+id/valoracion_detalle2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:text="0.0"
+                android:textSize="15dp"
+                android:textColor="@color/celeste_perfect"
+                android:textStyle="italic" />
+
+            <Button
+                android:id="@+id/btnEnviarDatos"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Enviar Datos"
+                android:drawableLeft="@drawable/ic_enviar"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:textSize="12dp"
+                android:backgroundTint="@color/azul_perfect"
+                android:textColor="@color/blanco"
+                android:textAllCaps="false"
+                >
+            </Button>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Valoración General"
+                        android:textSize="25dp"
+                        android:textStyle="italic|bold"
+                        android:textColor="@color/azul_perfect"
+                        />
+
+                    <TextView
+                        android:id="@+id/txtValProducto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Actualiza"
+                        android:textSize="40dp"
+                        android:textStyle="italic|bold"
+                        android:textColor="@color/verde_oscuro"
+                        />
+                </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="Comentarios"
+                android:textColor="@color/azul_perfect"
+                android:textSize="25dp"
+                android:textStyle="italic|bold" />
+
+            <TextView
+                android:id="@+id/txtNumCom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:textColor="@color/azul_perfect"
+                android:text="0 comentarios"
+                android:layout_marginRight="10dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:textColor="@color/azul_perfect"
+                android:text="Se mostrarán los últimos 5 comentarios añadidos"
+                android:layout_marginRight="10dp"
+                />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_Comentarios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                >
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <Button
+                android:id="@+id/btnActualizarComentarios"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Actualizar"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:textSize="12dp"
+                android:drawableLeft="@drawable/ic_actualizar_celeste"
+                android:backgroundTint="@color/blanco"
+                android:textColor="@color/celeste_perfect"
+                android:textAllCaps="false"
+                >
+            </Button>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@color/celeste_perfect"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <com.github.clans.fab.FloatingActionMenu
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:menu_fab_label="Cerrar"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            app:menu_colorNormal="@color/azul_perfect"
+            app:menu_colorPressed="@color/celeste_perfect"
+            android:layout_margin="16dp"
+            >
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fabCompartir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_label="Compartir"
+                app:fab_colorNormal="@color/celeste_perfect"
+                app:fab_colorPressed="@color/azul_perfect"
+                android:src="@drawable/ic_compartir"
+                />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_label="Cesta"
+                app:fab_colorNormal="@color/celeste_perfect"
+                app:fab_colorPressed="@color/azul_perfect"
+                android:src="@drawable/ic_cesta"
+                />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fabPrincipalProd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_label="Principal"
+                app:fab_colorNormal="@color/celeste_perfect"
+                app:fab_colorPressed="@color/azul_perfect"
+                android:src="@drawable/ic_principal"
+                />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fabRetrocederProd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_label="Retroceder"
+                app:fab_colorNormal="@color/celeste_perfect"
+                app:fab_colorPressed="@color/azul_perfect"
+                android:src="@drawable/ic_retroceder"
+                />
+        </com.github.clans.fab.FloatingActionMenu>
+    </LinearLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

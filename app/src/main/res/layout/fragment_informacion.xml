@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="55dp"
+    android:layout_width="match_parent"
+    android:layout_gravity="center_vertical"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold|italic"
+            android:layout_gravity="center"
+            android:textColor="@color/azul_perfect"
+            android:textSize="20dp"
+            android:text="Información">
+        </TextView>
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:src="@drawable/perfect_market_logo"
+        >
+    </ImageView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold|italic"
+        android:layout_gravity="center"
+        android:textColor="@color/azul_perfect"
+        android:textSize="20dp"
+        android:text="Perfect Market - Tienda Virtual">
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold|italic"
+        android:layout_gravity="center"
+        android:textColor="@color/negro"
+        android:textSize="12dp"
+        android:text="App desarrollada por Ignacio Gargiulo">
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:layout_gravity="center"
+        android:textColor="@color/negro"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:justificationMode="inter_word"
+        android:textSize="14dp"
+        android:text="Perfect Market - Tienda Virtual es una aplicación en la que podrá comprar diversos productos, ya sea con la opción de compra ya o añadiendo diversos productos a la cesta para posteriormente comprarlos. En cada uno de los productos podrá ver imágenes, realizar comentarios y darles una valoración, además, podrá ver algunos de los comentarios de otros clientes que han comprado ese mismo producto y también su valoración media. Observa nuestros productos en la página principal o desde la vista de categorías.">
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:textColor="@color/celeste_perfect"
+        android:textStyle="italic|bold"
+        android:textSize="16dp"
+        android:text="¡Disfruta de compras perfectas con Perfect Market!">
+    </TextView>
+
+        <ImageView
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/logoish"></ImageView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:textSize="12dp"
+        android:textColor="@color/negro"
+        android:textStyle="bold"
+        android:text="IES Santiago Hernández">
+    </TextView>
+
+    </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <com.github.clans.fab.FloatingActionMenu
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:menu_fab_label="Cerrar"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            app:menu_colorNormal="@color/azul_perfect"
+            app:menu_colorPressed="@color/celeste_perfect"
+            android:layout_margin="16dp"
+            >
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fabCestaInf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_label="Cesta"
+                app:fab_colorNormal="@color/celeste_perfect"
+                app:fab_colorPressed="@color/azul_perfect"
+                android:src="@drawable/ic_cesta"
+                />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fabPrincipalInf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_label="Principal"
+                app:fab_colorNormal="@color/celeste_perfect"
+                app:fab_colorPressed="@color/azul_perfect"
+                android:src="@drawable/ic_principal"
+                />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fabRetrocederInf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_label="Retroceder"
+                app:fab_colorNormal="@color/celeste_perfect"
+                app:fab_colorPressed="@color/azul_perfect"
+                android:src="@drawable/ic_retroceder"
+                />
+        </com.github.clans.fab.FloatingActionMenu>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

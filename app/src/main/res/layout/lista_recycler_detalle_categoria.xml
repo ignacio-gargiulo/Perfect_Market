@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="3dp"
+    app:cardElevation="3dp"
+    android:paddingTop="55dp"
+    app:cardUseCompatPadding="true"
+
+
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="55dp"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/imagenProductoCategoria"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_launcher_background"
+            />
+
+        <TextView
+            android:id="@+id/nombre_producto_categoria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre del producto"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@+id/imagenProductoCategoria"
+            android:layout_toEndOf="@+id/imagenProductoCategoria"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            />
+
+        <TextView
+            android:id="@+id/precio_producto_categoria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Precio: 0 €"
+            android:layout_below="@+id/nombre_producto_categoria"
+            android:layout_toRightOf="@+id/imagenProductoCategoria"
+            android:layout_toEndOf="@+id/imagenProductoCategoria"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
