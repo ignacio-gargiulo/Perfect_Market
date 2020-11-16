@@ -39,7 +39,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.ejemplo.perfectmarket_tiendavirtual.Adaptadores.AdapterRecyclerCesta;
 import com.ejemplo.perfectmarket_tiendavirtual.Adaptadores.AdapterRecyclerComentarios;
 import com.ejemplo.perfectmarket_tiendavirtual.Entidades.Categoria;
 import com.ejemplo.perfectmarket_tiendavirtual.Entidades.ComentariosProductos;
@@ -59,7 +58,7 @@ public class DetalleProductoFragment extends Fragment {
 
     ImageView imageView;
     String val1, val2, val3, val4, val5, val6, val7, val8, val9, val10, val11, val12, val13, val14, val15, val16;
-    TextView txtIdProducto, nombre, informacion, otrosDatos, precio, txtValoracion, precioTotal,txtNumProductosEnCesta, txtNumCom, txtSumaEstrellas;
+    TextView txtComUser, txtIdProducto, nombre, informacion, otrosDatos, precio, txtValoracion, precioTotal,txtNumProductosEnCesta, txtNumCom, txtSumaEstrellas;
     RatingBar ratingBar;
     ImageView imagen;
     String URLObtenerComentarios;
@@ -76,8 +75,8 @@ public class DetalleProductoFragment extends Fragment {
     FragmentManager fm;
     FragmentTransaction fragmentTransaction;
     StringBuilder sb;
-    ArrayList<ComentariosProductos> listaComentarios;
-    AdapterRecyclerComentarios adapterRecyclerComentarios;
+    ArrayList<ComentariosProductos> listaComentarios, listaComentarioUsuario;
+    AdapterRecyclerComentarios adapterRecyclerComentarios, adapterRecyclerComentarioUsuario;
     ViewFlipper viewFlipperP;
     int num;
     int cantidad = 0;
@@ -85,7 +84,7 @@ public class DetalleProductoFragment extends Fragment {
     double precioT;
     View view;
     ImageButton btnSiguienteP, btnAnteriorP;
-    RecyclerView recyclerViewComentarios;
+    RecyclerView recyclerViewComentarios, recyclerViewComentarioUsuario;
     int imagenId;
     String valProd, URLvalidarComentarios;
     TextView txtValGen;
@@ -96,6 +95,7 @@ public class DetalleProductoFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_detalle_producto,container, false);
 
         direccionesURL();
+        txtComUser = view.findViewById(R.id.txtComUser);
         URLObtenerComentarios = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/obtenerComentarios.php";
         URLNumCom = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/numOpiniones.php?id_producto=";
         txtIdProducto = view.findViewById(R.id.txtIdProducto);
@@ -129,7 +129,9 @@ public class DetalleProductoFragment extends Fragment {
         fabPrincipal = view.findViewById(R.id.fabPrincipalProd);
         txtNumCom = view.findViewById(R.id.txtNumCom);
         recyclerViewComentarios = view.findViewById(R.id.rv_Comentarios);
+        recyclerViewComentarioUsuario = view.findViewById(R.id.rv_ComentarioUsuario);
         listaComentarios = new ArrayList<>();
+        listaComentarioUsuario = new ArrayList<>();
         decimalFormat = new DecimalFormat("#.00");
         URLidProducto = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/buscar_Id_producto.php?nombre_producto=";
         URLinsertarComentarios = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/insertar_comentarios.php";
@@ -699,6 +701,10 @@ public class DetalleProductoFragment extends Fragment {
         for (int i = 1; i < 100; i++ ) {
             obtenerComentarios(URLObtenerComentarios, String.valueOf(i), txtIdProducto.getText().toString());
         }
+
+        SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
+                Context.MODE_PRIVATE);
+        obtenerComentarioUsuario(URLObtenerComentarios, preferences.getString("id", "1"), txtIdProducto.getText().toString());
     }
 
     public void flipperImagenes(int imagen){
@@ -844,6 +850,41 @@ public class DetalleProductoFragment extends Fragment {
                 recyclerViewComentarios.setLayoutManager(new LinearLayoutManager(getContext()));
                 adapterRecyclerComentarios = new AdapterRecyclerComentarios(getContext(), listaComentarios);
                 recyclerViewComentarios.setAdapter(adapterRecyclerComentarios);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(getContext(), "ERROR DE CONEXIÓN", Toast.LENGTH_SHORT).show();
+            }
+        }
+        );
+
+
+        requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(jsonArrayRequest);
+    }
+    private void obtenerComentarioUsuario(String URL, String id_usuario, String idProducto) {
+        URL = URL + "?id_usuario=" + id_usuario + "&id_producto=" + idProducto;
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                JSONObject jsonObject = null;
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        jsonObject = response.getJSONObject(i);
+                        usuario1 = jsonObject.getString("nombre") + " " + jsonObject.getString("apellido");
+                        comentario1 = jsonObject.getString("comentario");
+                        valoracion1 = jsonObject.getString("valoracion");
+                        listaComentarioUsuario.add(new ComentariosProductos(usuario1, comentario1, valoracion1));
+                    } catch (JSONException e) {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+                txtComUser.setVisibility(View.INVISIBLE);
+                recyclerViewComentarioUsuario.setLayoutManager(new LinearLayoutManager(getContext()));
+                adapterRecyclerComentarios = new AdapterRecyclerComentarios(getContext(), listaComentarioUsuario);
+                recyclerViewComentarioUsuario.setAdapter(adapterRecyclerComentarios);
             }
         }, new Response.ErrorListener() {
             @Override

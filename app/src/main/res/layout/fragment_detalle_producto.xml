@@ -457,38 +457,63 @@
                 android:textSize="25dp"
                 android:textStyle="italic|bold" />
 
-            <TextView
-                android:id="@+id/txtNumCom"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:gravity="center"
-                android:textColor="@color/azul_perfect"
-                android:text="0 comentarios"
-                android:layout_marginRight="10dp"
-                />
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center"
                 android:textColor="@color/azul_perfect"
-                android:text="Se mostrarán los últimos 5 comentarios añadidos"
+                android:text="Tu comentario"
+                android:textStyle="bold|italic"
                 android:layout_marginRight="10dp"
                 />
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_Comentarios"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                >
-            </androidx.recyclerview.widget.RecyclerView>
+                <TextView
+                    android:id="@+id/txtComUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center"
+                    android:textColor="@color/azul_perfect"
+                    android:text="No has hecho ningún comentario"
+                    android:layout_marginRight="10dp"
+                    />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_ComentarioUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="10dp"
+                    >
+                </androidx.recyclerview.widget.RecyclerView>
+                <TextView
+                    android:id="@+id/txtNumCom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:textColor="@color/azul_perfect"
+                    android:text="0 comentarios"
+                    android:layout_marginRight="10dp"
+                    />
+
+
+
+                 <androidx.recyclerview.widget.RecyclerView
+                     android:id="@+id/rv_Comentarios"
+                     android:layout_width="match_parent"
+                     android:layout_height="400dp"
+                     android:paddingLeft="10dp"
+                     android:paddingRight="10dp"
+                     android:paddingTop="10dp"
+                     android:paddingBottom="10dp"
+                     >
+                 </androidx.recyclerview.widget.RecyclerView>
 
 
             <Button
