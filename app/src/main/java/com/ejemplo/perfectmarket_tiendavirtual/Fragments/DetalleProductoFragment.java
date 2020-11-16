@@ -1,11 +1,14 @@
 package com.ejemplo.perfectmarket_tiendavirtual.Fragments;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -36,6 +39,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.ejemplo.perfectmarket_tiendavirtual.Adaptadores.AdapterRecyclerCesta;
 import com.ejemplo.perfectmarket_tiendavirtual.Adaptadores.AdapterRecyclerComentarios;
 import com.ejemplo.perfectmarket_tiendavirtual.Entidades.Categoria;
 import com.ejemplo.perfectmarket_tiendavirtual.Entidades.ComentariosProductos;
@@ -55,13 +59,15 @@ public class DetalleProductoFragment extends Fragment {
 
     ImageView imageView;
     String val1, val2, val3, val4, val5, val6, val7, val8, val9, val10, val11, val12, val13, val14, val15, val16;
-    TextView nombre, informacion, otrosDatos, precio, txtValoracion, precioTotal,txtNumProductosEnCesta, txtNumCom, txtSumaEstrellas;
+    TextView txtIdProducto, nombre, informacion, otrosDatos, precio, txtValoracion, precioTotal,txtNumProductosEnCesta, txtNumCom, txtSumaEstrellas;
     RatingBar ratingBar;
     ImageView imagen;
-    String opcion, numComentarios;
-    String URL, URL2, URL3, URL4, URL5, URL6, URL7, URL8,URL9,URL10,URL11,URL12,URL13,URL14,URL15,URL16,URL17, URL18, URL19, URL20, URL21, URL22, URL23;
-    String numCom1,numCom2,numCom3,numCom4,numCom5,numCom6,numCom7,numCom8,numCom9,numCom10,numCom11,numCom12,numCom13,numCom14,numCom15,numCom16;
+    String URLObtenerComentarios;
+    String opcion, numComentarios, idProducto, nombreUsuario;
+    String URL17, URL18, URL19, URL20, URL21, URL22, URL23;
+    String URLNumCom, URLDatosUsuario;
     EditText edtUsuario, edtComentario, edtCantidad;
+    String URLidProducto, URLinsertarComentarios;
     RequestQueue requestQueue;
     Button btnEnviarDatos, btnAñadirCesta, btnSumarCantidad, btnRestarCantidad, btnComprarYa, btnActualizarComentarios;
     String numeroProductosCesta, comentario1,comentario2, comentario3, comentario4, comentario5, valoracion1, valoracion2,
@@ -81,7 +87,7 @@ public class DetalleProductoFragment extends Fragment {
     ImageButton btnSiguienteP, btnAnteriorP;
     RecyclerView recyclerViewComentarios;
     int imagenId;
-    String valProd;
+    String valProd, URLvalidarComentarios;
     TextView txtValGen;
 
     @Nullable
@@ -90,7 +96,9 @@ public class DetalleProductoFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_detalle_producto,container, false);
 
         direccionesURL();
-        direccionesURLNumCom();
+        URLObtenerComentarios = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/obtenerComentarios.php";
+        URLNumCom = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/numOpiniones.php?id_producto=";
+        txtIdProducto = view.findViewById(R.id.txtIdProducto);
         txtValGen = view.findViewById(R.id.txtValProducto);
         btnSiguienteP = view.findViewById(R.id.btnImagenSiguienteProductos);
         btnAnteriorP = view.findViewById(R.id.btnImagenAnteriorProductos);
@@ -123,11 +131,15 @@ public class DetalleProductoFragment extends Fragment {
         recyclerViewComentarios = view.findViewById(R.id.rv_Comentarios);
         listaComentarios = new ArrayList<>();
         decimalFormat = new DecimalFormat("#.00");
-
+        URLidProducto = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/buscar_Id_producto.php?nombre_producto=";
+        URLinsertarComentarios = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/insertar_comentarios.php";
+        URLDatosUsuario = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/buscar_nombre_usuario.php?id_usuario=";
+        //URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/obtenerComentarios.php?id_producto=";
         obtenerDatosDeBBDD(URL18);
         direccionesValoraciones();
-
-
+        recuperarNombreDeUsuario();
+        btnActualizarComentarios.setEnabled(false);
+        URLvalidarComentarios = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/validarComentario.php";
 
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
@@ -274,8 +286,8 @@ public class DetalleProductoFragment extends Fragment {
         btnActualizarComentarios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                obtenerNumComentarios2();
-                if (opcion.equalsIgnoreCase("lenovo s145-15ast")){
+                //obtenerNumComentarios2();
+                /*if (opcion.equalsIgnoreCase("lenovo s145-15ast")){
                     obtencionValoracionesGenerales(val1);
                 }
                 else if (opcion.equalsIgnoreCase("asus zenbook 14")){
@@ -322,9 +334,15 @@ public class DetalleProductoFragment extends Fragment {
                 }
                 else if (opcion.equalsIgnoreCase("canva")){
                     obtencionValoracionesGenerales(val16);
+                }*/
+                if(!listaComentarios.isEmpty()){
+                    listaComentarios.clear();
+                    adapterRecyclerComentarios.notifyDataSetChanged();
+                    mostrarComentarios();
                 }
-                listaComentarios.clear();
-                adapterRecyclerComentarios.notifyDataSetChanged();
+                else {
+                    Toast.makeText(getContext(), "Nada que actualizar", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -366,11 +384,18 @@ public class DetalleProductoFragment extends Fragment {
                 precioTotal.setText(precio_total[0] + " €");
             }
         }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                obtenerNumComentarios2();
+            }
+        },500);
 
 
 
-        obtenerNumComentarios2();
 
+        Toast.makeText(getContext(), opcion, Toast.LENGTH_SHORT).show();
+        obtener_id_producto(URLidProducto + opcion);
         edtCantidad.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -407,58 +432,10 @@ public class DetalleProductoFragment extends Fragment {
                             .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    Snackbar.make(view, "Gracias por su comentario " + edtUsuario.getText().toString() + " :)", Snackbar.LENGTH_LONG)
-                                            .setAction("Action", null).show();
-                                    if (opcion.equalsIgnoreCase("lenovo s145-15ast")){
-                                        ejecutarServicio(URL);
-                                    }
-                                    else if (opcion.equalsIgnoreCase("asus zenbook 14")){
-                                        ejecutarServicio(URL2);
-                                    }
-                                    else if (opcion.equalsIgnoreCase("macbook pro 2020")){
-                                        ejecutarServicio(URL3);
-                                    }
-                                    else if (opcion.equalsIgnoreCase("irobot roomba 671")){
-                                        ejecutarServicio(URL4);
-                                    }
-                                    else if (opcion.equalsIgnoreCase("ua - sudadera hombre")){
-                                        ejecutarServicio(URL5);
-                                    }
-                                    else if (opcion.equalsIgnoreCase("ua - pantalones")){
-                                        ejecutarServicio(URL6);
-                                    }
-                                    else if (opcion.equalsIgnoreCase("Vans Classic Po Hoodie")){
-                                        ejecutarServicio(URL7);
-                                    }
-                                    else if (opcion.equalsIgnoreCase("adidas superstar")){
-                                        ejecutarServicio(URL8);
-                                    }
-                                    else if (opcion.equalsIgnoreCase("A. claro calvo")){
-                                        ejecutarServicio(URL9);
-                                    }
-                                    else if (opcion.equalsIgnoreCase("Maizena harina")){
-                                        ejecutarServicio(URL10);
-                                    }
-                                    else if (opcion.equalsIgnoreCase("harry potter y la piedra f.")){
-                                        ejecutarServicio(URL11);
-                                    }
-                                    else if (opcion.equalsIgnoreCase("crash team racing nf")){
-                                        ejecutarServicio(URL12);
-                                    }
-                                    else if (opcion.equalsIgnoreCase("mis planes son amarte")){
-                                        ejecutarServicio(URL13);
-                                    }
-                                    else if (opcion.equalsIgnoreCase("por primera vez")){
-                                        ejecutarServicio(URL14);
-                                    }
-                                    else if (opcion.equalsIgnoreCase("PUMA Laliga 1 Hybrid")){
-                                        ejecutarServicio(URL15);
-                                    }
-                                    else if (opcion.equalsIgnoreCase("canva")){
-                                        ejecutarServicio(URL16);
-                                    }
-                                    int numComSum = Integer.valueOf(numComentarios) + 1;
-                                    txtNumCom.setText(numComSum + " comentarios");
+
+                                    validarComentarios(URLvalidarComentarios);
+
+
                                 }
                             }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                         @Override
@@ -712,7 +689,16 @@ public class DetalleProductoFragment extends Fragment {
         //Toast.makeText(getContext(), "Nom: " + opcion, Toast.LENGTH_SHORT).show();
 
 
+
         return view;
+    }
+
+    public void mostrarComentarios(){
+        Toast.makeText(getContext(), "NumCom: " + txtNumCom.getText().toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),  "idProd: " + txtIdProducto.getText().toString(), Toast.LENGTH_SHORT).show();
+        for (int i = 1; i < 100; i++ ) {
+            obtenerComentarios(URLObtenerComentarios, String.valueOf(i), txtIdProducto.getText().toString());
+        }
     }
 
     public void flipperImagenes(int imagen){
@@ -743,755 +729,39 @@ public class DetalleProductoFragment extends Fragment {
     }
 
     public void direccionesURL(){
-        URL = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/insertar_comYvalP1.php";
-        URL2 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/insertar_comYvalP2.php";
-        URL3 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/insertar_comYvalP3.php";
-        URL4 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/insertar_comYvalP4.php";
-        URL5 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/insertar_comYvalP5.php";
-        URL6 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/insertar_comYvalP6.php";
-        URL7 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/insertar_comYvalP7.php";
-        URL8 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/insertar_comYvalP8.php";
-        URL9 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/insertar_comYvalP9.php";
-        URL10 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/insertar_comYvalP10.php";
-        URL11 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/insertar_comYvalP11.php";
-        URL12 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/insertar_comYvalP12.php";
-        URL13 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/insertar_comYvalP13.php";
-        URL14 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/insertar_comYvalP14.php";
-        URL15 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/insertar_comYvalP15.php";
-        URL16 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/insertar_comYvalP16.php";
         URL17 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/insertar_producto_en_cesta.php";
         URL18= "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/pruebaNumRegistros.php";
     }
 
-    public void direccionesURLComentarios(){
-        int nCom = Integer.valueOf(numComentarios);
+    private void recuperarNombreDeUsuario(){
+        edtUsuario.setEnabled(false);
+        SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
+                Context.MODE_PRIVATE);
+        //Toast.makeText(getContext(), "nnnnn: " + preferences.getString("nombre", "Desc"), Toast.LENGTH_SHORT).show();
+        edtUsuario.setText(preferences.getString("email", "Desconocido"));
 
-        if (nCom > 5){
-            for (int i = nCom; i >= nCom - 4 ; i--) {
-                if (i == nCom){
-                    if (opcion.equalsIgnoreCase("lenovo s145-15ast")){
-                        URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("asus zenbook 14")){
-                        URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("macbook pro 2020")){
-                        URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("irobot roomba 671")){
-                        URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("ua - sudadera hombre")){
-                        URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("ua - pantalones")){
-                        URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("Vans Classic Po Hoodie")){
-                        URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("adidas superstar")){
-                        URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("A. claro calvo")){
-                        URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("Maizena harina")){
-                        URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("harry potter y la piedra f.")){
-                        URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("crash team racing nf")){
-                        URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("mis planes son amarte")){
-                        URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("por primera vez")){
-                        URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("PUMA Laliga 1 Hybrid")){
-                        URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("canva")){
-                        URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=" + String.valueOf(i);
-                    }
-                    obtencionComentarios(URL19);
-                }
-                else if (i == nCom - 1) {
-                    if (opcion.equalsIgnoreCase("lenovo s145-15ast")){
-                        URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("asus zenbook 14")){
-                        URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("macbook pro 2020")){
-                        URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("irobot roomba 671")){
-                        URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("ua - sudadera hombre")){
-                        URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("ua - pantalones")){
-                        URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("Vans Classic Po Hoodie")){
-                        URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("adidas superstar")){
-                        URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("A. claro calvo")){
-                        URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("Maizena harina")){
-                        URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("harry potter y la piedra f.")){
-                        URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("crash team racing nf")){
-                        URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("mis planes son amarte")){
-                        URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("por primera vez")){
-                        URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("PUMA Laliga 1 Hybrid")){
-                        URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("canva")){
-                        URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=" + String.valueOf(i);
-                    }
-                    //URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=" + String.valueOf(i);
-                    obtencionComentarios(URL20);
-                }
-                else if (i == nCom - 2) {
-                    if (opcion.equalsIgnoreCase("lenovo s145-15ast")){
-                        URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("asus zenbook 14")){
-                        URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("macbook pro 2020")){
-                        URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("irobot roomba 671")){
-                        URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("ua - sudadera hombre")){
-                        URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("ua - pantalones")){
-                        URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("Vans Classic Po Hoodie")){
-                        URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("adidas superstar")){
-                        URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("A. claro calvo")){
-                        URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("Maizena harina")){
-                        URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("harry potter y la piedra f.")){
-                        URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("crash team racing nf")){
-                        URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("mis planes son amarte")){
-                        URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("por primera vez")){
-                        URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("PUMA Laliga 1 Hybrid")){
-                        URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("canva")){
-                        URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=" + String.valueOf(i);
-                    }
-                    //URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=" + String.valueOf(i);
-                    obtencionComentarios(URL21);
-                }
-                else if (i == nCom - 3) {
-                    if (opcion.equalsIgnoreCase("lenovo s145-15ast")){
-                        URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("asus zenbook 14")){
-                        URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("macbook pro 2020")){
-                        URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("irobot roomba 671")){
-                        URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("ua - sudadera hombre")){
-                        URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("ua - pantalones")){
-                        URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("Vans Classic Po Hoodie")){
-                        URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("adidas superstar")){
-                        URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("A. claro calvo")){
-                        URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("Maizena harina")){
-                        URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("harry potter y la piedra f.")){
-                        URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("crash team racing nf")){
-                        URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("mis planes son amarte")){
-                        URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("por primera vez")){
-                        URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("PUMA Laliga 1 Hybrid")){
-                        URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("canva")){
-                        URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=" + String.valueOf(i);
-                    }
-                    //URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=" + String.valueOf(i);
-                    obtencionComentarios(URL22);
-                }
-                else if (i == nCom - 4) {
-                    if (opcion.equalsIgnoreCase("lenovo s145-15ast")){
-                        URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("asus zenbook 14")){
-                        URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("macbook pro 2020")){
-                        URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("irobot roomba 671")){
-                        URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("ua - sudadera hombre")){
-                        URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("ua - pantalones")){
-                        URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("Vans Classic Po Hoodie")){
-                        URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("adidas superstar")){
-                        URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("A. claro calvo")){
-                        URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("Maizena harina")){
-                        URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("harry potter y la piedra f.")){
-                        URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("crash team racing nf")){
-                        URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("mis planes son amarte")){
-                        URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("por primera vez")){
-                        URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("PUMA Laliga 1 Hybrid")){
-                        URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=" + String.valueOf(i);
-                    }
-                    else if (opcion.equalsIgnoreCase("canva")){
-                        URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=" + String.valueOf(i);
-                    }
-                    //URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=" + String.valueOf(i);
-                    obtencionComentarios(URL23);
-                }
-        }
-        }
-
-        else {
-            if(nCom == 5){
-                if (opcion.equalsIgnoreCase("lenovo s145-15ast")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=4";
-                    URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=5";
-                }
-                else if (opcion.equalsIgnoreCase("asus zenbook 14")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=4";
-                    URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=5";
-                }
-                else if (opcion.equalsIgnoreCase("macbook pro 2020")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=4";
-                    URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=5";
-                }
-                else if (opcion.equalsIgnoreCase("irobot roomba 671")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=4";
-                    URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=5";
-                }
-                else if (opcion.equalsIgnoreCase("ua - sudadera hombre")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=4";
-                    URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=5";
-                }
-                else if (opcion.equalsIgnoreCase("ua - pantalones")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=4";
-                    URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=5";
-                }
-                else if (opcion.equalsIgnoreCase("Vans Classic Po Hoodie")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=4";
-                    URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=5";
-                }
-                else if (opcion.equalsIgnoreCase("adidas superstar")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=4";
-                    URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=5";
-                }
-                else if (opcion.equalsIgnoreCase("A. claro calvo")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=4";
-                    URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=5";
-                }
-                else if (opcion.equalsIgnoreCase("Maizena harina")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=4";
-                    URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=5";
-                }
-                else if (opcion.equalsIgnoreCase("harry potter y la piedra f.")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=4";
-                    URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=5";
-                }
-                else if (opcion.equalsIgnoreCase("crash team racing nf")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=4";
-                    URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=5";
-                }
-                else if (opcion.equalsIgnoreCase("mis planes son amarte")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=4";
-                    URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=5";
-                }
-                else if (opcion.equalsIgnoreCase("por primera vez")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=4";
-                    URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=5";
-                }
-                else if (opcion.equalsIgnoreCase("PUMA Laliga 1 Hybrid")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=4";
-                    URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=5";
-                }
-                else if (opcion.equalsIgnoreCase("canva")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=4";
-                    URL23 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=5";
-                }
-                obtencionComentarios(URL19);
-                obtencionComentarios(URL20);
-                obtencionComentarios(URL21);
-                obtencionComentarios(URL22);
-                obtencionComentarios(URL23);
-            }
-            else if(nCom == 4){
-                if (opcion.equalsIgnoreCase("lenovo s145-15ast")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=4";
-                }
-                else if (opcion.equalsIgnoreCase("asus zenbook 14")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=4";
-                }
-                else if (opcion.equalsIgnoreCase("macbook pro 2020")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=4";
-                }
-                else if (opcion.equalsIgnoreCase("irobot roomba 671")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=4";
-                }
-                else if (opcion.equalsIgnoreCase("ua - sudadera hombre")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=4";
-                }
-                else if (opcion.equalsIgnoreCase("ua - pantalones")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=4";
-                }
-                else if (opcion.equalsIgnoreCase("Vans Classic Po Hoodie")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=4";
-                }
-                else if (opcion.equalsIgnoreCase("adidas superstar")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=4";
-                }
-                else if (opcion.equalsIgnoreCase("A. claro calvo")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=4";
-                }
-                else if (opcion.equalsIgnoreCase("Maizena harina")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=4";
-                }
-                else if (opcion.equalsIgnoreCase("harry potter y la piedra f.")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=4";
-                }
-                else if (opcion.equalsIgnoreCase("crash team racing nf")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=4";
-                }
-                else if (opcion.equalsIgnoreCase("mis planes son amarte")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=4";
-                }
-                else if (opcion.equalsIgnoreCase("por primera vez")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=4";
-                }
-                else if (opcion.equalsIgnoreCase("PUMA Laliga 1 Hybrid")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=4";
-                }
-                else if (opcion.equalsIgnoreCase("canva")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=3";
-                    URL22 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=4";
-                }
-                obtencionComentarios(URL19);
-                obtencionComentarios(URL20);
-                obtencionComentarios(URL21);
-                obtencionComentarios(URL22);
-            }
-            else if(nCom == 3){
-                if (opcion.equalsIgnoreCase("lenovo s145-15ast")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=3";
-                }
-                else if (opcion.equalsIgnoreCase("asus zenbook 14")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=3";
-                }
-                else if (opcion.equalsIgnoreCase("macbook pro 2020")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=3";
-                }
-                else if (opcion.equalsIgnoreCase("irobot roomba 671")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=3";
-                }
-                else if (opcion.equalsIgnoreCase("ua - sudadera hombre")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=3";
-                }
-                else if (opcion.equalsIgnoreCase("ua - pantalones")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=3";
-                }
-                else if (opcion.equalsIgnoreCase("Vans Classic Po Hoodie")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=3";
-                }
-                else if (opcion.equalsIgnoreCase("adidas superstar")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=3";
-                }
-                else if (opcion.equalsIgnoreCase("A. claro calvo")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=3";
-                }
-                else if (opcion.equalsIgnoreCase("Maizena harina")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=3";
-                }
-                else if (opcion.equalsIgnoreCase("harry potter y la piedra f.")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=3";
-                }
-                else if (opcion.equalsIgnoreCase("crash team racing nf")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=3";
-                }
-                else if (opcion.equalsIgnoreCase("mis planes son amarte")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=3";
-                }
-                else if (opcion.equalsIgnoreCase("por primera vez")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=3";
-                }
-                else if (opcion.equalsIgnoreCase("PUMA Laliga 1 Hybrid")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=3";
-                }
-                else if (opcion.equalsIgnoreCase("canva")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=2";
-                    URL21 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=3";
-                }
-                obtencionComentarios(URL19);
-                obtencionComentarios(URL20);
-                obtencionComentarios(URL21);
-            }
-            else if(nCom == 2){
-                if (opcion.equalsIgnoreCase("lenovo s145-15ast")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=2";
-                }
-                else if (opcion.equalsIgnoreCase("asus zenbook 14")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=2";
-                }
-                else if (opcion.equalsIgnoreCase("macbook pro 2020")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=2";
-                }
-                else if (opcion.equalsIgnoreCase("irobot roomba 671")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=2";
-                }
-                else if (opcion.equalsIgnoreCase("ua - sudadera hombre")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=2";
-                }
-                else if (opcion.equalsIgnoreCase("ua - pantalones")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=2";
-                }
-                else if (opcion.equalsIgnoreCase("Vans Classic Po Hoodie")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=2";
-                }
-                else if (opcion.equalsIgnoreCase("adidas superstar")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=2";
-                }
-                else if (opcion.equalsIgnoreCase("A. claro calvo")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=2";
-                }
-                else if (opcion.equalsIgnoreCase("Maizena harina")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=2";
-                }
-                else if (opcion.equalsIgnoreCase("harry potter y la piedra f.")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=2";
-                }
-                else if (opcion.equalsIgnoreCase("crash team racing nf")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=2";
-                }
-                else if (opcion.equalsIgnoreCase("mis planes son amarte")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=2";
-                }
-                else if (opcion.equalsIgnoreCase("por primera vez")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=2";
-                }
-                else if (opcion.equalsIgnoreCase("PUMA Laliga 1 Hybrid")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=2";
-                }
-                else if (opcion.equalsIgnoreCase("canva")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=1";
-                    URL20 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=2";
-                }
-                obtencionComentarios(URL19);
-                obtencionComentarios(URL20);
-            }
-            else if(nCom == 1){
-                if (opcion.equalsIgnoreCase("lenovo s145-15ast")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP1.php?id=1";
-                }
-                else if (opcion.equalsIgnoreCase("asus zenbook 14")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP2.php?id=1";
-                }
-                else if (opcion.equalsIgnoreCase("macbook pro 2020")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP3.php?id=1";
-                }
-                else if (opcion.equalsIgnoreCase("irobot roomba 671")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP4.php?id=1";
-                }
-                else if (opcion.equalsIgnoreCase("ua - sudadera hombre")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP5.php?id=1";
-                }
-                else if (opcion.equalsIgnoreCase("ua - pantalones")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP6.php?id=1";
-                }
-                else if (opcion.equalsIgnoreCase("Vans Classic Po Hoodie")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP7.php?id=1";
-                }
-                else if (opcion.equalsIgnoreCase("adidas superstar")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP8.php?id=1";
-                }
-                else if (opcion.equalsIgnoreCase("A. claro calvo")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP9.php?id=1";
-                }
-                else if (opcion.equalsIgnoreCase("Maizena harina")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP10.php?id=1";
-                }
-                else if (opcion.equalsIgnoreCase("harry potter y la piedra f.")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP11.php?id=1";
-                }
-                else if (opcion.equalsIgnoreCase("crash team racing nf")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP12.php?id=1";
-                }
-                else if (opcion.equalsIgnoreCase("mis planes son amarte")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP13.php?id=1";
-                }
-                else if (opcion.equalsIgnoreCase("por primera vez")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP14.php?id=1";
-                }
-                else if (opcion.equalsIgnoreCase("PUMA Laliga 1 Hybrid")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP15.php?id=1";
-                }
-                else if (opcion.equalsIgnoreCase("canva")){
-                    URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/verComYValP16.php?id=1";
-                }
-                obtencionComentarios(URL19);
-            }
-            else if(nCom == 0){
-                Toast.makeText(getContext(), "NO HAY COMENTARIOS", Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
-
-
-    public void direccionesURLNumCom(){
-        numCom1 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/numCom1.php";
-        numCom2 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/numCom2.php";
-        numCom3 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/numCom3.php";
-        numCom4 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/numCom4.php";
-        numCom5 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/numCom5.php";
-        numCom6 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/numCom6.php";
-        numCom7 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/numCom7.php";
-        numCom8 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/numCom8.php";
-        numCom9 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/numCom9.php";
-        numCom10 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/numCom10.php";
-        numCom11 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/numCom11.php";
-        numCom12 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/numCom12.php";
-        numCom13 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/numCom13.php";
-        numCom14 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/numCom14.php";
-        numCom15 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/numCom15.php";
-        numCom16 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/numCom16.php";
-    }
-
-    private void ejecutarServicio(String url){
+    private void insertarComentarios(String url){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(getContext(), "Datos enviados correctamente", Toast.LENGTH_SHORT).show();
-                edtUsuario.setText("");
+                Snackbar.make(view, "Gracias por su comentario " + edtUsuario.getText().toString() + " :)", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                recuperarNombreDeUsuario();
                 edtComentario.setText("");
                 ratingBar.setRating(0);
                 txtValoracion.setText("0.0");
+                Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
+                if (listaComentarios.isEmpty()){
+                    mostrarComentarios();
+                }
+                else {
+                    listaComentarios.clear();
+                    adapterRecyclerComentarios.notifyDataSetChanged();
+                    mostrarComentarios();
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -1502,8 +772,14 @@ public class DetalleProductoFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> parametros = new HashMap<String, String>();
-                parametros.put("usuario",edtUsuario.getText().toString());
+
+                SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
+                        Context.MODE_PRIVATE);
+                
+                parametros.put("id_usuario", preferences.getString("id", "1"));
+                parametros.put("id_producto", txtIdProducto.getText().toString());
                 parametros.put("comentario", edtComentario.getText().toString());
+                //parametros.put("num", "");
                 parametros.put("valoracion", txtValoracion.getText().toString());
                 return parametros;
             }
@@ -1511,6 +787,103 @@ public class DetalleProductoFragment extends Fragment {
         //requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(stringRequest);
     }
+
+    private void validarComentarios(String URL) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //Toast.makeText(getContext(), "Response: " +response , Toast.LENGTH_SHORT).show();
+                if(response.isEmpty()){
+                    insertarComentarios(URLinsertarComentarios);
+                    int numComSum = Integer.valueOf(numComentarios) + 1;
+                    txtNumCom.setText(numComSum + " comentarios");
+                }
+                else {
+                    Snackbar.make(view, "El usuario " + edtUsuario.getText().toString() + " ya " +
+                            "ha hecho un comentario en este producto.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), error.toString() , Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> parametros = new HashMap<String, String>();
+                SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
+                        Context.MODE_PRIVATE);
+                parametros.put("id_usuario", preferences.getString("id", "1"));
+                parametros.put("id_producto", txtIdProducto.getText().toString());
+                return parametros;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    private void obtenerComentarios(String URL, String id_usuario, String idProducto) {
+        URL = URL + "?id_usuario=" + id_usuario + "&id_producto=" + idProducto;
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                JSONObject jsonObject = null;
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        jsonObject = response.getJSONObject(i);
+                        usuario1 = jsonObject.getString("nombre") + " " + jsonObject.getString("apellido");
+                        comentario1 = jsonObject.getString("comentario");
+                        valoracion1 = jsonObject.getString("valoracion");
+                        listaComentarios.add(new ComentariosProductos(usuario1, comentario1, valoracion1));
+                    } catch (JSONException e) {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+                recyclerViewComentarios.setLayoutManager(new LinearLayoutManager(getContext()));
+                adapterRecyclerComentarios = new AdapterRecyclerComentarios(getContext(), listaComentarios);
+                recyclerViewComentarios.setAdapter(adapterRecyclerComentarios);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(getContext(), "ERROR DE CONEXIÓN", Toast.LENGTH_SHORT).show();
+            }
+        }
+        );
+
+
+        requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(jsonArrayRequest);
+    }
+    private void obtener_id_producto(String URL) {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                JSONObject jsonObject = null;
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        jsonObject = response.getJSONObject(i);
+                        idProducto = jsonObject.getString("id");
+                        txtIdProducto.setText(idProducto);
+                        //Toast.makeText(getActivity(), "idP: " + idProducto, Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "ERROR DE CONEXIÓN", Toast.LENGTH_SHORT).show();
+            }
+        }
+        );
+        requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(jsonArrayRequest);
+    }
+
 
     private void insertarProductoEnCesta(String url){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -1570,7 +943,7 @@ public class DetalleProductoFragment extends Fragment {
         requestQueue.add(jsonArrayRequest);
     }
 
-    public void obtenerComentariosDeBBDD(final String url){
+    public void obtenerNumComentariosDeBBDD(final String url){
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -1580,7 +953,7 @@ public class DetalleProductoFragment extends Fragment {
                         jsonObject = response.getJSONObject(i);
                         numComentarios = jsonObject.getString("0");
                         txtNumCom.setText(numComentarios + " comentarios");
-                        direccionesURLComentarios();
+                        mostrarComentarios();
                     } catch (JSONException e) {
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
 
@@ -1599,111 +972,53 @@ public class DetalleProductoFragment extends Fragment {
 
     public void obtenerNumComentarios2(){
         if (opcion.equalsIgnoreCase("lenovo s145-15ast")){
-            obtenerComentariosDeBBDD(numCom1);
+            obtenerNumComentariosDeBBDD(URLNumCom + "1");
         }
         else if (opcion.equalsIgnoreCase("asus zenbook 14")){
-            obtenerComentariosDeBBDD(numCom2);
+            obtenerNumComentariosDeBBDD(URLNumCom + "2");
         }
         else if (opcion.equalsIgnoreCase("macbook pro 2020")){
-            obtenerComentariosDeBBDD(numCom3);
+            obtenerNumComentariosDeBBDD(URLNumCom + "3");
         }
         else if (opcion.equalsIgnoreCase("irobot roomba 671")){
-            obtenerComentariosDeBBDD(numCom4);
+            obtenerNumComentariosDeBBDD(URLNumCom + "4");
         }
         else if (opcion.equalsIgnoreCase("ua - sudadera hombre")){
-            obtenerComentariosDeBBDD(numCom5);
+            obtenerNumComentariosDeBBDD(URLNumCom + "5");
         }
         else if (opcion.equalsIgnoreCase("ua - pantalones")){
-            obtenerComentariosDeBBDD(numCom6);
+            obtenerNumComentariosDeBBDD(URLNumCom + "6");
         }
         else if (opcion.equalsIgnoreCase("Vans Classic Po Hoodie")){
-            obtenerComentariosDeBBDD(numCom7);
+            obtenerNumComentariosDeBBDD(URLNumCom + "7");
         }
         else if (opcion.equalsIgnoreCase("adidas superstar")){
-            obtenerComentariosDeBBDD(numCom8);
+            obtenerNumComentariosDeBBDD(URLNumCom + "8");
         }
         else if (opcion.equalsIgnoreCase("A. claro calvo")){
-            obtenerComentariosDeBBDD(numCom9);
+            obtenerNumComentariosDeBBDD(URLNumCom + "9");
         }
         else if (opcion.equalsIgnoreCase("Maizena harina")){
-            obtenerComentariosDeBBDD(numCom10);
+            obtenerNumComentariosDeBBDD(URLNumCom + "10");
         }
         else if (opcion.equalsIgnoreCase("harry potter y la piedra f.")){
-            obtenerComentariosDeBBDD(numCom11);
+            obtenerNumComentariosDeBBDD(URLNumCom + "11");
         }
         else if (opcion.equalsIgnoreCase("crash team racing nf")){
-            obtenerComentariosDeBBDD(numCom12);
+            obtenerNumComentariosDeBBDD(URLNumCom + "12");
         }
         else if (opcion.equalsIgnoreCase("mis planes son amarte")){
-            obtenerComentariosDeBBDD(numCom13);
+            obtenerNumComentariosDeBBDD(URLNumCom + "13");
         }
         else if (opcion.equalsIgnoreCase("por primera vez")){
-            obtenerComentariosDeBBDD(numCom14);
+            obtenerNumComentariosDeBBDD(URLNumCom + "14");
         }
         else if (opcion.equalsIgnoreCase("PUMA Laliga 1 Hybrid")){
-            obtenerComentariosDeBBDD(numCom15);
+            obtenerNumComentariosDeBBDD(URLNumCom + "15");
         }
         else if (opcion.equalsIgnoreCase("canva")){
-            obtenerComentariosDeBBDD(numCom16);
+            obtenerNumComentariosDeBBDD(URLNumCom + "16");
         }
-    }
-
-    public void obtencionComentarios(final String url){
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                JSONObject jsonObject = null;
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        jsonObject = response.getJSONObject(i);
-                        if (url.equalsIgnoreCase(URL19)) {
-                            comentario1 = jsonObject.getString("comentario");
-                            valoracion1 = jsonObject.getString("valoracion");
-                            usuario1 = jsonObject.getString("usuario");
-                            listaComentarios.add(new ComentariosProductos(usuario1 ,  comentario1, "Valoración: " + valoracion1 + " ⭐"));
-                        }
-                        else if (url.equalsIgnoreCase(URL20)) {
-                            comentario2 = jsonObject.getString("comentario");
-                            valoracion2 = jsonObject.getString("valoracion");
-                            usuario2 = jsonObject.getString("usuario");
-                            listaComentarios.add(new ComentariosProductos(usuario2, comentario2, "Valoración: " +valoracion2 + " ⭐"));
-                        }
-                        else if (url.equalsIgnoreCase(URL21)) {
-                            comentario3 = jsonObject.getString("comentario");
-                            valoracion3 = jsonObject.getString("valoracion");
-                            usuario3 = jsonObject.getString("usuario");
-                            listaComentarios.add(new ComentariosProductos(usuario3, comentario3, "Valoración: " +valoracion3 + " ⭐"));
-                        }
-                        else if (url.equalsIgnoreCase(URL22)) {
-                            comentario4 = jsonObject.getString("comentario");
-                            valoracion4 = jsonObject.getString("valoracion");
-                            usuario4 = jsonObject.getString("usuario");
-                            listaComentarios.add(new ComentariosProductos(usuario4, comentario4, "Valoración: " +valoracion4 + " ⭐"));
-                        }
-                        else if (url.equalsIgnoreCase(URL23)) {
-                            comentario5 = jsonObject.getString("comentario");
-                            valoracion5 = jsonObject.getString("valoracion");
-                            usuario5 = jsonObject.getString("usuario");
-                            listaComentarios.add(new ComentariosProductos(usuario5, comentario5, "Valoración: " +valoracion5 + " ⭐"));
-                        }
-                    } catch (JSONException e) {
-                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                    }
-
-                }
-                recyclerViewComentarios.setLayoutManager(new LinearLayoutManager(getContext()));
-                adapterRecyclerComentarios = new AdapterRecyclerComentarios(getContext(), listaComentarios);
-                recyclerViewComentarios.setAdapter(adapterRecyclerComentarios);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Toast.makeText(getContext(), "ERROR DE CONEXIÓN: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        //requestQueue= Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(jsonArrayRequest);
     }
 
     private void show(){
@@ -1758,6 +1073,4 @@ public class DetalleProductoFragment extends Fragment {
         val15 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/suma_valoracion15.php";
         val16 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/suma_valoracion16.php";
     }
-
-    
 }

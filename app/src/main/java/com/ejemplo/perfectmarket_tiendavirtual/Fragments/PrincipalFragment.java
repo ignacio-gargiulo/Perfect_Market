@@ -74,7 +74,7 @@ public class PrincipalFragment extends Fragment {
     ArrayList<Categoria> listaCategorias3;
     ArrayList<Categoria> listaCategorias4;
 
-    String URL, URL2, URL3, URL4, URL5, URL6, URL7, URL8,URL9,URL10,URL11,URL12,URL13,URL14,URL15,URL16;
+    String URL;
 
     String nombreProducto1 = "", descripcion1, otrosDatos1, precio1, img1;
     String nombreProducto2, descripcion2, otrosDatos2, precio2, img2;
@@ -119,7 +119,6 @@ public class PrincipalFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_principal, container, false);
 
-
         btnCat = view.findViewById(R.id.btnIrCategorias);
         btncesta = view.findViewById(R.id.btnIrCesta);
         btnImagenAnterior = view.findViewById(R.id.btnImagenAnterior);
@@ -142,8 +141,8 @@ public class PrincipalFragment extends Fragment {
 
         requestQueue = Volley.newRequestQueue(getContext());
         recuperarPreferencias();
-        direccionesURL();
-        direccionesURLImagenes();
+        URL = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/buscarProductosPrincipal.php?id=";
+
 
 
         if(nombreProducto1.equalsIgnoreCase("")){
@@ -243,14 +242,7 @@ public class PrincipalFragment extends Fragment {
     public void flipperImagenes(int imagen){
         ImageView imageView = new ImageView(getContext());
         imageView.setBackgroundResource(imagen);
-
         viewFlipper.addView(imageView);
-        //viewFlipperP.setFlipInterval(4000);
-        //viewFlipperP.setAutoStart(true);
-
-        //animacion
-        //viewFlipperP.setInAnimation(getContext(), android.R.anim.slide_in_left);
-        //viewFlipperP.setOutAnimation(getContext(), android.R.anim.slide_out_right);
     }
 
     public void previousView(View v) {
@@ -279,10 +271,9 @@ public class PrincipalFragment extends Fragment {
     }
 
     public void obtenerDatosLista1(){
-        obtenerDatosDeBBDD(URL);
-        obtenerDatosDeBBDD(URL2);
-        obtenerDatosDeBBDD(URL3);
-        obtenerDatosDeBBDD(URL4);
+        for (int i = 1; i < 5; i++){
+            obtenerDatosDeBBDD(URL + String.valueOf(i));
+        }
     }
 
     public void cargarLista2(){
@@ -293,10 +284,9 @@ public class PrincipalFragment extends Fragment {
     }
 
     public void obtenerDatosLista2(){
-        obtenerDatosDeBBDD(URL5);
-        obtenerDatosDeBBDD(URL6);
-        obtenerDatosDeBBDD(URL7);
-        obtenerDatosDeBBDD(URL8);
+        for (int i = 5; i < 9; i++){
+            obtenerDatosDeBBDD(URL + String.valueOf(i));
+        }
     }
 
     public void cargarLista3(){
@@ -307,10 +297,9 @@ public class PrincipalFragment extends Fragment {
     }
 
     public void obtenerDatosLista3(){
-        obtenerDatosDeBBDD(URL9);
-        obtenerDatosDeBBDD(URL10);
-        obtenerDatosDeBBDD(URL11);
-        obtenerDatosDeBBDD(URL12);
+        for (int i = 9; i < 13; i++){
+            obtenerDatosDeBBDD(URL + String.valueOf(i));
+        }
     }
 
     public void cargarLista4(){
@@ -321,10 +310,9 @@ public class PrincipalFragment extends Fragment {
     }
 
     public void obtenerDatosLista4(){
-        obtenerDatosDeBBDD(URL13);
-        obtenerDatosDeBBDD(URL14);
-        obtenerDatosDeBBDD(URL15);
-        obtenerDatosDeBBDD(URL16);
+        for (int i = 13; i < 17; i++){
+            obtenerDatosDeBBDD(URL + String.valueOf(i));
+        }
     }
 
     public void mostrarDatos1(){
@@ -392,97 +380,97 @@ public class PrincipalFragment extends Fragment {
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         jsonObject = response.getJSONObject(i);
-                        if (url.equalsIgnoreCase(URL)){
+                        if (url.equalsIgnoreCase(URL + "1")){
                             nombreProducto1 = jsonObject.getString("nombre_producto");
                             precio1 = jsonObject.getString("precio_producto");
                             descripcion1 = jsonObject.getString("descripcion_producto");
                             otrosDatos1 = jsonObject.getString("otros_datos_producto");
                         }
-                        else if (url.equalsIgnoreCase(URL2)){
+                        else if (url.equalsIgnoreCase(URL + "2")){
                             nombreProducto2 = jsonObject.getString("nombre_producto");
                             precio2 = jsonObject.getString("precio_producto");
                             descripcion2 = jsonObject.getString("descripcion_producto");
                             otrosDatos2 = jsonObject.getString("otros_datos_producto");
                         }
-                        else if (url.equalsIgnoreCase(URL3)){
+                        else if (url.equalsIgnoreCase(URL + "3")){
                             nombreProducto3 = jsonObject.getString("nombre_producto");
                             precio3 = jsonObject.getString("precio_producto");
                             descripcion3 = jsonObject.getString("descripcion_producto");
                             otrosDatos3 = jsonObject.getString("otros_datos_producto");
                         }
-                        else if (url.equalsIgnoreCase(URL4)){
+                        else if (url.equalsIgnoreCase(URL + "4")){
                             nombreProducto4 = jsonObject.getString("nombre_producto");
                             precio4 = jsonObject.getString("precio_producto");
                             descripcion4 = jsonObject.getString("descripcion_producto");
                             otrosDatos4 = jsonObject.getString("otros_datos_producto");
                         }
-                        else if (url.equalsIgnoreCase(URL5)){
+                        else if (url.equalsIgnoreCase(URL + "5")){
                             nombreProducto5 = jsonObject.getString("nombre_producto");
                             precio5 = jsonObject.getString("precio_producto");
                             descripcion5 = jsonObject.getString("descripcion_producto");
                             otrosDatos5 = jsonObject.getString("otros_datos_producto");
                         }
-                        else if (url.equalsIgnoreCase(URL6)){
+                        else if (url.equalsIgnoreCase(URL + "6")){
                             nombreProducto6 = jsonObject.getString("nombre_producto");
                             precio6 = jsonObject.getString("precio_producto");
                             descripcion6 = jsonObject.getString("descripcion_producto");
                             otrosDatos6 = jsonObject.getString("otros_datos_producto");
                         }
-                        else if (url.equalsIgnoreCase(URL7)){
+                        else if (url.equalsIgnoreCase(URL + "7")){
                             nombreProducto7 = jsonObject.getString("nombre_producto");
                             precio7 = jsonObject.getString("precio_producto");
                             descripcion7 = jsonObject.getString("descripcion_producto");
                             otrosDatos7 = jsonObject.getString("otros_datos_producto");
                         }
-                        else if (url.equalsIgnoreCase(URL8)){
+                        else if (url.equalsIgnoreCase(URL + "8")){
                             nombreProducto8 = jsonObject.getString("nombre_producto");
                             precio8 = jsonObject.getString("precio_producto");
                             descripcion8 = jsonObject.getString("descripcion_producto");
                             otrosDatos8 = jsonObject.getString("otros_datos_producto");
                         }
-                        else if (url.equalsIgnoreCase(URL9)){
+                        else if (url.equalsIgnoreCase(URL + "9")){
                             nombreProducto9 = jsonObject.getString("nombre_producto");
                             precio9 = jsonObject.getString("precio_producto");
                             descripcion9 = jsonObject.getString("descripcion_producto");
                             otrosDatos9 = jsonObject.getString("otros_datos_producto");
                         }
-                        else if (url.equalsIgnoreCase(URL10)){
+                        else if (url.equalsIgnoreCase(URL + "10")){
                             nombreProducto10 = jsonObject.getString("nombre_producto");
                             precio10 = jsonObject.getString("precio_producto");
                             descripcion10 = jsonObject.getString("descripcion_producto");
                             otrosDatos10 = jsonObject.getString("otros_datos_producto");
                         }
-                        else if (url.equalsIgnoreCase(URL11)){
+                        else if (url.equalsIgnoreCase(URL + "11")){
                             nombreProducto11 = jsonObject.getString("nombre_producto");
                             precio11 = jsonObject.getString("precio_producto");
                             descripcion11 = jsonObject.getString("descripcion_producto");
                             otrosDatos11 = jsonObject.getString("otros_datos_producto");
                         }
-                        else if (url.equalsIgnoreCase(URL12)){
+                        else if (url.equalsIgnoreCase(URL + "12")){
                             nombreProducto12 = jsonObject.getString("nombre_producto");
                             precio12 = jsonObject.getString("precio_producto");
                             descripcion12 = jsonObject.getString("descripcion_producto");
                             otrosDatos12 = jsonObject.getString("otros_datos_producto");
                         }
-                        else if (url.equalsIgnoreCase(URL13)){
+                        else if (url.equalsIgnoreCase(URL + "13")){
                             nombreProducto13 = jsonObject.getString("nombre_producto");
                             precio13 = jsonObject.getString("precio_producto");
                             descripcion13 = jsonObject.getString("descripcion_producto");
                             otrosDatos13 = jsonObject.getString("otros_datos_producto");
                         }
-                        else if (url.equalsIgnoreCase(URL14)){
+                        else if (url.equalsIgnoreCase(URL + "14")){
                             nombreProducto14 = jsonObject.getString("nombre_producto");
                             precio14 = jsonObject.getString("precio_producto");
                             descripcion14 = jsonObject.getString("descripcion_producto");
                             otrosDatos14 = jsonObject.getString("otros_datos_producto");
                         }
-                        else if (url.equalsIgnoreCase(URL15)){
+                        else if (url.equalsIgnoreCase(URL + "15")){
                             nombreProducto15 = jsonObject.getString("nombre_producto");
                             precio15 = jsonObject.getString("precio_producto");
                             descripcion15 = jsonObject.getString("descripcion_producto");
                             otrosDatos15 = jsonObject.getString("otros_datos_producto");
                         }
-                        else if (url.equalsIgnoreCase(URL16)){
+                        else if (url.equalsIgnoreCase(URL + "16")){
                             nombreProducto16 = jsonObject.getString("nombre_producto");
                             precio16 = jsonObject.getString("precio_producto");
                             descripcion16 = jsonObject.getString("descripcion_producto");
@@ -504,44 +492,6 @@ public class PrincipalFragment extends Fragment {
         //requestQueue= Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(jsonArrayRequest);
 
-    }
-
-    public void direccionesURL(){
-        URL = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_pm.php?id=1";
-        URL2 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_pm.php?id=2";
-        URL3 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_pm.php?id=3";
-        URL4 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_pm.php?id=4";
-        URL5 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_pm.php?id=5";
-        URL6 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_pm.php?id=6";
-        URL7 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_pm.php?id=7";
-        URL8 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_pm.php?id=8";
-        URL9 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_pm.php?id=9";
-        URL10 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_pm.php?id=10";
-        URL11 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_pm.php?id=11";
-        URL12 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_pm.php?id=12";
-        URL13 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_pm.php?id=13";
-        URL14 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_pm.php?id=14";
-        URL15 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_pm.php?id=15";
-        URL16 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_pm.php?id=16";
-    }
-
-    public void direccionesURLImagenes(){
-        img1 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/imagenes/img1.jpg";
-        img2 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/imagenes/img2.jpg";
-        img3 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/imagenes/img3.jpg";
-        img4 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/imagenes/img4.jpg";
-        img5 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/imagenes/img5.jpg";
-        img6 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/imagenes/img6.jpg";
-        img7 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/imagenes/img7.jpg";
-        img8 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/imagenes/img8.jpg";
-        img9 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/imagenes/img9.jpg";
-        img10 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/imagenes/img10.jpg";
-        img11= "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/imagenes/img11.jpg";
-        img12= "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/imagenes/img12.jpg";
-        img13= "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/imagenes/img13.jpg";
-        img14= "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/imagenes/img14.jpg";
-        img15= "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/imagenes/img15.jpg";
-        img16= "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/imagenes/img16.jpg";
     }
 
     class CargarProductos extends AsyncTask<String, Void, String>{

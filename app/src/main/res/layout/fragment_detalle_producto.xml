@@ -52,6 +52,12 @@
                 android:textColor="@color/azul_perfect"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/txtIdProducto"
+                android:visibility="invisible"
+                android:layout_width="0dp"
+                android:layout_height="0dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -320,7 +326,7 @@
                 android:layout_marginTop="10dp"
                 android:textColor="@color/celeste_perfect"
                 android:textStyle="bold"
-                android:text="Nombre de Usuario:"
+                android:text="Email de Usuario:"
                 />
 
             <EditText
@@ -332,6 +338,7 @@
                 android:layout_gravity="center"
                 android:justificationMode="inter_word"
                 android:textColor="@color/negro"
+                android:textAlignment="center"
                 android:hint="Usuario"
                 >
             </EditText>
@@ -452,11 +459,11 @@
 
             <TextView
                 android:id="@+id/txtNumCom"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginLeft="10dp"
                 android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
                 android:textColor="@color/azul_perfect"
                 android:text="0 comentarios"
                 android:layout_marginRight="10dp"
@@ -483,14 +490,13 @@
                 >
             </androidx.recyclerview.widget.RecyclerView>
 
+
             <Button
+                android:visibility="invisible"
                 android:id="@+id/btnActualizarComentarios"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="Actualizar"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
                 android:textSize="12dp"
                 android:drawableLeft="@drawable/ic_actualizar_celeste"
@@ -499,6 +505,7 @@
                 android:textAllCaps="false"
                 >
             </Button>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="5dp"
