@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="0/16 productos en la cesta"
+        android:text="0 productos en la cesta"
         android:textColor="@color/blanco"
         android:background="@color/azul_perfect"
         android:textStyle="bold"
@@ -57,6 +57,9 @@
                 android:visibility="invisible"
                 android:layout_width="0dp"
                 android:layout_height="0dp"/>
+
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -426,6 +429,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="Valoración General"
                         android:textSize="25dp"
                         android:textStyle="italic|bold"
@@ -437,8 +441,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Actualiza"
-                        android:textSize="40dp"
+                        android:text="s/n"
+                        android:textSize="50dp"
                         android:textStyle="italic|bold"
                         android:textColor="@color/verde_oscuro"
                         />

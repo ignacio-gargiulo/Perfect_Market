@@ -63,14 +63,14 @@ public class DetalleProductoFragment extends Fragment {
     ImageView imagen;
     String URLObtenerComentarios;
     String opcion, numComentarios, idProducto, nombreUsuario;
-    String URL17, URL18, URL19, URL20, URL21, URL22, URL23;
+    String URL17, URL18, URLinsertarProductoEnCesta, URL19, URL20, URL21, URL22, URL23;
     String URLNumCom, URLDatosUsuario;
     EditText edtUsuario, edtComentario, edtCantidad;
     String URLidProducto, URLinsertarComentarios;
     RequestQueue requestQueue;
     Button btnEnviarDatos, btnAñadirCesta, btnSumarCantidad, btnRestarCantidad, btnComprarYa, btnActualizarComentarios;
     String numeroProductosCesta, comentario1,comentario2, comentario3, comentario4, comentario5, valoracion1, valoracion2,
-    valoracion3, valoracion4, valoracion5, usuario1, usuario2, usuario3, usuario4, usuario5;
+            numeroTotalOpiniones, numProdCestaUsuario, valoracion5, usuario1, usuario2, usuario3, usuario4, usuario5;
     FloatingActionButton fab, fabCompartir, fabRetroceder, fabPrincipal;
     FragmentManager fm;
     FragmentTransaction fragmentTransaction;
@@ -78,6 +78,7 @@ public class DetalleProductoFragment extends Fragment {
     ArrayList<ComentariosProductos> listaComentarios, listaComentarioUsuario;
     AdapterRecyclerComentarios adapterRecyclerComentarios, adapterRecyclerComentarioUsuario;
     ViewFlipper viewFlipperP;
+    String URLSumaValoracionP;
     int num;
     int cantidad = 0;
     DecimalFormat decimalFormat;
@@ -87,17 +88,18 @@ public class DetalleProductoFragment extends Fragment {
     RecyclerView recyclerViewComentarios, recyclerViewComentarioUsuario;
     int imagenId;
     String valProd, URLvalidarComentarios;
-    TextView txtValGen;
-
+    TextView txtValGen, txtNumTotalOpiniones;
+    Double valoracionGeneral = 0.0;
+    String URLValidarProductosCesta, URLNumTOpiniones, URLNumProductosCesta;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_detalle_producto,container, false);
 
         direccionesURL();
+
+
         txtComUser = view.findViewById(R.id.txtComUser);
-        URLObtenerComentarios = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/obtenerComentarios.php";
-        URLNumCom = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/numOpiniones.php?id_producto=";
         txtIdProducto = view.findViewById(R.id.txtIdProducto);
         txtValGen = view.findViewById(R.id.txtValProducto);
         btnSiguienteP = view.findViewById(R.id.btnImagenSiguienteProductos);
@@ -133,15 +135,13 @@ public class DetalleProductoFragment extends Fragment {
         listaComentarios = new ArrayList<>();
         listaComentarioUsuario = new ArrayList<>();
         decimalFormat = new DecimalFormat("#.00");
-        URLidProducto = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/buscar_Id_producto.php?nombre_producto=";
-        URLinsertarComentarios = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/insertar_comentarios.php";
-        URLDatosUsuario = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/buscar_nombre_usuario.php?id_usuario=";
+
         //URL19 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/obtenerComentarios.php?id_producto=";
-        obtenerDatosDeBBDD(URL18);
+        //obtenerDatosDeBBDD(URL18);
         direccionesValoraciones();
         recuperarNombreDeUsuario();
         btnActualizarComentarios.setEnabled(false);
-        URLvalidarComentarios = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/validarComentario.php";
+
 
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
@@ -172,7 +172,7 @@ public class DetalleProductoFragment extends Fragment {
                 intent.setAction(Intent.ACTION_SEND);
 
         //change the type of data you need to share,
-        //for image use "image/*"
+        //for image use "image/*
                 intent.setType("text/plain");
                 if (cantidad != 0){
                     intent.putExtra(Intent.EXTRA_TEXT, "BUSCA ESTO EN PERFECT MARKET\n============================\n" +
@@ -386,17 +386,31 @@ public class DetalleProductoFragment extends Fragment {
                 precioTotal.setText(precio_total[0] + " €");
             }
         }
+
+
+        obtenerNumProdCestaUsuario(URLNumProductosCesta);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                obtenerNumComentarios2();
+                obtenerNumComentariosDeBBDD(URLNumCom + txtIdProducto.getText().toString());
+
             }
-        },500);
+        },1000);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                obtenerValoracionesG(URLSumaValoracionP + txtIdProducto.getText().toString());
+            }
+        },1500);
 
 
 
 
-        Toast.makeText(getContext(), opcion, Toast.LENGTH_SHORT).show();
+
+
+        //Toast.makeText(getContext(), opcion, Toast.LENGTH_SHORT).show();
         obtener_id_producto(URLidProducto + opcion);
         edtCantidad.addTextChangedListener(new TextWatcher() {
             @Override
@@ -424,8 +438,17 @@ public class DetalleProductoFragment extends Fragment {
         btnEnviarDatos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                if (edtUsuario.getText().toString().equalsIgnoreCase("") || edtComentario.getText().toString().equalsIgnoreCase("")){
-                    Snackbar.make(view, "Debe rellenar el campo de Usuario y Comentario" + edtUsuario.getText().toString(), Snackbar.LENGTH_LONG)
+                SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
+                        Context.MODE_PRIVATE);
+                String em = preferences.getString("email", "Desconocido");
+
+
+                if (em.equalsIgnoreCase("Desconocido")) {
+                    Snackbar.make(view, "Debes iniciar sesión en 'Zona Usuario' para realizar esta acción", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+                else if (edtUsuario.getText().toString().equalsIgnoreCase("") || edtComentario.getText().toString().equalsIgnoreCase("")){
+                    Snackbar.make(view, "Debe rellenar el campo de Email y Comentario", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
                 else {
@@ -434,10 +457,7 @@ public class DetalleProductoFragment extends Fragment {
                             .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-
                                     validarComentarios(URLvalidarComentarios);
-
-
                                 }
                             }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                         @Override
@@ -458,10 +478,18 @@ public class DetalleProductoFragment extends Fragment {
         btnAñadirCesta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                String num1[] = txtNumProductosEnCesta.getText().toString().split("/");
+                String num1[] = txtNumProductosEnCesta.getText().toString().split(" ");
                 num = Integer.valueOf(num1[0]);
 
-                if(num >= 16){
+                SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
+                        Context.MODE_PRIVATE);
+
+
+                if (preferences.getString("email", "Desconocido").equalsIgnoreCase("Desconocido")) {
+                    Snackbar.make(view, "Debes iniciar sesión en 'Zona Usuario' para realizar esta acción'", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+                else if(num >= 16){
                     Snackbar.make(view, "No se pueden añadir más de 16 productos en la cesta", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
@@ -477,11 +505,7 @@ public class DetalleProductoFragment extends Fragment {
                             .setCancelable(false).setPositiveButton("Si", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            insertarProductoEnCesta(URL17);
-                            num = num + 1;
-                            txtNumProductosEnCesta.setText(num + "/16 productos en la cesta");
-                            Snackbar.make(view, "Añadido " + opcion + " a la cesta...", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
+                            validarProductosCesta(URLValidarProductosCesta);
                             //Toast.makeText(getContext(), "Añadido " + opcion + " a la cesta...", Toast.LENGTH_SHORT).show();
 
                         }
@@ -696,15 +720,25 @@ public class DetalleProductoFragment extends Fragment {
     }
 
     public void mostrarComentarios(){
-        Toast.makeText(getContext(), "NumCom: " + txtNumCom.getText().toString(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getContext(),  "idProd: " + txtIdProducto.getText().toString(), Toast.LENGTH_SHORT).show();
-        for (int i = 1; i < 100; i++ ) {
-            obtenerComentarios(URLObtenerComentarios, String.valueOf(i), txtIdProducto.getText().toString());
-        }
+        //Toast.makeText(getContext(), "NumCom: " + txtNumCom.getText().toString(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(),  "idProd: " + txtIdProducto.getText().toString(), Toast.LENGTH_SHORT).show();
+        obtenerNumOpinionesTotales(URLNumTOpiniones);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-        SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
-                Context.MODE_PRIVATE);
-        obtenerComentarioUsuario(URLObtenerComentarios, preferences.getString("id", "1"), txtIdProducto.getText().toString());
+                Toast.makeText(getContext(), "nTO:" + numeroTotalOpiniones, Toast.LENGTH_SHORT).show();
+
+                    for (int i = 1; i < 50; i++ ) {
+                        obtenerComentarios(URLObtenerComentarios, String.valueOf(i), txtIdProducto.getText().toString());
+                    }
+
+
+                SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
+                        Context.MODE_PRIVATE);
+                obtenerComentarioUsuario(URLObtenerComentarios, preferences.getString("id", "1"), txtIdProducto.getText().toString());
+            }
+        }, 500);
     }
 
     public void flipperImagenes(int imagen){
@@ -735,8 +769,18 @@ public class DetalleProductoFragment extends Fragment {
     }
 
     public void direccionesURL(){
-        URL17 = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/insertar_producto_en_cesta.php";
-        URL18= "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/pruebaNumRegistros.php";
+        URLinsertarProductoEnCesta = "https://perfectmarket.000webhostapp.com/perfect_market/insertar_productos_en_cesta.php";
+        URLValidarProductosCesta = "https://perfectmarket.000webhostapp.com/perfect_market/validarProductosCesta.php";
+        URLNumTOpiniones = "https://perfectmarket.000webhostapp.com/perfect_market/numOpinionesTotales.php";
+        URLNumProductosCesta = "https://perfectmarket.000webhostapp.com/perfect_market/numProductosCesta.php";
+        URLidProducto = "https://perfectmarket.000webhostapp.com/perfect_market/buscar_Id_producto.php?nombre_producto=";
+        URLinsertarComentarios = "https://perfectmarket.000webhostapp.com/perfect_market/insertar_comentarios.php";
+        URLDatosUsuario = "https://perfectmarket.000webhostapp.com/perfect_market/buscar_nombre_usuario.php?id_usuario=";
+        URLvalidarComentarios = "https://perfectmarket.000webhostapp.com/perfect_market/validarComentario.php";
+        URLSumaValoracionP = "https://perfectmarket.000webhostapp.com/perfect_market/sumaValoraciones.php?id_producto=";
+        URLObtenerComentarios = "https://perfectmarket.000webhostapp.com/perfect_market/obtenerComentarios.php";
+        URLNumCom = "https://perfectmarket.000webhostapp.com/perfect_market/numOpiniones.php?id_producto=";
+        //URL18= "https://perfectmarket.000webhostapp.com/perfect_market/pruebaNumRegistros.php";
     }
 
     private void recuperarNombreDeUsuario(){
@@ -781,7 +825,7 @@ public class DetalleProductoFragment extends Fragment {
 
                 SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
                         Context.MODE_PRIVATE);
-                
+
                 parametros.put("id_usuario", preferences.getString("id", "1"));
                 parametros.put("id_producto", txtIdProducto.getText().toString());
                 parametros.put("comentario", edtComentario.getText().toString());
@@ -803,10 +847,48 @@ public class DetalleProductoFragment extends Fragment {
                     insertarComentarios(URLinsertarComentarios);
                     int numComSum = Integer.valueOf(numComentarios) + 1;
                     txtNumCom.setText(numComSum + " comentarios");
+                    obtenerValoracionesG(URLSumaValoracionP + txtIdProducto.getText().toString());
                 }
                 else {
                     Snackbar.make(view, "El usuario " + edtUsuario.getText().toString() + " ya " +
                             "ha hecho un comentario en este producto.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), error.toString() , Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> parametros = new HashMap<String, String>();
+                SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
+                        Context.MODE_PRIVATE);
+                parametros.put("id_usuario", preferences.getString("id", "1"));
+                parametros.put("id_producto", txtIdProducto.getText().toString());
+                return parametros;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    private void validarProductosCesta(String URL) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //Toast.makeText(getContext(), "Response: " +response , Toast.LENGTH_SHORT).show();
+                if(response.isEmpty()){
+                    insertarProductoEnCesta(URLinsertarProductoEnCesta);
+                    num = num + 1;
+                    txtNumProductosEnCesta.setText(num + " productos en la cesta");
+                    Snackbar.make(view, "Añadiiendo " + opcion + " a la cesta...", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+                else {
+                    Snackbar.make(view, "El usuario " + edtUsuario.getText().toString() + " ya " +
+                            "ha añadido este producto a la cesta.", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
             }
@@ -842,6 +924,9 @@ public class DetalleProductoFragment extends Fragment {
                         comentario1 = jsonObject.getString("comentario");
                         valoracion1 = jsonObject.getString("valoracion");
                         listaComentarios.add(new ComentariosProductos(usuario1, comentario1, valoracion1));
+                        /*if (!valoracion1.isEmpty()){
+                            valGen(Double.parseDouble(valoracion1));
+                        }*/
                     } catch (JSONException e) {
                         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -858,10 +943,111 @@ public class DetalleProductoFragment extends Fragment {
             }
         }
         );
+        requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(jsonArrayRequest);
+    }
 
+    private void obtenerValoracionesG(String URL) {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                JSONObject jsonObject = null;
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        jsonObject = response.getJSONObject(i);
+                        valoracion2 = jsonObject.getString("0");
+                    } catch (JSONException e) {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+                Toast.makeText(getContext(), "vvvv " + valoracion2, Toast.LENGTH_SHORT).show();
+                String nC[] = txtNumCom.getText().toString().split(" ");
+                if (!nC[0].equalsIgnoreCase("0")){
+                    Double vv =  Double.parseDouble(valoracion2)/Double.parseDouble(nC[0]);
+                    txtValGen.setText("" + decimalFormat.format(vv));
+                }
+
+                //Toast.makeText(getContext(), "ncccc: " + nC[0], Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(getContext(), "ERROR DE CONEXIÓN", Toast.LENGTH_SHORT).show();
+            }
+        }
+        );
 
         requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(jsonArrayRequest);
+    }
+
+    private void obtenerNumOpinionesTotales(String URL) {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                JSONObject jsonObject = null;
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        jsonObject = response.getJSONObject(i);
+                        numeroTotalOpiniones = jsonObject.getString("0");
+                    } catch (JSONException e) {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                //Toast.makeText(getContext(), "ncccc: " + nC[0], Toast.LENGTH_SHORT).show();
+                //txtNumTotalOpiniones.setText("" + numeroTotalOpiniones);
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(getContext(), "ERROR DE CONEXIÓN", Toast.LENGTH_SHORT).show();
+            }
+        }
+        );
+
+        requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(jsonArrayRequest);
+    }
+
+    private void obtenerNumProdCestaUsuario(String URL) {
+        SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
+                Context.MODE_PRIVATE);
+
+        URL = URL + "?id_usuario=" + preferences.getString("id", "1");
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                JSONObject jsonObject = null;
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        jsonObject = response.getJSONObject(i);
+                        numProdCestaUsuario = jsonObject.getString("0");
+                    } catch (JSONException e) {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+                txtNumProductosEnCesta.setText(numProdCestaUsuario + " productos en la cesta");
+                //Toast.makeText(getContext(), "ncccc: " + numProdCestaUsuario, Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(getContext(), "ERROR DE CONEXIÓN", Toast.LENGTH_SHORT).show();
+            }
+        }
+        );
+
+        requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(jsonArrayRequest);
+    }
+
+    private void valGen(Double num){
+        valoracionGeneral = valoracionGeneral + num;
+        //Toast.makeText(getContext(), "vvv: " + decimalFormat.format(valoracionGeneral/Double.parseDouble(numComentarios)), Toast.LENGTH_SHORT).show();
+        txtValGen.setText("" + decimalFormat.format(valoracionGeneral/Double.parseDouble(numComentarios)));
     }
     private void obtenerComentarioUsuario(String URL, String id_usuario, String idProducto) {
         URL = URL + "?id_usuario=" + id_usuario + "&id_producto=" + idProducto;
@@ -943,9 +1129,13 @@ public class DetalleProductoFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> parametros = new HashMap<String, String>();
-                parametros.put("nombre_producto", opcion);
-                parametros.put("precio", String.valueOf(precioT));
-                parametros.put("cantidad", edtCantidad.getText().toString());
+
+                SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
+                        Context.MODE_PRIVATE);
+
+                parametros.put("id_producto", txtIdProducto.getText().toString());
+                parametros.put("id_usuario", preferences.getString("id", "1"));
+                parametros.put("cantidad_comprada", edtCantidad.getText().toString());
                 return parametros;
             }
         };
@@ -1012,7 +1202,8 @@ public class DetalleProductoFragment extends Fragment {
     }
 
     public void obtenerNumComentarios2(){
-        if (opcion.equalsIgnoreCase("lenovo s145-15ast")){
+
+        /*if (opcion.equalsIgnoreCase("lenovo s145-15ast")){
             obtenerNumComentariosDeBBDD(URLNumCom + "1");
         }
         else if (opcion.equalsIgnoreCase("asus zenbook 14")){
@@ -1059,7 +1250,7 @@ public class DetalleProductoFragment extends Fragment {
         }
         else if (opcion.equalsIgnoreCase("canva")){
             obtenerNumComentariosDeBBDD(URLNumCom + "16");
-        }
+        }*/
     }
 
     private void show(){

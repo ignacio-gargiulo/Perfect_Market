@@ -67,10 +67,10 @@ public class ZonaUsuarioFragment extends Fragment {
         btnIniciarSesion = view.findViewById(R.id.btnIniciarSesion);
         btnRegistrarse = view.findViewById(R.id.btnRegistrarse);
         btnCerrarSesion = view.findViewById(R.id.btnCerrarSesion);
-        URLRegistro = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/insertar_usuarios.php";
-        URLValidarUsuario = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/validar_usuario.php";
-        URLValidarRegistro = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/validar_registro.php";
-        URLBuscarUsuarioLogeado = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/buscarDatosUsuarioLogueado.php?email=";
+        URLRegistro = "https://perfectmarket.000webhostapp.com/perfect_market/insertar_usuarios.php";
+        URLValidarUsuario = "https://perfectmarket.000webhostapp.com/perfect_market/validar_usuario.php";
+        URLValidarRegistro = "https://perfectmarket.000webhostapp.com/perfect_market/validar_registro.php";
+        URLBuscarUsuarioLogeado = "https://perfectmarket.000webhostapp.com/perfect_market/buscarDatosUsuarioLogueado.php?email=";
         requestQueue = Volley.newRequestQueue(getContext());
 
         recuperarPreferenciasLogin();
@@ -81,12 +81,24 @@ public class ZonaUsuarioFragment extends Fragment {
             edtContrasegna.setEnabled(true);
             btnIniciarSesion.setEnabled(true);
             btnCerrarSesion.setEnabled(false);
+            btnRegistrarse.setEnabled(true);
+            edtNombreR.setEnabled(true);
+            edtApellidoR.setEnabled(true);
+            edtEmailR.setEnabled(true);
+            edtEdadR.setEnabled(true);
+            edtContrasegnaR.setEnabled(true);
         }
         else {
             edtEmail.setEnabled(false);
             edtContrasegna.setEnabled(false);
             btnIniciarSesion.setEnabled(false);
             btnCerrarSesion.setEnabled(true);
+            btnRegistrarse.setEnabled(false);
+            edtNombreR.setEnabled(false);
+            edtApellidoR.setEnabled(false);
+            edtEmailR.setEnabled(false);
+            edtEdadR.setEnabled(false);
+            edtContrasegnaR.setEnabled(false);
         }
 
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +130,12 @@ public class ZonaUsuarioFragment extends Fragment {
                 edtContrasegna.setEnabled(true);
                 btnIniciarSesion.setEnabled(true);
                 btnCerrarSesion.setEnabled(false);
+                btnRegistrarse.setEnabled(true);
+                edtNombreR.setEnabled(true);
+                edtApellidoR.setEnabled(true);
+                edtEmailR.setEnabled(true);
+                edtEdadR.setEnabled(true);
+                edtContrasegnaR.setEnabled(true);
             }
         });
 
@@ -145,6 +163,11 @@ public class ZonaUsuarioFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 Toast.makeText(getContext(), "Usuario Registrado Correctamente", Toast.LENGTH_SHORT).show();
+                edtNombreR.setText("");
+                edtApellidoR.setText("");
+                edtEdadR.setText("");
+                edtEmailR.setText("");
+                edtContrasegnaR.setText("");
             }
         }, new Response.ErrorListener() {
             @Override
@@ -184,6 +207,12 @@ public class ZonaUsuarioFragment extends Fragment {
                     edtContrasegna.setEnabled(false);
                     btnIniciarSesion.setEnabled(false);
                     btnCerrarSesion.setEnabled(true);
+                    btnRegistrarse.setEnabled(false);
+                    edtNombreR.setEnabled(false);
+                    edtApellidoR.setEnabled(false);
+                    edtEmailR.setEnabled(false);
+                    edtEdadR.setEnabled(false);
+                    edtContrasegnaR.setEnabled(false);
                 }
             }
         }, new Response.ErrorListener() {
@@ -213,6 +242,9 @@ public class ZonaUsuarioFragment extends Fragment {
                     || contrasegnaR.isEmpty()) {
                         Toast.makeText(getContext(), "No se permiten campos vacíos", Toast.LENGTH_SHORT).show();
                     }
+                    else if(Integer.parseInt(edadR) < 18){
+                        Toast.makeText(getContext(), "Debes ser mayor de edad para registrate", Toast.LENGTH_SHORT).show();
+                    }
                     else {
                         registrarUsuario(URLRegistro);
                     }
@@ -240,6 +272,7 @@ public class ZonaUsuarioFragment extends Fragment {
     private void guardarPreferenciasLogin(){
         SharedPreferences preferences = getContext().getSharedPreferences("preferenciasLogin",
                 Context.MODE_PRIVATE);
+        Toast.makeText(getContext(), "emS: " + email + "\nConS: " + contrasegna, Toast.LENGTH_SHORT).show();
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("email", email);
         editor.putString("contrasegna", contrasegna);

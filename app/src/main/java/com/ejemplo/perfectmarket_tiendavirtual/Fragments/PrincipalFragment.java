@@ -141,7 +141,7 @@ public class PrincipalFragment extends Fragment {
 
         requestQueue = Volley.newRequestQueue(getContext());
         recuperarPreferencias();
-        URL = "https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market2/buscarProductosPrincipal.php?id=";
+        URL = "https://perfectmarket.000webhostapp.com/perfect_market/buscarProductosPrincipal.php?id=";
 
 
 
@@ -235,9 +235,9 @@ public class PrincipalFragment extends Fragment {
     private void recuperarPreferencias(){
         SharedPreferences preferences = getContext().getSharedPreferences("preferenciasLogin",
                 Context.MODE_PRIVATE);
-        Toast.makeText(actividad, "Email: " + preferences.getString("email", "Desconocido")
+        /*Toast.makeText(actividad, "Email: " + preferences.getString("email", "Desconocido")
                 + "\nContraseña: " + preferences.getString("contrasegna", "Desconocida"),
-                Toast.LENGTH_SHORT).show();
+                Toast.LENGTH_SHORT).show();*/
     }
     public void flipperImagenes(int imagen){
         ImageView imageView = new ImageView(getContext());
