@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        this.setTitle("Menú Principal");
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer);
@@ -75,20 +77,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-   /*@Override
-    public void onBackPressed() {
-        if (tiempoPrimerClick + INTERVALO > System.currentTimeMillis()){
-            finish();
-        }else {
-            Toast.makeText(this, "Vuelve a presionar para salir", Toast.LENGTH_SHORT).show();
-        }
-        tiempoPrimerClick = System.currentTimeMillis();
-    }*/
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         drawerLayout.closeDrawer(GravityCompat.START);
         if (menuItem.getItemId() == R.id.nav_principal){
+            this.setTitle("Menú Principal");
             if (fragmentManager.getBackStackEntryCount() == 1){
                 fragmentManager.popBackStack();
             }
@@ -97,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
         if (menuItem.getItemId() == R.id.nav_categorias){
+            this.setTitle("Categorías");
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container, new CategoriasFragment());
@@ -104,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentTransaction.addToBackStack(null);
         }
         if (menuItem.getItemId() == R.id.nav_cesta){
+            this.setTitle("Cesta");
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container, new CestaFragment());
@@ -111,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentTransaction.addToBackStack(null);
         }
         if (menuItem.getItemId() == R.id.nav_zona_usuario){
+            this.setTitle("Zona Usuario");
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container, new ZonaUsuarioFragment());
@@ -118,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentTransaction.addToBackStack(null);
         }
         if (menuItem.getItemId() == R.id.nav_informacion){
+            this.setTitle("Información");
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container, new InformacionFragment());

@@ -17,28 +17,13 @@
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait">
-            <tools:validation testUrl="https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_pm.php" />
-            <tools:validation testUrl="https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_pm.php" />
-            <tools:validation testUrl="https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_cesta.php" />
-            <tools:validation testUrl="https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_cesta.php" />
-            <tools:validation testUrl="https://servidorperfectmarket.000webhostapp.com/conexion_a_perfect_market/buscar_producto_cesta.php" />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="https"
-                    android:host="servidorperfectmarket.000webhostapp.com"
-                    android:pathPrefix="/conexion_a_perfect_market" />
-            </intent-filter>
         </activity>
     </application>
 
