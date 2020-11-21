@@ -388,6 +388,7 @@ public class DetalleProductoFragment extends Fragment {
         }
 
 
+
         obtenerNumProdCestaUsuario(URLNumProductosCesta);
 
         new Handler().postDelayed(new Runnable() {
@@ -420,7 +421,7 @@ public class DetalleProductoFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 if (edtCantidad.getText().toString().equalsIgnoreCase("") || edtCantidad.getText().toString().equalsIgnoreCase("0")){
-                    Toast.makeText(getActivity(), "Debes escoger una cantidad", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), "Debes escoger una cantidad", Toast.LENGTH_SHORT).show();
                     edtCantidad.setText("1");
                     String[] pr = precio.getText().toString().split(" ");
                     precioT = 1 * Double.valueOf(pr[0]);
@@ -736,6 +737,7 @@ public class DetalleProductoFragment extends Fragment {
 
                 SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
                         Context.MODE_PRIVATE);
+
                 obtenerComentarioUsuario(URLObtenerComentarios, preferences.getString("id", "1"), txtIdProducto.getText().toString());
             }
         }, 500);
@@ -1136,6 +1138,8 @@ public class DetalleProductoFragment extends Fragment {
                 parametros.put("id_producto", txtIdProducto.getText().toString());
                 parametros.put("id_usuario", preferences.getString("id", "1"));
                 parametros.put("cantidad_comprada", edtCantidad.getText().toString());
+                String pT[] = precioTotal.getText().toString().replace(",", ".").split(" ");
+                parametros.put("precio_total", pT[0]);
                 return parametros;
             }
         };

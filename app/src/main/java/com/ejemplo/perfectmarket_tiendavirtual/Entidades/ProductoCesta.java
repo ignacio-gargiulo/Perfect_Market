@@ -10,7 +10,7 @@ public class ProductoCesta implements Serializable {
     private String cantidad;
     private int imagen;
 
-    /*public ProductoCesta(String nombre, String precio, String cantidad) {
+    public ProductoCesta(String nombre, String precio, String cantidad) {
         this.nombre = nombre;
         this.precio = precio;
         this.cantidad = cantidad;
@@ -21,7 +21,7 @@ public class ProductoCesta implements Serializable {
         this.precio = precio;
         this.cantidad = cantidad;
         this.imagen = imagen;
-    }*/
+    }
 
     public ProductoCesta(String id, String nombre, String precio, String cantidad, int imagen) {
         this.id = id;

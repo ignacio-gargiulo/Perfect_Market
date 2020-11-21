@@ -172,16 +172,16 @@
                     android:textColor="@color/azul_perfect"
                     android:text="PVP:"
                 />
+
                 <TextView
                     android:id="@+id/precio_detalle_producto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
-                    android:textStyle="bold"
-                    android:textSize="18dp"
-                    android:textColor="@color/celeste_perfect"
                     android:text="0 €"
-                    />
+                    android:textColor="@color/celeste_perfect"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
 
