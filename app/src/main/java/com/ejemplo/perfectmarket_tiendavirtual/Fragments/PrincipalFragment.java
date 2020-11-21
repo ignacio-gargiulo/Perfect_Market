@@ -260,7 +260,7 @@ public class PrincipalFragment extends Fragment {
     }
 
     public void cargarLista1(){
-
+    try {
         listaCategorias1.add(new Categoria(nombreProducto1, precio1 + " €", descripcion1, otrosDatos1, R.drawable.img1));
 
         listaCategorias1.add(new Categoria(nombreProducto2, precio2 + " €", descripcion2, otrosDatos2, R.drawable.img2));
@@ -268,32 +268,59 @@ public class PrincipalFragment extends Fragment {
         listaCategorias1.add(new Categoria(nombreProducto3, precio3 + " €", descripcion3, otrosDatos3, R.drawable.img3));
 
         listaCategorias1.add(new Categoria(nombreProducto4, precio4 + " €", descripcion4, otrosDatos4, R.drawable.img4));
+
+    }
+    catch (Exception e){
+
+    }
     }
 
     public void obtenerDatosLista1(){
-        for (int i = 1; i < 5; i++){
-            obtenerDatosDeBBDD(URL + String.valueOf(i));
+        try {
+            for (int i = 1; i < 5; i++){
+                obtenerDatosDeBBDD(URL + String.valueOf(i));
+            }
         }
+        catch (Exception e){
+
+        }
+
     }
 
     public void cargarLista2(){
-        listaCategorias2.add(new Categoria(nombreProducto5,  precio5 + " €" ,descripcion5, otrosDatos5, R.drawable.img5));
-        listaCategorias2.add(new Categoria(nombreProducto6,  precio6 + " €" ,descripcion6, otrosDatos6,R.drawable.img6));
-        listaCategorias2.add(new Categoria(nombreProducto7, precio7 + " €" ,descripcion7, otrosDatos7,R.drawable.img7));
-        listaCategorias2.add(new Categoria(nombreProducto8, precio8 + " €" ,descripcion8, otrosDatos8,R.drawable.img8));
+        try {
+            listaCategorias2.add(new Categoria(nombreProducto5,  precio5 + " €" ,descripcion5, otrosDatos5, R.drawable.img5));
+            listaCategorias2.add(new Categoria(nombreProducto6,  precio6 + " €" ,descripcion6, otrosDatos6,R.drawable.img6));
+            listaCategorias2.add(new Categoria(nombreProducto7, precio7 + " €" ,descripcion7, otrosDatos7,R.drawable.img7));
+            listaCategorias2.add(new Categoria(nombreProducto8, precio8 + " €" ,descripcion8, otrosDatos8,R.drawable.img8));
+
+        }
+        catch (Exception e){
+
+        }
     }
 
     public void obtenerDatosLista2(){
-        for (int i = 5; i < 9; i++){
-            obtenerDatosDeBBDD(URL + String.valueOf(i));
+        try {
+            for (int i = 5; i < 9; i++){
+                obtenerDatosDeBBDD(URL + String.valueOf(i));
+            }
+        }
+        catch (Exception e){
+
         }
     }
 
     public void cargarLista3(){
-        listaCategorias3.add(new Categoria(nombreProducto9,  precio9 + " €" ,descripcion9, otrosDatos9,R.drawable.img9));
-        listaCategorias3.add(new Categoria(nombreProducto10,  precio10 + " €" ,descripcion10, otrosDatos10,R.drawable.img10));
-        listaCategorias3.add(new Categoria(nombreProducto11, precio11 + " €" ,descripcion11, otrosDatos11,R.drawable.img11));
-        listaCategorias3.add(new Categoria(nombreProducto12, precio12 + " €" ,descripcion12, otrosDatos12,R.drawable.img12));
+        try {
+            listaCategorias3.add(new Categoria(nombreProducto9,  precio9 + " €" ,descripcion9, otrosDatos9,R.drawable.img9));
+            listaCategorias3.add(new Categoria(nombreProducto10,  precio10 + " €" ,descripcion10, otrosDatos10,R.drawable.img10));
+            listaCategorias3.add(new Categoria(nombreProducto11, precio11 + " €" ,descripcion11, otrosDatos11,R.drawable.img11));
+            listaCategorias3.add(new Categoria(nombreProducto12, precio12 + " €" ,descripcion12, otrosDatos12,R.drawable.img12));
+        }
+        catch (Exception e){
+
+        }
     }
 
     public void obtenerDatosLista3(){
@@ -303,195 +330,231 @@ public class PrincipalFragment extends Fragment {
     }
 
     public void cargarLista4(){
-        listaCategorias4.add(new Categoria(nombreProducto13,  precio13 + " €" ,descripcion13, otrosDatos13,R.drawable.img13));
-        listaCategorias4.add(new Categoria(nombreProducto14,  precio14 + " €" ,descripcion14, otrosDatos14,R.drawable.img14));
-        listaCategorias4.add(new Categoria(nombreProducto15, precio15 + " €" ,descripcion15, otrosDatos15,R.drawable.img15));
-        listaCategorias4.add(new Categoria(nombreProducto16, precio16 + " €" ,descripcion16, otrosDatos16,R.drawable.img16));
+        try {
+            listaCategorias4.add(new Categoria(nombreProducto13,  precio13 + " €" ,descripcion13, otrosDatos13,R.drawable.img13));
+            listaCategorias4.add(new Categoria(nombreProducto14,  precio14 + " €" ,descripcion14, otrosDatos14,R.drawable.img14));
+            listaCategorias4.add(new Categoria(nombreProducto15, precio15 + " €" ,descripcion15, otrosDatos15,R.drawable.img15));
+            listaCategorias4.add(new Categoria(nombreProducto16, precio16 + " €" ,descripcion16, otrosDatos16,R.drawable.img16));
+        }
+        catch (Exception e){
+
+        }
     }
 
     public void obtenerDatosLista4(){
-        for (int i = 13; i < 17; i++){
-            obtenerDatosDeBBDD(URL + String.valueOf(i));
+        try {
+            for (int i = 13; i < 17; i++){
+                obtenerDatosDeBBDD(URL + String.valueOf(i));
+            }
+        }
+        catch (Exception e){
+
         }
     }
 
     public void mostrarDatos1(){
-        recyclerProducto1.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        adapterCategorias = new AdapterRecycler2(getContext(), listaCategorias1);
-        recyclerProducto1.setAdapter(adapterCategorias);
-        adapterCategorias.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String nombre = listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)).getNombre();
-               // Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
-                interfaceComunicaFragments.enviarProducto(listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)));
-            }
-        });
+        try {
+            recyclerProducto1.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+            adapterCategorias = new AdapterRecycler2(getContext(), listaCategorias1);
+            recyclerProducto1.setAdapter(adapterCategorias);
+            adapterCategorias.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String nombre = listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)).getNombre();
+                    // Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
+                    interfaceComunicaFragments.enviarProducto(listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)));
+                }
+            });
+        }
+        catch (Exception e){
+
+        }
     }
 
     public void mostrarDatos2(){
-        recyclerProducto2.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        adapterCategorias = new AdapterRecycler2(getContext(), listaCategorias2);
-        recyclerProducto2.setAdapter(adapterCategorias);
-        adapterCategorias.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String nombre = listaCategorias2.get(recyclerProducto2.getChildAdapterPosition(view)).getNombre();
-                //Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
-                interfaceComunicaFragments.enviarProducto(listaCategorias2.get(recyclerProducto2.getChildAdapterPosition(view)));
-            }
-        });
+        try {
+            recyclerProducto2.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+            adapterCategorias = new AdapterRecycler2(getContext(), listaCategorias2);
+            recyclerProducto2.setAdapter(adapterCategorias);
+            adapterCategorias.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String nombre = listaCategorias2.get(recyclerProducto2.getChildAdapterPosition(view)).getNombre();
+                    //Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
+                    interfaceComunicaFragments.enviarProducto(listaCategorias2.get(recyclerProducto2.getChildAdapterPosition(view)));
+                }
+            });
+        }
+        catch (Exception e){
+
+        }
+
     }
 
     public void mostrarDatos3(){
-        recyclerProducto3.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        adapterCategorias = new AdapterRecycler2(getContext(), listaCategorias3);
-        recyclerProducto3.setAdapter(adapterCategorias);
-        adapterCategorias.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String nombre = listaCategorias3.get(recyclerProducto3.getChildAdapterPosition(view)).getNombre();
-               // Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
-                interfaceComunicaFragments.enviarProducto(listaCategorias3.get(recyclerProducto3.getChildAdapterPosition(view)));
-            }
-        });
+        try {
+            recyclerProducto3.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+            adapterCategorias = new AdapterRecycler2(getContext(), listaCategorias3);
+            recyclerProducto3.setAdapter(adapterCategorias);
+            adapterCategorias.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String nombre = listaCategorias3.get(recyclerProducto3.getChildAdapterPosition(view)).getNombre();
+                    // Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
+                    interfaceComunicaFragments.enviarProducto(listaCategorias3.get(recyclerProducto3.getChildAdapterPosition(view)));
+                }
+            });
+        }
+        catch (Exception e){
+
+        }
+
     }
 
     public void mostrarDatos4(){
-        recyclerProducto4.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        adapterCategorias = new AdapterRecycler2(getContext(), listaCategorias4);
-        recyclerProducto4.setAdapter(adapterCategorias);
-        adapterCategorias.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String nombre = listaCategorias4.get(recyclerProducto4.getChildAdapterPosition(view)).getNombre();
-               // Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
-                interfaceComunicaFragments.enviarProducto(listaCategorias4.get(recyclerProducto4.getChildAdapterPosition(view)));
-            }
-        });
+        try {
+            recyclerProducto4.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+            adapterCategorias = new AdapterRecycler2(getContext(), listaCategorias4);
+            recyclerProducto4.setAdapter(adapterCategorias);
+            adapterCategorias.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String nombre = listaCategorias4.get(recyclerProducto4.getChildAdapterPosition(view)).getNombre();
+                    // Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
+                    interfaceComunicaFragments.enviarProducto(listaCategorias4.get(recyclerProducto4.getChildAdapterPosition(view)));
+                }
+            });
+        }
+        catch (Exception e){
+
+        }
+
     }
 
     public void obtenerDatosDeBBDD(final String url){
+        try {
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    JSONObject jsonObject = null;
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            jsonObject = response.getJSONObject(i);
+                            if (url.equalsIgnoreCase(URL + "1")){
+                                nombreProducto1 = jsonObject.getString("nombre_producto");
+                                precio1 = jsonObject.getString("precio_producto");
+                                descripcion1 = jsonObject.getString("descripcion_producto");
+                                otrosDatos1 = jsonObject.getString("otros_datos_producto");
+                            }
+                            else if (url.equalsIgnoreCase(URL + "2")){
+                                nombreProducto2 = jsonObject.getString("nombre_producto");
+                                precio2 = jsonObject.getString("precio_producto");
+                                descripcion2 = jsonObject.getString("descripcion_producto");
+                                otrosDatos2 = jsonObject.getString("otros_datos_producto");
+                            }
+                            else if (url.equalsIgnoreCase(URL + "3")){
+                                nombreProducto3 = jsonObject.getString("nombre_producto");
+                                precio3 = jsonObject.getString("precio_producto");
+                                descripcion3 = jsonObject.getString("descripcion_producto");
+                                otrosDatos3 = jsonObject.getString("otros_datos_producto");
+                            }
+                            else if (url.equalsIgnoreCase(URL + "4")){
+                                nombreProducto4 = jsonObject.getString("nombre_producto");
+                                precio4 = jsonObject.getString("precio_producto");
+                                descripcion4 = jsonObject.getString("descripcion_producto");
+                                otrosDatos4 = jsonObject.getString("otros_datos_producto");
+                            }
+                            else if (url.equalsIgnoreCase(URL + "5")){
+                                nombreProducto5 = jsonObject.getString("nombre_producto");
+                                precio5 = jsonObject.getString("precio_producto");
+                                descripcion5 = jsonObject.getString("descripcion_producto");
+                                otrosDatos5 = jsonObject.getString("otros_datos_producto");
+                            }
+                            else if (url.equalsIgnoreCase(URL + "6")){
+                                nombreProducto6 = jsonObject.getString("nombre_producto");
+                                precio6 = jsonObject.getString("precio_producto");
+                                descripcion6 = jsonObject.getString("descripcion_producto");
+                                otrosDatos6 = jsonObject.getString("otros_datos_producto");
+                            }
+                            else if (url.equalsIgnoreCase(URL + "7")){
+                                nombreProducto7 = jsonObject.getString("nombre_producto");
+                                precio7 = jsonObject.getString("precio_producto");
+                                descripcion7 = jsonObject.getString("descripcion_producto");
+                                otrosDatos7 = jsonObject.getString("otros_datos_producto");
+                            }
+                            else if (url.equalsIgnoreCase(URL + "8")){
+                                nombreProducto8 = jsonObject.getString("nombre_producto");
+                                precio8 = jsonObject.getString("precio_producto");
+                                descripcion8 = jsonObject.getString("descripcion_producto");
+                                otrosDatos8 = jsonObject.getString("otros_datos_producto");
+                            }
+                            else if (url.equalsIgnoreCase(URL + "9")){
+                                nombreProducto9 = jsonObject.getString("nombre_producto");
+                                precio9 = jsonObject.getString("precio_producto");
+                                descripcion9 = jsonObject.getString("descripcion_producto");
+                                otrosDatos9 = jsonObject.getString("otros_datos_producto");
+                            }
+                            else if (url.equalsIgnoreCase(URL + "10")){
+                                nombreProducto10 = jsonObject.getString("nombre_producto");
+                                precio10 = jsonObject.getString("precio_producto");
+                                descripcion10 = jsonObject.getString("descripcion_producto");
+                                otrosDatos10 = jsonObject.getString("otros_datos_producto");
+                            }
+                            else if (url.equalsIgnoreCase(URL + "11")){
+                                nombreProducto11 = jsonObject.getString("nombre_producto");
+                                precio11 = jsonObject.getString("precio_producto");
+                                descripcion11 = jsonObject.getString("descripcion_producto");
+                                otrosDatos11 = jsonObject.getString("otros_datos_producto");
+                            }
+                            else if (url.equalsIgnoreCase(URL + "12")){
+                                nombreProducto12 = jsonObject.getString("nombre_producto");
+                                precio12 = jsonObject.getString("precio_producto");
+                                descripcion12 = jsonObject.getString("descripcion_producto");
+                                otrosDatos12 = jsonObject.getString("otros_datos_producto");
+                            }
+                            else if (url.equalsIgnoreCase(URL + "13")){
+                                nombreProducto13 = jsonObject.getString("nombre_producto");
+                                precio13 = jsonObject.getString("precio_producto");
+                                descripcion13 = jsonObject.getString("descripcion_producto");
+                                otrosDatos13 = jsonObject.getString("otros_datos_producto");
+                            }
+                            else if (url.equalsIgnoreCase(URL + "14")){
+                                nombreProducto14 = jsonObject.getString("nombre_producto");
+                                precio14 = jsonObject.getString("precio_producto");
+                                descripcion14 = jsonObject.getString("descripcion_producto");
+                                otrosDatos14 = jsonObject.getString("otros_datos_producto");
+                            }
+                            else if (url.equalsIgnoreCase(URL + "15")){
+                                nombreProducto15 = jsonObject.getString("nombre_producto");
+                                precio15 = jsonObject.getString("precio_producto");
+                                descripcion15 = jsonObject.getString("descripcion_producto");
+                                otrosDatos15 = jsonObject.getString("otros_datos_producto");
+                            }
+                            else if (url.equalsIgnoreCase(URL + "16")){
+                                nombreProducto16 = jsonObject.getString("nombre_producto");
+                                precio16 = jsonObject.getString("precio_producto");
+                                descripcion16 = jsonObject.getString("descripcion_producto");
+                                otrosDatos16 = jsonObject.getString("otros_datos_producto");
+                            }
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                JSONObject jsonObject = null;
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        jsonObject = response.getJSONObject(i);
-                        if (url.equalsIgnoreCase(URL + "1")){
-                            nombreProducto1 = jsonObject.getString("nombre_producto");
-                            precio1 = jsonObject.getString("precio_producto");
-                            descripcion1 = jsonObject.getString("descripcion_producto");
-                            otrosDatos1 = jsonObject.getString("otros_datos_producto");
-                        }
-                        else if (url.equalsIgnoreCase(URL + "2")){
-                            nombreProducto2 = jsonObject.getString("nombre_producto");
-                            precio2 = jsonObject.getString("precio_producto");
-                            descripcion2 = jsonObject.getString("descripcion_producto");
-                            otrosDatos2 = jsonObject.getString("otros_datos_producto");
-                        }
-                        else if (url.equalsIgnoreCase(URL + "3")){
-                            nombreProducto3 = jsonObject.getString("nombre_producto");
-                            precio3 = jsonObject.getString("precio_producto");
-                            descripcion3 = jsonObject.getString("descripcion_producto");
-                            otrosDatos3 = jsonObject.getString("otros_datos_producto");
-                        }
-                        else if (url.equalsIgnoreCase(URL + "4")){
-                            nombreProducto4 = jsonObject.getString("nombre_producto");
-                            precio4 = jsonObject.getString("precio_producto");
-                            descripcion4 = jsonObject.getString("descripcion_producto");
-                            otrosDatos4 = jsonObject.getString("otros_datos_producto");
-                        }
-                        else if (url.equalsIgnoreCase(URL + "5")){
-                            nombreProducto5 = jsonObject.getString("nombre_producto");
-                            precio5 = jsonObject.getString("precio_producto");
-                            descripcion5 = jsonObject.getString("descripcion_producto");
-                            otrosDatos5 = jsonObject.getString("otros_datos_producto");
-                        }
-                        else if (url.equalsIgnoreCase(URL + "6")){
-                            nombreProducto6 = jsonObject.getString("nombre_producto");
-                            precio6 = jsonObject.getString("precio_producto");
-                            descripcion6 = jsonObject.getString("descripcion_producto");
-                            otrosDatos6 = jsonObject.getString("otros_datos_producto");
-                        }
-                        else if (url.equalsIgnoreCase(URL + "7")){
-                            nombreProducto7 = jsonObject.getString("nombre_producto");
-                            precio7 = jsonObject.getString("precio_producto");
-                            descripcion7 = jsonObject.getString("descripcion_producto");
-                            otrosDatos7 = jsonObject.getString("otros_datos_producto");
-                        }
-                        else if (url.equalsIgnoreCase(URL + "8")){
-                            nombreProducto8 = jsonObject.getString("nombre_producto");
-                            precio8 = jsonObject.getString("precio_producto");
-                            descripcion8 = jsonObject.getString("descripcion_producto");
-                            otrosDatos8 = jsonObject.getString("otros_datos_producto");
-                        }
-                        else if (url.equalsIgnoreCase(URL + "9")){
-                            nombreProducto9 = jsonObject.getString("nombre_producto");
-                            precio9 = jsonObject.getString("precio_producto");
-                            descripcion9 = jsonObject.getString("descripcion_producto");
-                            otrosDatos9 = jsonObject.getString("otros_datos_producto");
-                        }
-                        else if (url.equalsIgnoreCase(URL + "10")){
-                            nombreProducto10 = jsonObject.getString("nombre_producto");
-                            precio10 = jsonObject.getString("precio_producto");
-                            descripcion10 = jsonObject.getString("descripcion_producto");
-                            otrosDatos10 = jsonObject.getString("otros_datos_producto");
-                        }
-                        else if (url.equalsIgnoreCase(URL + "11")){
-                            nombreProducto11 = jsonObject.getString("nombre_producto");
-                            precio11 = jsonObject.getString("precio_producto");
-                            descripcion11 = jsonObject.getString("descripcion_producto");
-                            otrosDatos11 = jsonObject.getString("otros_datos_producto");
-                        }
-                        else if (url.equalsIgnoreCase(URL + "12")){
-                            nombreProducto12 = jsonObject.getString("nombre_producto");
-                            precio12 = jsonObject.getString("precio_producto");
-                            descripcion12 = jsonObject.getString("descripcion_producto");
-                            otrosDatos12 = jsonObject.getString("otros_datos_producto");
-                        }
-                        else if (url.equalsIgnoreCase(URL + "13")){
-                            nombreProducto13 = jsonObject.getString("nombre_producto");
-                            precio13 = jsonObject.getString("precio_producto");
-                            descripcion13 = jsonObject.getString("descripcion_producto");
-                            otrosDatos13 = jsonObject.getString("otros_datos_producto");
-                        }
-                        else if (url.equalsIgnoreCase(URL + "14")){
-                            nombreProducto14 = jsonObject.getString("nombre_producto");
-                            precio14 = jsonObject.getString("precio_producto");
-                            descripcion14 = jsonObject.getString("descripcion_producto");
-                            otrosDatos14 = jsonObject.getString("otros_datos_producto");
-                        }
-                        else if (url.equalsIgnoreCase(URL + "15")){
-                            nombreProducto15 = jsonObject.getString("nombre_producto");
-                            precio15 = jsonObject.getString("precio_producto");
-                            descripcion15 = jsonObject.getString("descripcion_producto");
-                            otrosDatos15 = jsonObject.getString("otros_datos_producto");
-                        }
-                        else if (url.equalsIgnoreCase(URL + "16")){
-                            nombreProducto16 = jsonObject.getString("nombre_producto");
-                            precio16 = jsonObject.getString("precio_producto");
-                            descripcion16 = jsonObject.getString("descripcion_producto");
-                            otrosDatos16 = jsonObject.getString("otros_datos_producto");
-                        }
+                        } catch (JSONException e) {
+                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
 
-                    } catch (JSONException e) {
-                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-
+                        }
                     }
                 }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "ERROR DE CONEXIÓN: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        //requestQueue= Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(jsonArrayRequest);
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getContext(), "ERROR DE CONEXIÓN: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            //requestQueue= Volley.newRequestQueue(getApplicationContext());
+            requestQueue.add(jsonArrayRequest);
+        }
+        catch (Exception e){
 
+        }
     }
 
     class CargarProductos extends AsyncTask<String, Void, String>{
@@ -515,21 +578,26 @@ public class PrincipalFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
+            try {
+                pb.setVisibility(View.INVISIBLE);
+                txtCargando.setVisibility(View.INVISIBLE);
+                linearPrincipal.setVisibility(View.VISIBLE);
+                cargarLista1();
+                mostrarDatos1();
 
-            pb.setVisibility(View.INVISIBLE);
-            txtCargando.setVisibility(View.INVISIBLE);
-            linearPrincipal.setVisibility(View.VISIBLE);
-            cargarLista1();
-            mostrarDatos1();
+                cargarLista2();
+                mostrarDatos2();
 
-            cargarLista2();
-            mostrarDatos2();
+                cargarLista3();
+                mostrarDatos3();
 
-            cargarLista3();
-            mostrarDatos3();
+                cargarLista4();
+                mostrarDatos4();
+            }
+            catch (Exception e){
 
-            cargarLista4();
-            mostrarDatos4();
+            }
+
 
             //Snackbar.make(view, "Datos cargados con éxito!!", Snackbar.LENGTH_SHORT)
              //       .setAction("Action", null).show();

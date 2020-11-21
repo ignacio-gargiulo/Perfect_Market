@@ -385,17 +385,22 @@ public class DetalleCategoriaFragment extends Fragment {
     }
 
     public void mostrarDatos1(){
-        recyclerProducto1.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterRecyclerDetalleCategoria = new AdapterRecyclerDetalleCategoria(getContext(), listaCategorias1);
-        recyclerProducto1.setAdapter(adapterRecyclerDetalleCategoria);
-        adapterRecyclerDetalleCategoria.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String nombre = listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)).getNombre();
-                Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
-                interfaceComunicaFragments.enviarProducto2(listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)));
-            }
-        });
+        try{
+            recyclerProducto1.setLayoutManager(new LinearLayoutManager(getContext()));
+            adapterRecyclerDetalleCategoria = new AdapterRecyclerDetalleCategoria(getContext(), listaCategorias1);
+            recyclerProducto1.setAdapter(adapterRecyclerDetalleCategoria);
+            adapterRecyclerDetalleCategoria.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String nombre = listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)).getNombre();
+                    Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
+                    interfaceComunicaFragments.enviarProducto2(listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)));
+                }
+            });
+        }
+        catch (Exception e){
+
+        }
     }
 
     public void mostrarDatos2(){
@@ -673,44 +678,49 @@ public class DetalleCategoriaFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
-            pb2.setVisibility(View.INVISIBLE);
-            txtCargando2.setVisibility(View.INVISIBLE);
-            linearCategorias.setVisibility(View.VISIBLE);
-            linearFabdetprodcat.setVisibility(View.VISIBLE);
+            try {
+                pb2.setVisibility(View.INVISIBLE);
+                txtCargando2.setVisibility(View.INVISIBLE);
+                linearCategorias.setVisibility(View.VISIBLE);
+                linearFabdetprodcat.setVisibility(View.VISIBLE);
 
-            if (opcion.equalsIgnoreCase("apps móviles")){
-                cargarLista1();
-                mostrarDatos1();
+                if (opcion.equalsIgnoreCase("apps móviles")){
+                    cargarLista1();
+                    mostrarDatos1();
+                }
+                else if (opcion.equalsIgnoreCase("comida")){
+                    cargarLista2();
+                    mostrarDatos2();
+                }
+                else if (opcion.equalsIgnoreCase("deporte")){
+                    cargarLista3();
+                    mostrarDatos3();
+                }
+                else if (opcion.equalsIgnoreCase("electronica e informatica")){
+                    cargarLista4();
+                    mostrarDatos4();
+                }
+                else if (opcion.equalsIgnoreCase("libros")){
+                    cargarLista5();
+                    mostrarDatos5();
+                }
+                else if (opcion.equalsIgnoreCase("moda")){
+                    cargarLista6();
+                    mostrarDatos6();
+                }
+                else if (opcion.equalsIgnoreCase("música")){
+                    cargarLista7();
+                    mostrarDatos7();
+                }
+                else if (opcion.equalsIgnoreCase("videojuegos")){
+                    cargarLista8();
+                    mostrarDatos8();
+                }
+                Toast.makeText(actividad, "DATOS CARGADOS", Toast.LENGTH_SHORT).show();
             }
-            else if (opcion.equalsIgnoreCase("comida")){
-                cargarLista2();
-                mostrarDatos2();
+            catch (Exception e){
+
             }
-            else if (opcion.equalsIgnoreCase("deporte")){
-                cargarLista3();
-                mostrarDatos3();
-            }
-            else if (opcion.equalsIgnoreCase("electronica e informatica")){
-                cargarLista4();
-                mostrarDatos4();
-            }
-            else if (opcion.equalsIgnoreCase("libros")){
-                cargarLista5();
-                mostrarDatos5();
-            }
-            else if (opcion.equalsIgnoreCase("moda")){
-                cargarLista6();
-                mostrarDatos6();
-            }
-            else if (opcion.equalsIgnoreCase("música")){
-                cargarLista7();
-                mostrarDatos7();
-            }
-            else if (opcion.equalsIgnoreCase("videojuegos")){
-                cargarLista8();
-                mostrarDatos8();
-            }
-            Toast.makeText(actividad, "DATOS CARGADOS", Toast.LENGTH_SHORT).show();
         }
     }
 }

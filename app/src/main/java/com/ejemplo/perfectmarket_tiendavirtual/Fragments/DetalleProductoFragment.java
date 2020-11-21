@@ -196,7 +196,13 @@ public class DetalleProductoFragment extends Fragment {
         fabRetroceder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fm.popBackStack();
+                try {
+                    fm.popBackStack();
+                }
+                catch (Exception e){
+
+                }
+
             }
         });
 
@@ -723,24 +729,38 @@ public class DetalleProductoFragment extends Fragment {
     public void mostrarComentarios(){
         //Toast.makeText(getContext(), "NumCom: " + txtNumCom.getText().toString(), Toast.LENGTH_SHORT).show();
         //Toast.makeText(getContext(),  "idProd: " + txtIdProducto.getText().toString(), Toast.LENGTH_SHORT).show();
-        obtenerNumOpinionesTotales(URLNumTOpiniones);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        try {
+            obtenerNumOpinionesTotales(URLNumTOpiniones);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
 
-                Toast.makeText(getContext(), "nTO:" + numeroTotalOpiniones, Toast.LENGTH_SHORT).show();
+                    try {
+                        Toast.makeText(getContext(), "nTO:" + numeroTotalOpiniones, Toast.LENGTH_SHORT).show();
+                        for (int i = 1; i < 50; i++ ) {
+                            obtenerComentarios(URLObtenerComentarios, String.valueOf(i), txtIdProducto.getText().toString());
+                        }
 
-                    for (int i = 1; i < 50; i++ ) {
-                        obtenerComentarios(URLObtenerComentarios, String.valueOf(i), txtIdProducto.getText().toString());
+
+                        SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
+                                Context.MODE_PRIVATE);
+
+                        obtenerComentarioUsuario(URLObtenerComentarios, preferences.getString("id", "1"), txtIdProducto.getText().toString());
+                    }
+                    catch (Exception e){
+
                     }
 
 
-                SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
-                        Context.MODE_PRIVATE);
 
-                obtenerComentarioUsuario(URLObtenerComentarios, preferences.getString("id", "1"), txtIdProducto.getText().toString());
-            }
-        }, 500);
+                }
+            }, 500);
+        }
+        catch (Exception e){
+
+        }
+
+
     }
 
     public void flipperImagenes(int imagen){
@@ -786,58 +806,68 @@ public class DetalleProductoFragment extends Fragment {
     }
 
     private void recuperarNombreDeUsuario(){
-        edtUsuario.setEnabled(false);
-        SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
-                Context.MODE_PRIVATE);
-        //Toast.makeText(getContext(), "nnnnn: " + preferences.getString("nombre", "Desc"), Toast.LENGTH_SHORT).show();
-        edtUsuario.setText(preferences.getString("email", "Desconocido"));
+        try {
+            edtUsuario.setEnabled(false);
+            SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
+                    Context.MODE_PRIVATE);
+            //Toast.makeText(getContext(), "nnnnn: " + preferences.getString("nombre", "Desc"), Toast.LENGTH_SHORT).show();
+            edtUsuario.setText(preferences.getString("email", "Desconocido"));
+        }
+        catch (Exception e){
 
+        }
     }
 
     private void insertarComentarios(String url){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Snackbar.make(view, "Gracias por su comentario " + edtUsuario.getText().toString() + " :)", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                recuperarNombreDeUsuario();
-                edtComentario.setText("");
-                ratingBar.setRating(0);
-                txtValoracion.setText("0.0");
-                Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
-                if (listaComentarios.isEmpty()){
-                    mostrarComentarios();
+        try {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Snackbar.make(view, "Gracias por su comentario " + edtUsuario.getText().toString() + " :)", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    recuperarNombreDeUsuario();
+                    edtComentario.setText("");
+                    ratingBar.setRating(0);
+                    txtValoracion.setText("0.0");
+                    Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
+                    if (listaComentarios.isEmpty()){
+                        mostrarComentarios();
+                    }
+                    else {
+                        listaComentarios.clear();
+                        adapterRecyclerComentarios.notifyDataSetChanged();
+                        mostrarComentarios();
+                    }
+
                 }
-                else {
-                    listaComentarios.clear();
-                    adapterRecyclerComentarios.notifyDataSetChanged();
-                    mostrarComentarios();
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
                 }
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String,String> parametros = new HashMap<String, String>();
 
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> parametros = new HashMap<String, String>();
+                    SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
+                            Context.MODE_PRIVATE);
 
-                SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
-                        Context.MODE_PRIVATE);
+                    parametros.put("id_usuario", preferences.getString("id", "1"));
+                    parametros.put("id_producto", txtIdProducto.getText().toString());
+                    parametros.put("comentario", edtComentario.getText().toString());
+                    //parametros.put("num", "");
+                    parametros.put("valoracion", txtValoracion.getText().toString());
+                    return parametros;
+                }
+            };
+            //requestQueue = Volley.newRequestQueue(getApplicationContext());
+            requestQueue.add(stringRequest);
+        }
+        catch (Exception e){
 
-                parametros.put("id_usuario", preferences.getString("id", "1"));
-                parametros.put("id_producto", txtIdProducto.getText().toString());
-                parametros.put("comentario", edtComentario.getText().toString());
-                //parametros.put("num", "");
-                parametros.put("valoracion", txtValoracion.getText().toString());
-                return parametros;
-            }
-        };
-        //requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(stringRequest);
+        }
+
     }
 
     private void validarComentarios(String URL) {
@@ -915,73 +945,93 @@ public class DetalleProductoFragment extends Fragment {
 
     private void obtenerComentarios(String URL, String id_usuario, String idProducto) {
         URL = URL + "?id_usuario=" + id_usuario + "&id_producto=" + idProducto;
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                JSONObject jsonObject = null;
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        jsonObject = response.getJSONObject(i);
-                        usuario1 = jsonObject.getString("nombre") + " " + jsonObject.getString("apellido");
-                        comentario1 = jsonObject.getString("comentario");
-                        valoracion1 = jsonObject.getString("valoracion");
-                        listaComentarios.add(new ComentariosProductos(usuario1, comentario1, valoracion1));
+        try {
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    JSONObject jsonObject = null;
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            jsonObject = response.getJSONObject(i);
+                            usuario1 = jsonObject.getString("nombre") + " " + jsonObject.getString("apellido");
+                            comentario1 = jsonObject.getString("comentario");
+                            valoracion1 = jsonObject.getString("valoracion");
+                            listaComentarios.add(new ComentariosProductos(usuario1, comentario1, valoracion1));
                         /*if (!valoracion1.isEmpty()){
                             valGen(Double.parseDouble(valoracion1));
                         }*/
-                    } catch (JSONException e) {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
+                        } catch (JSONException e) {
+                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
 
+                    }
+                    try {
+                        recyclerViewComentarios.setLayoutManager(new LinearLayoutManager(getContext()));
+                        adapterRecyclerComentarios = new AdapterRecyclerComentarios(getContext(), listaComentarios);
+                        recyclerViewComentarios.setAdapter(adapterRecyclerComentarios);
+                    }
+                    catch (Exception e){
+
+                    }
                 }
-                recyclerViewComentarios.setLayoutManager(new LinearLayoutManager(getContext()));
-                adapterRecyclerComentarios = new AdapterRecyclerComentarios(getContext(), listaComentarios);
-                recyclerViewComentarios.setAdapter(adapterRecyclerComentarios);
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //Toast.makeText(getContext(), "ERROR DE CONEXIÓN", Toast.LENGTH_SHORT).show();
+                }
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Toast.makeText(getContext(), "ERROR DE CONEXIÓN", Toast.LENGTH_SHORT).show();
-            }
+            );
+            requestQueue = Volley.newRequestQueue(getContext());
+            requestQueue.add(jsonArrayRequest);
         }
-        );
-        requestQueue = Volley.newRequestQueue(getContext());
-        requestQueue.add(jsonArrayRequest);
+        catch (Exception e){
+
+        }
     }
 
     private void obtenerValoracionesG(String URL) {
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                JSONObject jsonObject = null;
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        jsonObject = response.getJSONObject(i);
-                        valoracion2 = jsonObject.getString("0");
-                    } catch (JSONException e) {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        try {
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    JSONObject jsonObject = null;
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            jsonObject = response.getJSONObject(i);
+                            valoracion2 = jsonObject.getString("0");
+                        } catch (JSONException e) {
+                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                    //Toast.makeText(getContext(), "vvvv " + valoracion2, Toast.LENGTH_SHORT).show();
+                    String nC[] = txtNumCom.getText().toString().split(" ");
+                    if (!nC[0].equalsIgnoreCase("0")){
+                        Double vv =  Double.parseDouble(valoracion2)/Double.parseDouble(nC[0]);
+                        txtValGen.setText("" + decimalFormat.format(vv));
                     }
 
+                    //Toast.makeText(getContext(), "ncccc: " + nC[0], Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(getContext(), "vvvv " + valoracion2, Toast.LENGTH_SHORT).show();
-                String nC[] = txtNumCom.getText().toString().split(" ");
-                if (!nC[0].equalsIgnoreCase("0")){
-                    Double vv =  Double.parseDouble(valoracion2)/Double.parseDouble(nC[0]);
-                    txtValGen.setText("" + decimalFormat.format(vv));
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //Toast.makeText(getContext(), "ERROR DE CONEXIÓN", Toast.LENGTH_SHORT).show();
                 }
-
-                //Toast.makeText(getContext(), "ncccc: " + nC[0], Toast.LENGTH_SHORT).show();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Toast.makeText(getContext(), "ERROR DE CONEXIÓN", Toast.LENGTH_SHORT).show();
+            );
+
+            try {
+                requestQueue = Volley.newRequestQueue(getContext());
+                requestQueue.add(jsonArrayRequest);
+            }
+            catch (Exception e){
+
             }
         }
-        );
+        catch (Exception e){
 
-        requestQueue = Volley.newRequestQueue(getContext());
-        requestQueue.add(jsonArrayRequest);
+        }
     }
 
     private void obtenerNumOpinionesTotales(String URL) {
@@ -1010,8 +1060,12 @@ public class DetalleProductoFragment extends Fragment {
         }
         );
 
-        requestQueue = Volley.newRequestQueue(getContext());
-        requestQueue.add(jsonArrayRequest);
+
+            requestQueue = Volley.newRequestQueue(getContext());
+            requestQueue.add(jsonArrayRequest);
+
+
+
     }
 
     private void obtenerNumProdCestaUsuario(String URL) {
@@ -1053,38 +1107,48 @@ public class DetalleProductoFragment extends Fragment {
     }
     private void obtenerComentarioUsuario(String URL, String id_usuario, String idProducto) {
         URL = URL + "?id_usuario=" + id_usuario + "&id_producto=" + idProducto;
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                JSONObject jsonObject = null;
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        jsonObject = response.getJSONObject(i);
-                        usuario1 = jsonObject.getString("nombre") + " " + jsonObject.getString("apellido");
-                        comentario1 = jsonObject.getString("comentario");
-                        valoracion1 = jsonObject.getString("valoracion");
-                        listaComentarioUsuario.add(new ComentariosProductos(usuario1, comentario1, valoracion1));
-                    } catch (JSONException e) {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        try {
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    JSONObject jsonObject = null;
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            jsonObject = response.getJSONObject(i);
+                            usuario1 = jsonObject.getString("nombre") + " " + jsonObject.getString("apellido");
+                            comentario1 = jsonObject.getString("comentario");
+                            valoracion1 = jsonObject.getString("valoracion");
+                            listaComentarioUsuario.add(new ComentariosProductos(usuario1, comentario1, valoracion1));
+                        } catch (JSONException e) {
+                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
                     }
+                    try {
+                        txtComUser.setVisibility(View.INVISIBLE);
+                        recyclerViewComentarioUsuario.setLayoutManager(new LinearLayoutManager(getContext()));
+                        adapterRecyclerComentarios = new AdapterRecyclerComentarios(getContext(), listaComentarioUsuario);
+                        recyclerViewComentarioUsuario.setAdapter(adapterRecyclerComentarios);
+                    }
+                    catch (Exception e){
 
+                    }
                 }
-                txtComUser.setVisibility(View.INVISIBLE);
-                recyclerViewComentarioUsuario.setLayoutManager(new LinearLayoutManager(getContext()));
-                adapterRecyclerComentarios = new AdapterRecyclerComentarios(getContext(), listaComentarioUsuario);
-                recyclerViewComentarioUsuario.setAdapter(adapterRecyclerComentarios);
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //Toast.makeText(getContext(), "ERROR DE CONEXIÓN", Toast.LENGTH_SHORT).show();
+                }
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Toast.makeText(getContext(), "ERROR DE CONEXIÓN", Toast.LENGTH_SHORT).show();
-            }
+            );
+
+
+            requestQueue = Volley.newRequestQueue(getContext());
+            requestQueue.add(jsonArrayRequest);
         }
-        );
+        catch (Exception e){
 
-
-        requestQueue = Volley.newRequestQueue(getContext());
-        requestQueue.add(jsonArrayRequest);
+        }
     }
     private void obtener_id_producto(String URL) {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {

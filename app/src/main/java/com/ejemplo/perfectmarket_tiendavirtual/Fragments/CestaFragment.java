@@ -349,11 +349,17 @@ public class CestaFragment extends Fragment {
     }
 
     public void mostrarDatos(){
-        SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
-                Context.MODE_PRIVATE);
-        for (int i = 1; i < 17; i++ ) {
-            obtenerProductosCesta(URLObtenerDatosCesta, preferences.getString("id", "0") , String.valueOf(i));
+        try {
+            SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
+                    Context.MODE_PRIVATE);
+            for (int i = 1; i < 17; i++ ) {
+                obtenerProductosCesta(URLObtenerDatosCesta, preferences.getString("id", "0") , String.valueOf(i));
+            }
         }
+        catch (Exception e){
+
+        }
+
     }
 
 
@@ -380,9 +386,15 @@ public class CestaFragment extends Fragment {
                     }
 
                 }
-                recyclerProductosCesta.setLayoutManager(new LinearLayoutManager(getContext()));
-                adapterProductosCesta = new AdapterRecyclerCesta(getContext(), listaProductosCesta);
-                recyclerProductosCesta.setAdapter(adapterProductosCesta);
+                try {
+                    recyclerProductosCesta.setLayoutManager(new LinearLayoutManager(getContext()));
+                    adapterProductosCesta = new AdapterRecyclerCesta(getContext(), listaProductosCesta);
+                    recyclerProductosCesta.setAdapter(adapterProductosCesta);
+                }
+                catch (Exception e){
+
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override

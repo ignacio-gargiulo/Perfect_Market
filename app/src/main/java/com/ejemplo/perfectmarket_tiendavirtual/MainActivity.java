@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-   @Override
+   /*@Override
     public void onBackPressed() {
         if (tiempoPrimerClick + INTERVALO > System.currentTimeMillis()){
             finish();
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(this, "Vuelve a presionar para salir", Toast.LENGTH_SHORT).show();
         }
         tiempoPrimerClick = System.currentTimeMillis();
-    }
+    }*/
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
