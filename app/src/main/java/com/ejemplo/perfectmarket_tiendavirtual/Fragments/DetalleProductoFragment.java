@@ -433,7 +433,7 @@ public class DetalleProductoFragment extends Fragment {
                     tituloEnviarDatos.setTitle("Enviar Comentario del Producto " + opcion);
                     tituloEnviarDatos.show();
                 }
-                Toast.makeText(getContext(), "" + edtComentario.getText().toString() , Toast.LENGTH_SHORT).show();
+                 Toast.makeText(getContext(), "" + edtComentario.getText().toString() , Toast.LENGTH_SHORT).show();
             }
         });
 

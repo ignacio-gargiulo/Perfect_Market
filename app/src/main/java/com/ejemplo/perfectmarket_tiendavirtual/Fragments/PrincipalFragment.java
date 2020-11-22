@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,13 +61,13 @@ public class PrincipalFragment extends Fragment {
     View view;
     SharedPreferences preferences;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         preferences = getContext().getSharedPreferences("preferenciasDU", Context.MODE_PRIVATE);
         view = inflater.inflate(R.layout.fragment_principal, container, false);
+        btnZonaUsuario = view.findViewById(R.id.btnZonaUsuario);
         txtNomUserPrincipal = view.findViewById(R.id.txtNomUserPrincipal);
         btnCat = view.findViewById(R.id.btnIrCategorias);
         btncesta = view.findViewById(R.id.btnIrCesta);
@@ -85,6 +86,7 @@ public class PrincipalFragment extends Fragment {
         viewFlipper.setFlipInterval(4000);
         viewFlipper.setInAnimation(getContext(), R.anim.slide_in_right);
         viewFlipper.setOutAnimation(getContext(), R.anim.slide_out_left);
+
 
         txtNomUserPrincipal.setText(preferences.getString("nombre", "Desconocido") +
                 " " + preferences.getString("apellido", ""));
@@ -116,6 +118,16 @@ public class PrincipalFragment extends Fragment {
             }
         });
 
+        btnZonaUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container, new ZonaUsuarioFragment());
+                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null);
+            }
+        });
 
         for (int i = 1; i < 5; i++) {
             obtenerDatosProductos1(URL + String.valueOf(i));
@@ -132,6 +144,9 @@ public class PrincipalFragment extends Fragment {
         for (int i = 13; i < 17; i++) {
             obtenerDatosProductos4(URL + String.valueOf(i));
         }
+
+
+
 
         return view;
     }
