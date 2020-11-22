@@ -38,15 +38,15 @@ public class AdapterRecyclerCesta extends RecyclerView.Adapter<AdapterRecyclerCe
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderCesta holder, int position) {
-        String id = listaProductosCesta.get(position).getId();
+        //String id = listaProductosCesta.get(position).getId();
         String nombre = listaProductosCesta.get(position).getNombre();
         String precio = listaProductosCesta.get(position).getPrecio();
         String cantidad = listaProductosCesta.get(position).getCantidad();
         //int imagen = listaProductosCesta.get(position).getImagen();
 
-        holder.id.setText(id);
+        //holder.id.setText(id);
         holder.nombre.setText(nombre);
-        holder.precio.setText(precio);
+        holder.precio.setText(precio + "€");
         holder.cantidad.setText(cantidad);
         //holder.imagen.setImageResource(imagen);
     }
@@ -75,7 +75,7 @@ public class AdapterRecyclerCesta extends RecyclerView.Adapter<AdapterRecyclerCe
 
         public ViewHolderCesta(@NonNull View itemView) {
             super(itemView);
-            id = itemView.findViewById(R.id.id_producto_cesta);
+            //id = itemView.findViewById(R.id.id_producto_cesta);
             nombre = itemView.findViewById(R.id.nombre_producto_cesta);
             precio = itemView.findViewById(R.id.precio_producto_cesta);
             cantidad = itemView.findViewById(R.id.cantidad_producto_cesta);

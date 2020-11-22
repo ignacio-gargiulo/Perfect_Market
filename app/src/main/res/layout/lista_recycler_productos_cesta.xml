@@ -31,10 +31,10 @@
             />
 
         <TextView
-            android:id="@+id/precio_producto_cesta"
+            android:id="@+id/cantidad_producto_cesta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Precio: 0 €"
+            android:text="Cantidad: 0 Productos"
             android:layout_below="@+id/nombre_producto_cesta"
             android:textColor="@color/blanco"
             android:layout_marginLeft="10dp"
@@ -42,26 +42,14 @@
             />
 
         <TextView
-            android:id="@+id/cantidad_producto_cesta"
+            android:id="@+id/precio_producto_cesta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cantidad: 0 Productos"
-            android:layout_below="@+id/precio_producto_cesta"
-            android:textColor="@color/blanco"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            />
-
-        <TextView
-            android:id="@+id/id_producto_cesta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Id: 0"
+            android:text="Precio: 0 €"
             android:layout_below="@+id/cantidad_producto_cesta"
             android:textColor="@color/blanco"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             />
-
-    </RelativeLayout>
+        </RelativeLayout>
 </androidx.cardview.widget.CardView>

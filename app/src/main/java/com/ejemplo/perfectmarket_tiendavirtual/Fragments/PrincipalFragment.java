@@ -59,8 +59,6 @@ public class PrincipalFragment extends Fragment {
     ImageButton btnImagenAnterior, btnImagenSiguiente;
     FragmentTransaction fragmentTransaction;
     FragmentManager fragmentManager;
-    int imgBBDD;
-    int imgW, imgH;
 
 
     RecyclerView recyclerProducto1;
