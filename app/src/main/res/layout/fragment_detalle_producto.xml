@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:background="@color/celeste_perfect"></TextView>
+
         <TextView
             android:id="@+id/txtNomUser"
             android:layout_width="match_parent"
@@ -22,12 +23,13 @@
             android:layout_gravity="center"
             android:background="@color/azul_perfect"
             android:gravity="center"
+            android:paddingLeft="5dp"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
-            android:paddingLeft="5dp"
             android:text="Usuario"
             android:textColor="@color/blanco"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -40,12 +42,11 @@
             android:layout_gravity="center"
             android:background="@color/azul_perfect"
             android:gravity="center"
+            android:paddingLeft="5dp"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
-            android:paddingLeft="5dp"
-            android:text="Productos en la cesta: 0"
-            android:textColor="@color/blanco"
-            />
+            android:text="0 Productos en la Cesta"
+            android:textColor="@color/blanco" />
 
         <TextView
             android:layout_width="match_parent"
@@ -112,16 +113,6 @@
                         android:src="@drawable/ic_flecha_derecha" />
                 </LinearLayout>
 
-
-                <!--
-                <ImageView
-                    android:id="@+id/imagen_producto_detalle"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_gravity="center"
-                    android:paddingTop="10dp"
-                    android:src="@drawable/ic_launcher_background" />
-    -->
 
                 <TextView
                     android:id="@+id/dato_adicional_detalle"

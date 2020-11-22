@@ -32,14 +32,11 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, iComunicaFragments {
 
-    private static final int INTERVALO = 2000; //2 segundos para salir
-    private long tiempoPrimerClick;
-
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;
     NavigationView navigationView;
-    //int count = getSupportFragmentManager().getBackStackEntryCount();
+
     //variables para cargar los fragments
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
@@ -67,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
         actionBarDrawerToggle.syncState();
 
-        //Toast.makeText(this, "" + count, Toast.LENGTH_SHORT).show();
+
         //cargar fragment principal
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();

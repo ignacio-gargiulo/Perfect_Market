@@ -60,33 +60,32 @@ import java.util.Map;
 
 public class DetalleProductoFragment extends Fragment {
 
-    StringBuilder sb;
-    FragmentManager fm;
-    FragmentTransaction fragmentTransaction;
-    RequestQueue requestQueue;
-    RatingBar ratingBar;
-    ImageView imageView;
-    TextView txtComUser, txtIdProducto, nombre, informacion, otrosDatos, precio, txtValoracion, precioTotal,
+    private FragmentManager fm;
+    private FragmentTransaction fragmentTransaction;
+    private RequestQueue requestQueue;
+    private RatingBar ratingBar;
+    private ImageView imageView;
+    private TextView txtComUser, txtIdProducto, nombre, informacion, otrosDatos, precio, txtValoracion, precioTotal,
             txtNumProductosEnCesta, txtNumCom, txtValGen, txtNomUser;
-    String URLObtenerComentarios, opcion, numComentarios, idProducto, URLinsertarProductoEnCesta,
+    private String URLObtenerComentarios, opcion, numComentarios, idProducto, URLinsertarProductoEnCesta,
             URLNumCom, URLDatosUsuario, URLidProducto, URLinsertarComentarios, comentario1, valoracion1,
             valoracion2, numeroTotalOpiniones, numProdCestaUsuario, usuario1, URLSumaValoracionP,
             URLvalidarComentarios, URLValidarProductosCesta, URLNumTOpiniones, URLNumProductosCesta;
-    EditText edtComentario, edtCantidad;
-    Button btnEnviarDatos, btnAñadirCesta, btnSumarCantidad, btnRestarCantidad,
+    private EditText edtComentario, edtCantidad;
+    private Button btnEnviarDatos, btnAñadirCesta, btnSumarCantidad, btnRestarCantidad,
             btnComprarYa, btnActualizarComentarios;
-    FloatingActionButton fab, fabCompartir, fabRetroceder, fabPrincipal;
-    ArrayList<ComentariosProductos> listaComentarios, listaComentarioUsuario;
-    AdapterRecyclerComentarios adapterRecyclerComentarios;
-    ViewFlipper viewFlipperP;
-    DecimalFormat decimalFormat;
-    ImageButton btnSiguienteP, btnAnteriorP;
-    RecyclerView recyclerViewComentarios, recyclerViewComentarioUsuario;
-    View view;
-    SharedPreferences preferences;
-    int num, imagenId;
-    int cantidad = 0;
-    double precioT;
+    private FloatingActionButton fab, fabCompartir, fabRetroceder, fabPrincipal;
+    private ArrayList<ComentariosProductos> listaComentarios, listaComentarioUsuario;
+    private AdapterRecyclerComentarios adapterRecyclerComentarios;
+    private ViewFlipper viewFlipperP;
+    private DecimalFormat decimalFormat;
+    private ImageButton btnSiguienteP, btnAnteriorP;
+    private RecyclerView recyclerViewComentarios, recyclerViewComentarioUsuario;
+    private View view;
+    private SharedPreferences preferences;
+    private int num, imagenId;
+    private int cantidad = 0;
+    private double precioT;
 
 
     @Nullable
@@ -142,7 +141,7 @@ public class DetalleProductoFragment extends Fragment {
         });
 
         txtNomUser.setText(preferences.getString("nombre", "Desconocido")
-        + preferences.getString("apellido", ""));
+        + " " + preferences.getString("apellido", ""));
 
         //Crear objeto bundle para recibir el objeto envado por argumentos
         Bundle objetoProducto = getArguments();
@@ -502,7 +501,7 @@ public class DetalleProductoFragment extends Fragment {
                         for (int i = 1; i < Integer.parseInt(numeroTotalOpiniones); i++) {
                             obtenerComentarios(URLObtenerComentarios, String.valueOf(i), txtIdProducto.getText().toString());
                         }
-                        obtenerComentarioUsuario(URLObtenerComentarios, preferences.getString("id", "1"), txtIdProducto.getText().toString());
+                        obtenerComentarioUsuario(URLObtenerComentarios, preferences.getString("id", "0"), txtIdProducto.getText().toString());
                     } catch (Exception e) {
 
                     }
