@@ -94,6 +94,7 @@ public class DetalleProductoFragment extends Fragment {
 
         direccionesURL();
         view = inflater.inflate(R.layout.fragment_detalle_producto, container, false);
+        edtComentario = view.findViewById(R.id.edtComentario);
         txtComUser = view.findViewById(R.id.txtComUser);
         txtIdProducto = view.findViewById(R.id.txtIdProducto);
         txtValGen = view.findViewById(R.id.txtValProducto);
@@ -409,7 +410,7 @@ public class DetalleProductoFragment extends Fragment {
                 if (em.equalsIgnoreCase("Desconocido")) {
                     Snackbar.make(view, "Debes iniciar sesión en 'Zona Usuario' para realizar esta acción", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                } else if (edtComentario.getText().toString().equalsIgnoreCase("")) {
+                } else if (edtComentario.getText().toString().equalsIgnoreCase("f")) {
                     Snackbar.make(view, "Debe rellenar el campo del Comentario", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 } else {
@@ -432,7 +433,7 @@ public class DetalleProductoFragment extends Fragment {
                     tituloEnviarDatos.setTitle("Enviar Comentario del Producto " + opcion);
                     tituloEnviarDatos.show();
                 }
-
+                Toast.makeText(getContext(), "" + edtComentario.getText().toString() , Toast.LENGTH_SHORT).show();
             }
         });
 
