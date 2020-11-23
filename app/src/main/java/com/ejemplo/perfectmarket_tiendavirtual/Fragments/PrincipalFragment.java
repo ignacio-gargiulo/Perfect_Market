@@ -29,7 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.ejemplo.perfectmarket_tiendavirtual.Adaptadores.AdapterRecycler2;
-import com.ejemplo.perfectmarket_tiendavirtual.Entidades.Categoria;
+import com.ejemplo.perfectmarket_tiendavirtual.Entidades.Producto;
 import com.ejemplo.perfectmarket_tiendavirtual.R;
 import com.ejemplo.perfectmarket_tiendavirtual.iComunicaFragments;
 
@@ -48,7 +48,7 @@ public class PrincipalFragment extends Fragment {
     TextView txtNomUserPrincipal;
     RecyclerView recyclerProducto1, recyclerProducto2, recyclerProducto3, recyclerProducto4;
     AdapterRecycler2 adapterCategorias;
-    ArrayList<Categoria> listaProductos1, listaProductos2, listaProductos3, listaProductos4;
+    ArrayList<Producto> listaProductos1, listaProductos2, listaProductos3, listaProductos4;
     String URL, nombreProducto = "", descripcion, otrosDatos, precio;
     RequestQueue requestQueue;
     ViewFlipper viewFlipper;
@@ -181,13 +181,13 @@ public class PrincipalFragment extends Fragment {
                         descripcion = jsonObject.getString("descripcion_producto");
                         otrosDatos = jsonObject.getString("otros_datos_producto");
                         if (id.equalsIgnoreCase("1")) {
-                            listaProductos1.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img1));
+                            listaProductos1.add(new Producto(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img1));
                         } else if (id.equalsIgnoreCase("2")) {
-                            listaProductos1.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img2));
+                            listaProductos1.add(new Producto(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img2));
                         } else if (id.equalsIgnoreCase("3")) {
-                            listaProductos1.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img3));
+                            listaProductos1.add(new Producto(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img3));
                         } else if (id.equalsIgnoreCase("4")) {
-                            listaProductos1.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img4));
+                            listaProductos1.add(new Producto(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img4));
                         }
 
                     } catch (JSONException e) {
@@ -232,13 +232,13 @@ public class PrincipalFragment extends Fragment {
                         descripcion = jsonObject.getString("descripcion_producto");
                         otrosDatos = jsonObject.getString("otros_datos_producto");
                         if (id.equalsIgnoreCase("5")) {
-                            listaProductos2.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img5));
+                            listaProductos2.add(new Producto(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img5));
                         } else if (id.equalsIgnoreCase("6")) {
-                            listaProductos2.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img6));
+                            listaProductos2.add(new Producto(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img6));
                         } else if (id.equalsIgnoreCase("7")) {
-                            listaProductos2.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img7));
+                            listaProductos2.add(new Producto(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img7));
                         } else if (id.equalsIgnoreCase("8")) {
-                            listaProductos2.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img8));
+                            listaProductos2.add(new Producto(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img8));
                         }
 
                     } catch (JSONException e) {
@@ -283,13 +283,13 @@ public class PrincipalFragment extends Fragment {
                         descripcion = jsonObject.getString("descripcion_producto");
                         otrosDatos = jsonObject.getString("otros_datos_producto");
                         if (id.equalsIgnoreCase("9")) {
-                            listaProductos3.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img9));
+                            listaProductos3.add(new Producto(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img9));
                         } else if (id.equalsIgnoreCase("10")) {
-                            listaProductos3.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img10));
+                            listaProductos3.add(new Producto(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img10));
                         } else if (id.equalsIgnoreCase("11")) {
-                            listaProductos3.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img11));
+                            listaProductos3.add(new Producto(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img11));
                         } else if (id.equalsIgnoreCase("12")) {
-                            listaProductos3.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img12));
+                            listaProductos3.add(new Producto(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img12));
                         }
 
                     } catch (JSONException e) {
@@ -334,13 +334,13 @@ public class PrincipalFragment extends Fragment {
                         descripcion = jsonObject.getString("descripcion_producto");
                         otrosDatos = jsonObject.getString("otros_datos_producto");
                         if (id.equalsIgnoreCase("13")) {
-                            listaProductos4.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img13));
+                            listaProductos4.add(new Producto(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img13));
                         } else if (id.equalsIgnoreCase("14")) {
-                            listaProductos4.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img14));
+                            listaProductos4.add(new Producto(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img14));
                         } else if (id.equalsIgnoreCase("15")) {
-                            listaProductos4.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img15));
+                            listaProductos4.add(new Producto(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img15));
                         } else if (id.equalsIgnoreCase("16")) {
-                            listaProductos4.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img16));
+                            listaProductos4.add(new Producto(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img16));
                         }
 
                     } catch (JSONException e) {

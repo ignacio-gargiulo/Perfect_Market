@@ -90,7 +90,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:background="@color/azul_perfect"
-                    android:text="Productos por categoria"
+                    android:text="Categorías"
                     android:textColor="#FFFFFF"
                     android:textStyle="bold|italic" />
 

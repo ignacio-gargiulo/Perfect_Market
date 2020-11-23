@@ -10,10 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ejemplo.perfectmarket_tiendavirtual.Entidades.Categoria;
-import com.ejemplo.perfectmarket_tiendavirtual.Entidades.ProductoCesta;
 import com.ejemplo.perfectmarket_tiendavirtual.Entidades.ProductosDetalleCategoria;
-import com.ejemplo.perfectmarket_tiendavirtual.Fragments.DetalleCategoriaFragment;
 import com.ejemplo.perfectmarket_tiendavirtual.R;
 
 import java.util.ArrayList;

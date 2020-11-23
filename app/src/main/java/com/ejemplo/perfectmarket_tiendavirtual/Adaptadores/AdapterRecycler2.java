@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.ejemplo.perfectmarket_tiendavirtual.Entidades.Categoria;
+import com.ejemplo.perfectmarket_tiendavirtual.Entidades.Producto;
 import com.ejemplo.perfectmarket_tiendavirtual.R;
 
 import java.util.ArrayList;
@@ -17,14 +17,14 @@ import java.util.ArrayList;
 public class AdapterRecycler2 extends RecyclerView.Adapter<AdapterRecycler2.ViewHolder> implements View.OnClickListener {
 
     LayoutInflater inflater;
-    ArrayList<Categoria> categoria;
+    ArrayList<Producto> producto;
 
     //listener
     private View.OnClickListener listener;
 
-    public AdapterRecycler2(Context context, ArrayList<Categoria> model){
+    public AdapterRecycler2(Context context, ArrayList<Producto> model){
         this.inflater = LayoutInflater.from(context);
-        this.categoria = model;
+        this.producto = model;
     }
 
     @NonNull
@@ -41,9 +41,9 @@ public class AdapterRecycler2 extends RecyclerView.Adapter<AdapterRecycler2.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String nombre = categoria.get(position).getNombre();
-        String precio = categoria.get(position).getPrecio();
-        int imagen = categoria.get(position).getImagenId();
+        String nombre = producto.get(position).getNombre();
+        String precio = producto.get(position).getPrecio();
+        int imagen = producto.get(position).getImagenId();
 
         holder.nombre.setText(nombre);
         holder.precio.setText(precio);
@@ -52,7 +52,7 @@ public class AdapterRecycler2 extends RecyclerView.Adapter<AdapterRecycler2.View
 
     @Override
     public int getItemCount() {
-        return categoria.size();
+        return producto.size();
     }
 
     @Override

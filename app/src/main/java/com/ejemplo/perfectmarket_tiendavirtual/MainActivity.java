@@ -10,14 +10,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
-import android.content.ContentProvider;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.ejemplo.perfectmarket_tiendavirtual.Entidades.Categoria;
+import com.ejemplo.perfectmarket_tiendavirtual.Entidades.Producto;
 import com.ejemplo.perfectmarket_tiendavirtual.Entidades.ProductosDetalleCategoria;
 import com.ejemplo.perfectmarket_tiendavirtual.Fragments.CategoriasFragment;
 import com.ejemplo.perfectmarket_tiendavirtual.Fragments.CestaFragment;
@@ -123,13 +119,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void enviarCategoria(Categoria categoria) {
+    public void enviarCategoria(Producto producto) {
         //Aqui se realiza la lógica necesaria para poder realizar el envio
         detalleCategoriaFragment = new DetalleCategoriaFragment();
         //objeto bundle para transportar la información
         Bundle bundleEnvio = new Bundle();
         //enviar objeto con Serializable
-        bundleEnvio.putSerializable("categoria", categoria);
+        bundleEnvio.putSerializable("categoria", producto);
         detalleCategoriaFragment.setArguments(bundleEnvio);
 
         //abrir fragment
@@ -141,13 +137,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void enviarProducto(Categoria categoria) {
+    public void enviarProducto(Producto producto) {
         //Aqui se realiza la lógica necesaria para poder realizar el envio
         detalleProductoFragment = new DetalleProductoFragment();
         //objeto bundle para transportar la información
         Bundle bundleEnvio = new Bundle();
         //enviar objeto con Serializable
-        bundleEnvio.putSerializable("producto", categoria);
+        bundleEnvio.putSerializable("producto", producto);
         detalleProductoFragment.setArguments(bundleEnvio);
 
         //abrir fragment

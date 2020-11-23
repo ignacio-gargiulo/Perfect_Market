@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
@@ -42,7 +41,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ejemplo.perfectmarket_tiendavirtual.Adaptadores.AdapterRecyclerComentarios;
-import com.ejemplo.perfectmarket_tiendavirtual.Entidades.Categoria;
+import com.ejemplo.perfectmarket_tiendavirtual.Entidades.Producto;
 import com.ejemplo.perfectmarket_tiendavirtual.Entidades.ComentariosProductos;
 import com.ejemplo.perfectmarket_tiendavirtual.Entidades.ProductosDetalleCategoria;
 import com.ejemplo.perfectmarket_tiendavirtual.R;
@@ -146,12 +145,12 @@ public class DetalleProductoFragment extends Fragment {
 
         //Crear objeto bundle para recibir el objeto envado por argumentos
         Bundle objetoProducto = getArguments();
-        Categoria mainModel = null;
+        Producto mainModel = null;
         ProductosDetalleCategoria mainModel2 = null;
 
         //validacion para verificar si existen argumentos enviados para mostrar
         if (objetoProducto != null) {
-            mainModel = (Categoria) objetoProducto.getSerializable("producto");
+            mainModel = (Producto) objetoProducto.getSerializable("producto");
             mainModel2 = (ProductosDetalleCategoria) objetoProducto.getSerializable("productos");
 
             if (mainModel2 == null) {
@@ -410,7 +409,7 @@ public class DetalleProductoFragment extends Fragment {
                 if (em.equalsIgnoreCase("Desconocido")) {
                     Snackbar.make(view, "Debes iniciar sesión en 'Zona Usuario' para realizar esta acción", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                } else if (edtComentario.getText().toString().equalsIgnoreCase("f")) {
+                } else if (edtComentario.getText().toString().equalsIgnoreCase("")) {
                     Snackbar.make(view, "Debe rellenar el campo del Comentario", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 } else {
@@ -433,7 +432,6 @@ public class DetalleProductoFragment extends Fragment {
                     tituloEnviarDatos.setTitle("Enviar Comentario del Producto " + opcion);
                     tituloEnviarDatos.show();
                 }
-                 Toast.makeText(getContext(), "" + edtComentario.getText().toString() , Toast.LENGTH_SHORT).show();
             }
         });
 

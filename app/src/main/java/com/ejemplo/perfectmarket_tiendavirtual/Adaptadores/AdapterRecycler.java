@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.ejemplo.perfectmarket_tiendavirtual.Entidades.Categoria;
+import com.ejemplo.perfectmarket_tiendavirtual.Entidades.Producto;
 import com.ejemplo.perfectmarket_tiendavirtual.R;
 
 import java.util.ArrayList;
@@ -17,12 +17,12 @@ import java.util.ArrayList;
 public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.ViewHolder> implements View.OnClickListener {
 
     LayoutInflater inflater;
-    ArrayList<Categoria> model;
+    ArrayList<Producto> model;
 
     //listener
     private View.OnClickListener listener;
 
-    public AdapterRecycler(Context context, ArrayList<Categoria> model){
+    public AdapterRecycler(Context context, ArrayList<Producto> model){
         this.inflater = LayoutInflater.from(context);
         this.model = model;
     }

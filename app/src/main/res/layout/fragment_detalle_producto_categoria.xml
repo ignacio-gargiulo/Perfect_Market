@@ -1,203 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="55dp"
-    >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-    <ProgressBar
-        android:id="@+id/pb2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:indeterminate="true">
-
-    </ProgressBar>
-
-    <TextView
-        android:id="@+id/txtCargando2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:gravity="center"
-        android:textColor="@color/azul_perfect"
-        android:text="Cargando datos de la categoría seleccionada..."
-        />
-    </LinearLayout>
+    android:orientation="vertical"
+    android:paddingTop="55dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:id="@+id/linearCategorias"
-            android:visibility="invisible"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
 
-            <androidx.cardview.widget.CardView
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/linearCategorias"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="3dp"
-                app:cardElevation="3dp"
-                app:cardUseCompatPadding="true">
+                android:orientation="vertical"
+                android:visibility="visible">
 
-                <RelativeLayout
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:paddingTop="55dp"
-                    >
+                    app:cardCornerRadius="3dp"
+                    app:cardElevation="3dp"
+                    app:cardUseCompatPadding="true">
 
-                    <ImageView
-                        android:id="@+id/imagenCategoria1"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/ic_launcher_background" />
-
-                    <TextView
-                        android:id="@+id/nombre_categoria1"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_toEndOf="@+id/imagenCategoria1"
-                        android:layout_toRightOf="@+id/imagenCategoria1"
-                        android:text="Nombre de la Categoría"
-                        android:textSize="20dp"
-                        android:textStyle="bold" />
+                        android:padding="10dp"
+                        android:paddingTop="55dp">
 
-                    <TextView
-                        android:id="@+id/dato_adicional1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/nombre_categoria1"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_toEndOf="@+id/imagenCategoria1"
-                        android:layout_toRightOf="@+id/imagenCategoria1"
-                        android:text="Dato Adicional" />
-                </RelativeLayout>
-            </androidx.cardview.widget.CardView>
+                        <ImageView
+                            android:id="@+id/imagenCategoria1"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:src="@drawable/ic_launcher_background" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerProductosCategoria1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center">
+                        <TextView
+                            android:id="@+id/nombre_categoria1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_toEndOf="@+id/imagenCategoria1"
+                            android:layout_toRightOf="@+id/imagenCategoria1"
+                            android:text="Nombre de la Categoría"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
 
-            </androidx.recyclerview.widget.RecyclerView>
+                        <TextView
+                            android:id="@+id/dato_adicional1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/nombre_categoria1"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_toEndOf="@+id/imagenCategoria1"
+                            android:layout_toRightOf="@+id/imagenCategoria1"
+                            android:text="Dato Adicional" />
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerProductosCategoria2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerProductosCategoria1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
 
-            </androidx.recyclerview.widget.RecyclerView>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerProductosCategoria3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerProductosCategoria4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center">
-            </androidx.recyclerview.widget.RecyclerView>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerProductosCategoria5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center">
-            </androidx.recyclerview.widget.RecyclerView>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerProductosCategoria6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center">
-            </androidx.recyclerview.widget.RecyclerView>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerProductosCategoria7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                >
-            </androidx.recyclerview.widget.RecyclerView>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerProductosCategoria8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center">
-            </androidx.recyclerview.widget.RecyclerView>
-        </LinearLayout>
-    </ScrollView>
+                </androidx.recyclerview.widget.RecyclerView>
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearFabdetprodcat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="invisible">
+
         <com.github.clans.fab.FloatingActionMenu
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:menu_fab_label="Cerrar"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
             app:menu_colorNormal="@color/azul_perfect"
             app:menu_colorPressed="@color/celeste_perfect"
-            android:layout_margin="16dp"
-            >
+            app:menu_fab_label="Cerrar">
+
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/fabCestaDCat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:fab_label="Cesta"
+                android:src="@drawable/ic_cesta"
                 app:fab_colorNormal="@color/celeste_perfect"
                 app:fab_colorPressed="@color/azul_perfect"
-                android:src="@drawable/ic_cesta"
-                />
+                app:fab_label="Cesta" />
+
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/fabDPrincipalCat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:fab_label="Principal"
+                android:src="@drawable/ic_principal"
                 app:fab_colorNormal="@color/celeste_perfect"
                 app:fab_colorPressed="@color/azul_perfect"
-                android:src="@drawable/ic_principal"
-                />
+                app:fab_label="Principal" />
+
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/fabDRetrocederCat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:fab_label="Retroceder"
+                android:src="@drawable/ic_retroceder"
                 app:fab_colorNormal="@color/celeste_perfect"
                 app:fab_colorPressed="@color/azul_perfect"
-                android:src="@drawable/ic_retroceder"
-                />
+                app:fab_label="Retroceder" />
         </com.github.clans.fab.FloatingActionMenu>
     </LinearLayout>
 
