@@ -4,16 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -52,7 +48,7 @@ public class PrincipalFragment extends Fragment {
     TextView txtNomUserPrincipal;
     RecyclerView recyclerProducto1, recyclerProducto2, recyclerProducto3, recyclerProducto4;
     AdapterRecycler2 adapterCategorias;
-    ArrayList<Categoria> listaCategorias1, listaCategorias2, listaCategorias3, listaCategorias4;
+    ArrayList<Categoria> listaProductos1, listaProductos2, listaProductos3, listaProductos4;
     String URL, nombreProducto = "", descripcion, otrosDatos, precio;
     RequestQueue requestQueue;
     ViewFlipper viewFlipper;
@@ -75,10 +71,10 @@ public class PrincipalFragment extends Fragment {
         recyclerProducto2 = view.findViewById(R.id.recyclerPrincipal2);
         recyclerProducto3 = view.findViewById(R.id.recyclerPrincipal3);
         recyclerProducto4 = view.findViewById(R.id.recyclerPrincipal4);
-        listaCategorias1 = new ArrayList<>();
-        listaCategorias2 = new ArrayList<>();
-        listaCategorias3 = new ArrayList<>();
-        listaCategorias4 = new ArrayList<>();
+        listaProductos1 = new ArrayList<>();
+        listaProductos2 = new ArrayList<>();
+        listaProductos3 = new ArrayList<>();
+        listaProductos4 = new ArrayList<>();
         requestQueue = Volley.newRequestQueue(getContext());
         URL = "https://perfectmarket.000webhostapp.com/perfect_market/buscarProductosPrincipal.php?id=";
         int imagenes[] = {R.drawable.pm_banner, R.drawable.img3, R.drawable.img1, R.drawable.img2};
@@ -185,13 +181,13 @@ public class PrincipalFragment extends Fragment {
                         descripcion = jsonObject.getString("descripcion_producto");
                         otrosDatos = jsonObject.getString("otros_datos_producto");
                         if (id.equalsIgnoreCase("1")) {
-                            listaCategorias1.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img1));
+                            listaProductos1.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img1));
                         } else if (id.equalsIgnoreCase("2")) {
-                            listaCategorias1.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img2));
+                            listaProductos1.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img2));
                         } else if (id.equalsIgnoreCase("3")) {
-                            listaCategorias1.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img3));
+                            listaProductos1.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img3));
                         } else if (id.equalsIgnoreCase("4")) {
-                            listaCategorias1.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img4));
+                            listaProductos1.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img4));
                         }
 
                     } catch (JSONException e) {
@@ -200,14 +196,14 @@ public class PrincipalFragment extends Fragment {
                 }
                 try {
                     recyclerProducto1.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-                    adapterCategorias = new AdapterRecycler2(getContext(), listaCategorias1);
+                    adapterCategorias = new AdapterRecycler2(getContext(), listaProductos1);
                     recyclerProducto1.setAdapter(adapterCategorias);
                     adapterCategorias.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            String nombre = listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)).getNombre();
+                            String nombre = listaProductos1.get(recyclerProducto1.getChildAdapterPosition(view)).getNombre();
                             // Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
-                            interfaceComunicaFragments.enviarProducto(listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)));
+                            interfaceComunicaFragments.enviarProducto(listaProductos1.get(recyclerProducto1.getChildAdapterPosition(view)));
                         }
                     });
                 } catch (Exception e) {
@@ -236,13 +232,13 @@ public class PrincipalFragment extends Fragment {
                         descripcion = jsonObject.getString("descripcion_producto");
                         otrosDatos = jsonObject.getString("otros_datos_producto");
                         if (id.equalsIgnoreCase("5")) {
-                            listaCategorias2.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img5));
+                            listaProductos2.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img5));
                         } else if (id.equalsIgnoreCase("6")) {
-                            listaCategorias2.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img6));
+                            listaProductos2.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img6));
                         } else if (id.equalsIgnoreCase("7")) {
-                            listaCategorias2.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img7));
+                            listaProductos2.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img7));
                         } else if (id.equalsIgnoreCase("8")) {
-                            listaCategorias2.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img8));
+                            listaProductos2.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img8));
                         }
 
                     } catch (JSONException e) {
@@ -251,14 +247,14 @@ public class PrincipalFragment extends Fragment {
                 }
                 try {
                     recyclerProducto2.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-                    adapterCategorias = new AdapterRecycler2(getContext(), listaCategorias2);
+                    adapterCategorias = new AdapterRecycler2(getContext(), listaProductos2);
                     recyclerProducto2.setAdapter(adapterCategorias);
                     adapterCategorias.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            String nombre = listaCategorias2.get(recyclerProducto2.getChildAdapterPosition(view)).getNombre();
+                            String nombre = listaProductos2.get(recyclerProducto2.getChildAdapterPosition(view)).getNombre();
                             //Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
-                            interfaceComunicaFragments.enviarProducto(listaCategorias2.get(recyclerProducto2.getChildAdapterPosition(view)));
+                            interfaceComunicaFragments.enviarProducto(listaProductos2.get(recyclerProducto2.getChildAdapterPosition(view)));
                         }
                     });
                 } catch (Exception e) {
@@ -287,13 +283,13 @@ public class PrincipalFragment extends Fragment {
                         descripcion = jsonObject.getString("descripcion_producto");
                         otrosDatos = jsonObject.getString("otros_datos_producto");
                         if (id.equalsIgnoreCase("9")) {
-                            listaCategorias3.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img9));
+                            listaProductos3.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img9));
                         } else if (id.equalsIgnoreCase("10")) {
-                            listaCategorias3.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img10));
+                            listaProductos3.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img10));
                         } else if (id.equalsIgnoreCase("11")) {
-                            listaCategorias3.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img11));
+                            listaProductos3.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img11));
                         } else if (id.equalsIgnoreCase("12")) {
-                            listaCategorias3.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img12));
+                            listaProductos3.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img12));
                         }
 
                     } catch (JSONException e) {
@@ -302,14 +298,14 @@ public class PrincipalFragment extends Fragment {
                 }
                 try {
                     recyclerProducto3.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-                    adapterCategorias = new AdapterRecycler2(getContext(), listaCategorias3);
+                    adapterCategorias = new AdapterRecycler2(getContext(), listaProductos3);
                     recyclerProducto3.setAdapter(adapterCategorias);
                     adapterCategorias.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            String nombre = listaCategorias3.get(recyclerProducto3.getChildAdapterPosition(view)).getNombre();
+                            String nombre = listaProductos3.get(recyclerProducto3.getChildAdapterPosition(view)).getNombre();
                             // Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
-                            interfaceComunicaFragments.enviarProducto(listaCategorias3.get(recyclerProducto3.getChildAdapterPosition(view)));
+                            interfaceComunicaFragments.enviarProducto(listaProductos3.get(recyclerProducto3.getChildAdapterPosition(view)));
                         }
                     });
                 } catch (Exception e) {
@@ -338,13 +334,13 @@ public class PrincipalFragment extends Fragment {
                         descripcion = jsonObject.getString("descripcion_producto");
                         otrosDatos = jsonObject.getString("otros_datos_producto");
                         if (id.equalsIgnoreCase("13")) {
-                            listaCategorias4.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img13));
+                            listaProductos4.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img13));
                         } else if (id.equalsIgnoreCase("14")) {
-                            listaCategorias4.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img14));
+                            listaProductos4.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img14));
                         } else if (id.equalsIgnoreCase("15")) {
-                            listaCategorias4.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img15));
+                            listaProductos4.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img15));
                         } else if (id.equalsIgnoreCase("16")) {
-                            listaCategorias4.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img16));
+                            listaProductos4.add(new Categoria(nombreProducto, precio + " €", descripcion, otrosDatos, R.drawable.img16));
                         }
 
                     } catch (JSONException e) {
@@ -353,14 +349,14 @@ public class PrincipalFragment extends Fragment {
                 }
                 try {
                     recyclerProducto4.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-                    adapterCategorias = new AdapterRecycler2(getContext(), listaCategorias4);
+                    adapterCategorias = new AdapterRecycler2(getContext(), listaProductos4);
                     recyclerProducto4.setAdapter(adapterCategorias);
                     adapterCategorias.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            String nombre = listaCategorias4.get(recyclerProducto4.getChildAdapterPosition(view)).getNombre();
+                            String nombre = listaProductos4.get(recyclerProducto4.getChildAdapterPosition(view)).getNombre();
                             // Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
-                            interfaceComunicaFragments.enviarProducto(listaCategorias4.get(recyclerProducto4.getChildAdapterPosition(view)));
+                            interfaceComunicaFragments.enviarProducto(listaProductos4.get(recyclerProducto4.getChildAdapterPosition(view)));
                         }
                     });
                 } catch (Exception e) {
