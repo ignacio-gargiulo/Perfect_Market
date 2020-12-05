@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingTop="55dp"
     tools:context=".Fragments.ZonaUsuarioFragment">
 
@@ -14,209 +15,219 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Zona Usuario"
-                android:gravity="center"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:textColor="@color/azul_perfect"
                 android:layout_marginTop="5dp"
-                ></TextView>
+                android:gravity="center"
+                android:text="Usuario Actual"
+                android:textColor="@color/azul_perfect"
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp">
+                android:backgroundTint="@color/celeste_perfect"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Usuario Actual:"
-                    android:textColor="@color/negro"
-                    android:textStyle="bold"/>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/negro"
-                        android:text="Nombre:"/>
-                    <TextView
-                        android:id="@+id/txtNombre"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="Desconocido"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/negro"
-                        android:text="Apellido:"/>
-                    <TextView
-                        android:id="@+id/txtApellido"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="Desconocido"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/negro"
-                        android:text="Edad:"/>
-                    <TextView
-                        android:id="@+id/txtEdad"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="18"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/negro"
-                        android:text="Email:"/>
-                    <TextView
-                        android:id="@+id/txtEmail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="Desconocido"/>
-                </LinearLayout>
-            </LinearLayout>
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="vertical">
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nombre:"
+                            android:textColor="@color/azul_perfect" />
+
+                        <TextView
+                            android:id="@+id/txtNombre"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Desconocido"
+                            android:textColor="@color/blanco" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Apellido:"
+                            android:textColor="@color/azul_perfect" />
+
+                        <TextView
+                            android:id="@+id/txtApellido"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Desconocido"
+                            android:textColor="@color/blanco" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Edad:"
+                            android:textColor="@color/azul_perfect" />
+
+                        <TextView
+                            android:id="@+id/txtEdad"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="18"
+                            android:textColor="@color/blanco" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Email:"
+                            android:textColor="@color/azul_perfect" />
+
+                        <TextView
+                            android:id="@+id/txtEmail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Desconocido"
+                            android:textColor="@color/blanco" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            
             <TextView
-                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Iniciar Sesión:"
                 android:textColor="@color/negro"
-                android:textStyle="bold"
-                android:text="Iniciar Sesión:"/>
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="2">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/negro"
                     android:layout_weight="1.60"
-                    android:text="Email:"/>
+                    android:text="Email:"
+                    android:textColor="@color/negro" />
+
                 <EditText
                     android:id="@+id/edtEmail"
-                    android:layout_weight="0.40"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/negro"
+                    android:layout_weight="0.40"
                     android:enabled="false"
-                    android:hint="Email"/>
+                    android:hint="Email"
+                    android:textColor="@color/negro" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="2">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/negro"
                     android:layout_weight="1.60"
-                    android:text="Contraseña:"/>
+                    android:text="Contraseña:"
+                    android:textColor="@color/negro" />
+
                 <EditText
                     android:id="@+id/edtContrasegna"
-                    android:layout_weight="0.40"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/negro"
-                    android:inputType="textPassword"
+                    android:layout_weight="0.40"
                     android:enabled="false"
-                    android:hint="Contraseña"/>
+                    android:hint="Contraseña"
+                    android:inputType="textPassword"
+                    android:textColor="@color/negro" />
             </LinearLayout>
+
             <Button
                 android:id="@+id/btnIniciarSesion"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="80dp"
                 android:enabled="false"
-                android:text="Iniciar Sesión"/>
+                android:text="Iniciar Sesión" />
+
             <Button
                 android:id="@+id/btnCerrarSesion"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="80dp"
-                android:text="Cerrar Sesión"/>
+                android:text="Cerrar Sesión" />
+
             <TextView
-                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/negro"
-                android:textStyle="bold"
+                android:layout_marginTop="10dp"
                 android:enabled="false"
-                android:text="Registrarse:"/>
+                android:text="Registrarse:"
+                android:textColor="@color/negro"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="2">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/negro"
                     android:layout_weight="1.60"
-                    android:text="Nombre:"/>
+                    android:text="Nombre:"
+                    android:textColor="@color/negro" />
+
                 <EditText
                     android:id="@+id/edtNombreR"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="0.40"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/negro"
-                    android:hint="Nombre"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/negro"
-                    android:layout_weight="1.60"
-                    android:text="Apellido:"/>
-                <EditText
-                    android:id="@+id/edtApellidoR"
-                    android:layout_weight="0.40"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/negro"
-                    android:hint="Apellido"/>
+                    android:hint="Nombre"
+                    android:textColor="@color/negro" />
             </LinearLayout>
 
             <LinearLayout
@@ -224,66 +235,97 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="2">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/negro"
                     android:layout_weight="1.60"
-                    android:text="Email:"/>
+                    android:text="Apellido:"
+                    android:textColor="@color/negro" />
+
+                <EditText
+                    android:id="@+id/edtApellidoR"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.40"
+                    android:hint="Apellido"
+                    android:textColor="@color/negro" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.60"
+                    android:text="Email:"
+                    android:textColor="@color/negro" />
+
                 <EditText
                     android:id="@+id/edtEmailR"
-                    android:layout_weight="0.40"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/negro"
-                    android:hint="Email"/>
+                    android:layout_weight="0.40"
+                    android:hint="Email"
+                    android:textColor="@color/negro" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="2">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/negro"
                     android:layout_weight="1.60"
-                    android:text="Edad:"/>
+                    android:text="Edad:"
+                    android:textColor="@color/negro" />
+
                 <EditText
                     android:id="@+id/edtEdadR"
-                    android:layout_weight="0.40"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.40"
+                    android:hint="Edad"
                     android:inputType="number"
-                    android:textColor="@color/negro"
-                    android:hint="Edad"/>
+                    android:textColor="@color/negro" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="2">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/negro"
                     android:layout_weight="1.60"
-                    android:text="Contraseña:"/>
+                    android:text="Contraseña:"
+                    android:textColor="@color/negro" />
+
                 <EditText
                     android:id="@+id/edtContrasegnaR"
-                    android:layout_weight="0.40"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/negro"
+                    android:layout_weight="0.40"
+                    android:hint="Contraseña"
                     android:inputType="textPassword"
-                    android:hint="Contraseña"/>
+                    android:textColor="@color/negro" />
             </LinearLayout>
+
             <Button
                 android:id="@+id/btnRegistrarse"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="80dp"
-                android:text="Registrarse"/>
+                android:text="Registrarse" />
         </LinearLayout>
     </ScrollView>
 

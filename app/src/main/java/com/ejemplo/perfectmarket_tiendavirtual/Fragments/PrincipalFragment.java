@@ -125,9 +125,11 @@ public class PrincipalFragment extends Fragment {
             }
         });
 
+
         for (int i = 1; i < 5; i++) {
             obtenerDatosProductos1(URL + String.valueOf(i));
         }
+
 
         for (int i = 5; i < 9; i++) {
             obtenerDatosProductos2(URL + String.valueOf(i));
@@ -140,8 +142,6 @@ public class PrincipalFragment extends Fragment {
         for (int i = 13; i < 17; i++) {
             obtenerDatosProductos4(URL + String.valueOf(i));
         }
-
-
 
 
         return view;

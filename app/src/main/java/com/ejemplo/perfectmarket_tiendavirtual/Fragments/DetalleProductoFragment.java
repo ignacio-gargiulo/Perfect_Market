@@ -69,13 +69,14 @@ public class DetalleProductoFragment extends Fragment {
     private String URLObtenerComentarios, opcion, numComentarios, idProducto, URLinsertarProductoEnCesta,
             URLNumCom, URLDatosUsuario, URLidProducto, URLinsertarComentarios, comentario1, valoracion1,
             valoracion2, numeroTotalOpiniones, numProdCestaUsuario, usuario1, URLSumaValoracionP,
-            URLvalidarComentarios, URLValidarProductosCesta, URLNumTOpiniones, URLNumProductosCesta;
+            URLvalidarComentarios, URLValidarProductosCesta, URLNumTOpiniones, URLNumProductosCesta,
+            URLEliminarComentarioUsuario;
     private EditText edtComentario, edtCantidad;
     private Button btnEnviarDatos, btnAñadirCesta, btnSumarCantidad, btnRestarCantidad,
-            btnComprarYa, btnActualizarComentarios;
+            btnComprarYa, btnEliminarComentarioUsuario;
     private FloatingActionButton fab, fabCompartir, fabRetroceder, fabPrincipal;
     private ArrayList<ComentariosProductos> listaComentarios, listaComentarioUsuario;
-    private AdapterRecyclerComentarios adapterRecyclerComentarios;
+    private AdapterRecyclerComentarios adapterRecyclerComentarios, adapterRecyclerComentarios2;
     private ViewFlipper viewFlipperP;
     private DecimalFormat decimalFormat;
     private ImageButton btnSiguienteP, btnAnteriorP;
@@ -116,6 +117,7 @@ public class DetalleProductoFragment extends Fragment {
         btnSumarCantidad = view.findViewById(R.id.btnSumarCantidad);
         btnRestarCantidad = view.findViewById(R.id.btnRestarCantidad);
         btnComprarYa = view.findViewById(R.id.btnComprarYa);
+        btnEliminarComentarioUsuario = view.findViewById(R.id.btnEliminarComentario);
         txtNumProductosEnCesta = view.findViewById(R.id.txtNumProductosEnCesta);
         fab = view.findViewById(R.id.fab);
         fabCompartir = view.findViewById(R.id.fabCompartir);
@@ -141,7 +143,7 @@ public class DetalleProductoFragment extends Fragment {
         });
 
         txtNomUser.setText(preferences.getString("nombre", "Desconocido")
-        + " " + preferences.getString("apellido", ""));
+                + " " + preferences.getString("apellido", ""));
 
         //Crear objeto bundle para recibir el objeto envado por argumentos
         Bundle objetoProducto = getArguments();
@@ -272,7 +274,7 @@ public class DetalleProductoFragment extends Fragment {
         }
     }
 
-    private void botones(){
+    private void botones() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -444,7 +446,7 @@ public class DetalleProductoFragment extends Fragment {
                 if (preferences.getString("email", "Desconocido").equalsIgnoreCase("Desconocido")) {
                     Snackbar.make(view, "Debes iniciar sesión en 'Zona Usuario' para realizar esta acción'", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                }  else if (edtCantidad.getText().toString().equalsIgnoreCase("")) {
+                } else if (edtCantidad.getText().toString().equalsIgnoreCase("")) {
                     Snackbar.make(view, "Debes introducir una cantidad a añadir a la cesta", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     //Toast.makeText(getContext(), "Debes introducir una cantidad", Toast.LENGTH_SHORT).show();
@@ -488,6 +490,46 @@ public class DetalleProductoFragment extends Fragment {
                 previousView(view);
             }
         });
+
+        btnEliminarComentarioUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String em = preferences.getString("email", "Desconocido");
+
+
+                if (em.equalsIgnoreCase("Desconocido")) {
+                    Snackbar.make(view, "Debes iniciar sesión en 'Zona Usuario' para realizar esta acción", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else if (listaComentarioUsuario.isEmpty()) {
+                    Snackbar.make(view, "No has realizado ningún comentario", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+                    alertDialog.setMessage("¿Seguro que quiere eliminar el comentario sobre el producto " + opcion + "?").setCancelable(false)
+                            .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    listaComentarios.clear();
+                                    adapterRecyclerComentarios2.notifyDataSetChanged();
+                                    listaComentarioUsuario.clear();
+                                    adapterRecyclerComentarios.notifyDataSetChanged();
+                                    eliminarComentarioUsuario(URLEliminarComentarioUsuario);
+                                }
+                            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                            Snackbar.make(view, "No se ha eliminado el comentario", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        }
+                    });
+                    AlertDialog tituloEliminarComentario = alertDialog.create();
+                    tituloEliminarComentario.setTitle("Eliminar Comentario del Producto " + opcion);
+                    tituloEliminarComentario.show();
+                }
+            }
+        });
     }
 
     public void mostrarComentarios() {
@@ -506,7 +548,8 @@ public class DetalleProductoFragment extends Fragment {
                     }
                 }
             }, 500);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     public void flipperImagenes(int imagen) {
@@ -541,6 +584,7 @@ public class DetalleProductoFragment extends Fragment {
         URLSumaValoracionP = "https://perfectmarket.000webhostapp.com/perfect_market/sumaValoraciones.php?id_producto=";
         URLObtenerComentarios = "https://perfectmarket.000webhostapp.com/perfect_market/obtenerComentarios.php";
         URLNumCom = "https://perfectmarket.000webhostapp.com/perfect_market/numOpiniones.php?id_producto=";
+        URLEliminarComentarioUsuario = "https://perfectmarket.000webhostapp.com/perfect_market/eliminar_comentario_usuario.php";
     }
 
     private void insertarComentarios(String url) {
@@ -591,7 +635,7 @@ public class DetalleProductoFragment extends Fragment {
             public void onResponse(String response) {
                 if (response.isEmpty()) {
                     insertarComentarios(URLinsertarComentarios);
-                    int numComSum = Integer.valueOf(numComentarios) + 1;
+                    int numComSum = Integer.valueOf(numComentarios);
                     txtNumCom.setText(numComSum + " comentarios");
                     obtenerValoracionesG(URLSumaValoracionP + txtIdProducto.getText().toString());
                 } else {
@@ -704,8 +748,13 @@ public class DetalleProductoFragment extends Fragment {
                     }
                     String nC[] = txtNumCom.getText().toString().split(" ");
                     if (!nC[0].equalsIgnoreCase("0")) {
-                        Double vv = Double.parseDouble(valoracion2) / Double.parseDouble(nC[0]);
-                        txtValGen.setText("" + decimalFormat.format(vv));
+                        try {
+                            Double vv = Double.parseDouble(valoracion2) / Double.parseDouble(nC[0]);
+                            txtValGen.setText("" + decimalFormat.format(vv));
+                        } catch (Exception e) {
+                        }
+                    } else {
+                        txtValGen.setText("s/n");
                     }
                 }
             }, new Response.ErrorListener() {
@@ -760,11 +809,12 @@ public class DetalleProductoFragment extends Fragment {
                         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
-                txtNumProductosEnCesta.setText(numProdCestaUsuario +" Productos en la Cesta");
+                txtNumProductosEnCesta.setText(numProdCestaUsuario + " Productos en la Cesta");
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {}
+            public void onErrorResponse(VolleyError error) {
+            }
         });
         requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(jsonArrayRequest);
@@ -791,17 +841,20 @@ public class DetalleProductoFragment extends Fragment {
                     try {
                         txtComUser.setVisibility(View.INVISIBLE);
                         recyclerViewComentarioUsuario.setLayoutManager(new LinearLayoutManager(getContext()));
-                        adapterRecyclerComentarios = new AdapterRecyclerComentarios(getContext(), listaComentarioUsuario);
-                        recyclerViewComentarioUsuario.setAdapter(adapterRecyclerComentarios);
-                    } catch (Exception e) {}
+                        adapterRecyclerComentarios2 = new AdapterRecyclerComentarios(getContext(), listaComentarioUsuario);
+                        recyclerViewComentarioUsuario.setAdapter(adapterRecyclerComentarios2);
+                    } catch (Exception e) {
+                    }
                 }
             }, new Response.ErrorListener() {
                 @Override
-                public void onErrorResponse(VolleyError error) {}
+                public void onErrorResponse(VolleyError error) {
+                }
             });
             requestQueue = Volley.newRequestQueue(getContext());
             requestQueue.add(jsonArrayRequest);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     private void obtener_id_producto(String URL) {
@@ -821,7 +874,8 @@ public class DetalleProductoFragment extends Fragment {
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {}
+            public void onErrorResponse(VolleyError error) {
+            }
         });
         requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(jsonArrayRequest);
@@ -873,8 +927,52 @@ public class DetalleProductoFragment extends Fragment {
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {}
+            public void onErrorResponse(VolleyError error) {
+            }
         });
         requestQueue.add(jsonArrayRequest);
+    }
+
+    private void eliminarComentarioUsuario(String URL) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(getContext(), "Tú comentario ha sido eliminado", Toast.LENGTH_SHORT).show();
+                txtComUser.setVisibility(View.VISIBLE);
+
+                String nC[] = txtNumCom.getText().toString().split(" ");
+                int numCOM = Integer.valueOf(nC[0]) - 1;
+                txtNumCom.setText(numCOM + " comentarios");
+
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mostrarComentarios();
+                    }
+                }, 500);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        obtenerValoracionesG(URLSumaValoracionP + txtIdProducto.getText().toString());
+                    }
+                }, 1500);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<String, String>();
+                parametros.put("id_usuario", preferences.getString("id", "0"));
+                parametros.put("id_producto", txtIdProducto.getText().toString());
+                return parametros;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 }
