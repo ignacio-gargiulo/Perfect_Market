@@ -391,6 +391,18 @@
                         android:textColor="@color/blanco"
                         android:textSize="12dp"></Button>
                     <Button
+                        android:id="@+id/btnEditarComentario"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:backgroundTint="@color/celeste_perfect"
+                        android:drawableLeft="@drawable/ic_editar"
+                        android:text="Editar Comentario"
+                        android:textColor="@color/blanco"
+                        android:textSize="12dp"></Button>
+                    <Button
                         android:id="@+id/btnEliminarComentario"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"

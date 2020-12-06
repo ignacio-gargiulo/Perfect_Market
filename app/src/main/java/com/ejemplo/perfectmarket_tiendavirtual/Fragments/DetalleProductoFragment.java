@@ -70,10 +70,10 @@ public class DetalleProductoFragment extends Fragment {
             URLNumCom, URLDatosUsuario, URLidProducto, URLinsertarComentarios, comentario1, valoracion1,
             valoracion2, numeroTotalOpiniones, numProdCestaUsuario, usuario1, URLSumaValoracionP,
             URLvalidarComentarios, URLValidarProductosCesta, URLNumTOpiniones, URLNumProductosCesta,
-            URLEliminarComentarioUsuario;
+            URLEliminarComentarioUsuario, URLEditarComentario;
     private EditText edtComentario, edtCantidad;
     private Button btnEnviarDatos, btnAñadirCesta, btnSumarCantidad, btnRestarCantidad,
-            btnComprarYa, btnEliminarComentarioUsuario;
+            btnComprarYa, btnEliminarComentarioUsuario, btnEditarComentario;
     private FloatingActionButton fab, fabCompartir, fabRetroceder, fabPrincipal;
     private ArrayList<ComentariosProductos> listaComentarios, listaComentarioUsuario;
     private AdapterRecyclerComentarios adapterRecyclerComentarios, adapterRecyclerComentarios2;
@@ -111,6 +111,7 @@ public class DetalleProductoFragment extends Fragment {
         ratingBar = view.findViewById(R.id.ratingBar);
         btnEnviarDatos = view.findViewById(R.id.btnEnviarDatos);
         btnAñadirCesta = view.findViewById(R.id.btnAñadirCesta);
+        btnEditarComentario = view.findViewById(R.id.btnEditarComentario);
         txtNomUser = view.findViewById(R.id.txtNomUser);
         precioTotal = view.findViewById(R.id.precio_detalle_producto_total);
         edtCantidad = view.findViewById(R.id.edtCantidad);
@@ -530,6 +531,50 @@ public class DetalleProductoFragment extends Fragment {
                 }
             }
         });
+
+        btnEditarComentario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String em = preferences.getString("email", "Desconocido");
+
+
+                if (em.equalsIgnoreCase("Desconocido")) {
+                    Snackbar.make(view, "Debes iniciar sesión en 'Zona Usuario' para realizar esta acción", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else if (listaComentarioUsuario.isEmpty()) {
+                    Snackbar.make(view, "No has realizado ningún comentario", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+                else if (edtComentario.getText().toString().equalsIgnoreCase("")){
+                    Snackbar.make(view, "Debes rellenar el campo de comentario", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+                else {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+                    alertDialog.setMessage("¿Seguro que quiere editar el comentario sobre el producto " + opcion + "?").setCancelable(false)
+                            .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    listaComentarios.clear();
+                                    adapterRecyclerComentarios2.notifyDataSetChanged();
+                                    listaComentarioUsuario.clear();
+                                    adapterRecyclerComentarios.notifyDataSetChanged();
+                                    editarComentarios(URLEditarComentario);
+                                }
+                            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                            Snackbar.make(view, "No se ha eliminado el comentario", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        }
+                    });
+                    AlertDialog tituloEditarComentario = alertDialog.create();
+                    tituloEditarComentario.setTitle("Editar Comentario del Producto " + opcion);
+                    tituloEditarComentario.show();
+                }
+            }
+        });
     }
 
     public void mostrarComentarios() {
@@ -585,6 +630,7 @@ public class DetalleProductoFragment extends Fragment {
         URLObtenerComentarios = "https://perfectmarket.000webhostapp.com/perfect_market/obtenerComentarios.php";
         URLNumCom = "https://perfectmarket.000webhostapp.com/perfect_market/numOpiniones.php?id_producto=";
         URLEliminarComentarioUsuario = "https://perfectmarket.000webhostapp.com/perfect_market/eliminar_comentario_usuario.php";
+        URLEditarComentario = "https://perfectmarket.000webhostapp.com/perfect_market/editar_comentario.php";
     }
 
     private void insertarComentarios(String url) {
@@ -636,6 +682,7 @@ public class DetalleProductoFragment extends Fragment {
                 if (response.isEmpty()) {
                     insertarComentarios(URLinsertarComentarios);
                     int numComSum = Integer.valueOf(numComentarios);
+
                     txtNumCom.setText(numComSum + " comentarios");
                     obtenerValoracionesG(URLSumaValoracionP + txtIdProducto.getText().toString());
                 } else {
@@ -750,7 +797,13 @@ public class DetalleProductoFragment extends Fragment {
                     if (!nC[0].equalsIgnoreCase("0")) {
                         try {
                             Double vv = Double.parseDouble(valoracion2) / Double.parseDouble(nC[0]);
-                            txtValGen.setText("" + decimalFormat.format(vv));
+                            if (vv > 5.00) {
+                                txtValGen.setText("Recarga");
+                            }
+                            else {
+                                txtValGen.setText("" + decimalFormat.format(vv));
+                            }
+
                         } catch (Exception e) {
                         }
                     } else {
@@ -970,6 +1023,45 @@ public class DetalleProductoFragment extends Fragment {
                 Map<String, String> parametros = new HashMap<String, String>();
                 parametros.put("id_usuario", preferences.getString("id", "0"));
                 parametros.put("id_producto", txtIdProducto.getText().toString());
+                return parametros;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    private void editarComentarios(String URL){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(getContext(), "Tú comentario ha sido editado", Toast.LENGTH_SHORT).show();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mostrarComentarios();
+                    }
+                }, 500);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        obtenerValoracionesG(URLSumaValoracionP + txtIdProducto.getText().toString());
+                    }
+                }, 1500);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<String, String>();
+                parametros.put("id_usuario", preferences.getString("id", "0"));
+                parametros.put("id_producto", txtIdProducto.getText().toString());
+                parametros.put("comentario", edtComentario.getText().toString());
+                parametros.put("valoracion", txtValoracion.getText().toString());
                 return parametros;
             }
         };
