@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Principal">
+    <item android:title="Perfect Market">
         <menu android:checkableBehavior="single">
             <item
                 android:id="@+id/nav_principal"
@@ -14,15 +14,21 @@
                 android:id="@+id/nav_cesta"
                 android:icon="@drawable/ic_menu_cesta_negra"
                 android:title="@string/menu_cesta" />
+
         </menu>
     </item>
 
-    <item android:title="Secundario">
+    <item android:title="Usuario">
         <menu>
             <item
                 android:id="@+id/nav_zona_usuario"
                 android:icon="@drawable/ic_user"
                 android:title="Zona Usuario" />
+        </menu>
+    </item>
+
+    <item android:title="Otros">
+        <menu>
             <item
                 android:id="@+id/nav_informacion"
                 android:icon="@drawable/ic_menu_informacion"

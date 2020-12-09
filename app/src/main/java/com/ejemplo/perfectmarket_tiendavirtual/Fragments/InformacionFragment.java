@@ -56,7 +56,7 @@ public class InformacionFragment extends Fragment {
         fabPrincipal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "" + fm.getBackStackEntryCount(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "" + fm.getBackStackEntryCount(), Toast.LENGTH_SHORT).show();
                 if (fm.getBackStackEntryCount() == 1){
                     fm.popBackStack();
                 }

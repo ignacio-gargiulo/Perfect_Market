@@ -222,7 +222,6 @@ public class CestaFragment extends Fragment {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(getContext(), "Los productos fueron eliminados", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override

@@ -327,7 +327,7 @@ public class DetalleProductoFragment extends Fragment {
         fabPrincipal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "" + fm.getBackStackEntryCount(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "" + fm.getBackStackEntryCount(), Toast.LENGTH_SHORT).show();
                 if (fm.getBackStackEntryCount() == 1) {
                     fm.popBackStack();
                 } else {
@@ -356,7 +356,7 @@ public class DetalleProductoFragment extends Fragment {
             public void onClick(View view) {
                 int cantidad = 1;
                 if (edtCantidad.getText().toString().equalsIgnoreCase("")) {
-                    Toast.makeText(getContext(), "No se puede restar la cantidad", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "No se puede restar la cantidad", Toast.LENGTH_SHORT).show();
                 } else {
                     cantidad = Integer.valueOf(edtCantidad.getText().toString());
                     if (cantidad == 0) {
@@ -368,7 +368,7 @@ public class DetalleProductoFragment extends Fragment {
                     cantidad = cantidad - 1;
                     edtCantidad.setText(cantidad + "");
                 } else {
-                    Toast.makeText(getContext(), "No puede comprar menos de 1 producto", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "No puede comprar menos de 1 producto", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -415,6 +415,8 @@ public class DetalleProductoFragment extends Fragment {
                 } else if (edtComentario.getText().toString().equalsIgnoreCase("")) {
                     Snackbar.make(view, "Debe rellenar el campo del Comentario", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+                } else if (edtComentario.getText().toString().length() > 300) {
+                    edtComentario.setError("Has escrito " + edtComentario.getText().toString().length() + "/300 caracteres");
                 } else {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
                     alertDialog.setMessage("¿Seguro que quiere enviar el comentario sobre el producto " + opcion + "?").setCancelable(false)
@@ -544,12 +546,14 @@ public class DetalleProductoFragment extends Fragment {
                 } else if (listaComentarioUsuario.isEmpty()) {
                     Snackbar.make(view, "No has realizado ningún comentario", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                }
-                else if (edtComentario.getText().toString().equalsIgnoreCase("")){
+                } else if (edtComentario.getText().toString().equalsIgnoreCase("")) {
                     Snackbar.make(view, "Debes rellenar el campo de comentario", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                }
-                else {
+                } else if (edtComentario.getText().toString().length() > 300) {
+                    edtComentario.setError("Has escrito " + edtComentario.getText().toString().length() + "/300 caracteres");
+
+
+                } else {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
                     alertDialog.setMessage("¿Seguro que quiere editar el comentario sobre el producto " + opcion + "?").setCancelable(false)
                             .setPositiveButton("Si", new DialogInterface.OnClickListener() {
@@ -644,7 +648,7 @@ public class DetalleProductoFragment extends Fragment {
                     edtComentario.setText("");
                     ratingBar.setRating(0);
                     txtValoracion.setText("0.0");
-                    Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
                     if (listaComentarios.isEmpty()) {
                         mostrarComentarios();
                     } else {
@@ -799,8 +803,7 @@ public class DetalleProductoFragment extends Fragment {
                             Double vv = Double.parseDouble(valoracion2) / Double.parseDouble(nC[0]);
                             if (vv > 5.00) {
                                 txtValGen.setText("Recarga");
-                            }
-                            else {
+                            } else {
                                 txtValGen.setText("" + decimalFormat.format(vv));
                             }
 
@@ -990,7 +993,9 @@ public class DetalleProductoFragment extends Fragment {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(getContext(), "Tú comentario ha sido eliminado", Toast.LENGTH_SHORT).show();
+                Snackbar.make(view, "Tu comentario ha sido eliminado", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                //Toast.makeText(getContext(), "Tú comentario ha sido eliminado", Toast.LENGTH_SHORT).show();
                 txtComUser.setVisibility(View.VISIBLE);
 
                 String nC[] = txtNumCom.getText().toString().split(" ");
@@ -1029,11 +1034,17 @@ public class DetalleProductoFragment extends Fragment {
         requestQueue.add(stringRequest);
     }
 
-    private void editarComentarios(String URL){
+    private void editarComentarios(String URL) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(getContext(), "Tú comentario ha sido editado", Toast.LENGTH_SHORT).show();
+                Snackbar.make(view, "Tu comentario ha sido editado", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+                edtComentario.setText("");
+                ratingBar.setRating(0);
+                txtValoracion.setText("0.0");
+                //Toast.makeText(getContext(), "Tú comentario ha sido editado", Toast.LENGTH_SHORT).show();
 
                 new Handler().postDelayed(new Runnable() {
                     @Override

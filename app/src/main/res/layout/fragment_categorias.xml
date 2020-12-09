@@ -1,63 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingTop="55dp">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerCategorias"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-    </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerCategorias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-    <com.github.clans.fab.FloatingActionMenu
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:menu_fab_label="Cerrar"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        app:menu_colorNormal="@color/azul_perfect"
-        app:menu_colorPressed="@color/celeste_perfect"
-        android:layout_margin="16dp"
-        >
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fabCestaCat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_label="Cesta"
-            app:fab_colorNormal="@color/celeste_perfect"
-            app:fab_colorPressed="@color/azul_perfect"
-            android:src="@drawable/ic_cesta"
-            />
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fabPrincipalCat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_label="Principal"
-            app:fab_colorNormal="@color/celeste_perfect"
-            app:fab_colorPressed="@color/azul_perfect"
-            android:src="@drawable/ic_principal"
-            />
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fabRetrocederCat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_label="Retroceder"
-            app:fab_colorNormal="@color/celeste_perfect"
-            app:fab_colorPressed="@color/azul_perfect"
-            android:src="@drawable/ic_retroceder"
-            />
-    </com.github.clans.fab.FloatingActionMenu>
-</LinearLayout>
+        android:layout_height="match_parent">
+
+        <com.github.clans.fab.FloatingActionMenu
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
+            app:menu_colorNormal="@color/azul_perfect"
+            app:menu_colorPressed="@color/celeste_perfect"
+            app:menu_fab_label="Cerrar">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fabCestaCat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_cesta"
+                app:fab_colorNormal="@color/celeste_perfect"
+                app:fab_colorPressed="@color/azul_perfect"
+                app:fab_label="Cesta" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fabPrincipalCat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_principal"
+                app:fab_colorNormal="@color/celeste_perfect"
+                app:fab_colorPressed="@color/azul_perfect"
+                app:fab_label="Principal" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fabRetrocederCat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_retroceder"
+                app:fab_colorNormal="@color/celeste_perfect"
+                app:fab_colorPressed="@color/azul_perfect"
+                app:fab_label="Retroceder" />
+        </com.github.clans.fab.FloatingActionMenu>
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

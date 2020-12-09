@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,7 +99,7 @@ public class DetalleCategoriaFragment extends Fragment {
         fabPrincipal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "" + fm.getBackStackEntryCount(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "" + fm.getBackStackEntryCount(), Toast.LENGTH_SHORT).show();
                 if (fm.getBackStackEntryCount() == 1) {
                     fm.popBackStack();
                 } else {
@@ -222,7 +221,7 @@ public class DetalleCategoriaFragment extends Fragment {
                         } else if (id.equalsIgnoreCase("4")) {
                             listaCategorias1.add(new ProductosDetalleCategoria(nombreProducto1, precio1 + " €", R.drawable.img4, descripcion1, otrosDatos1));
                         }
-                        Toast.makeText(actividad, "cat: " + opcion + " id: " + i, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(actividad, "cat: " + opcion + " id: " + i, Toast.LENGTH_SHORT).show();
                     } catch (JSONException e) {
                         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -235,7 +234,7 @@ public class DetalleCategoriaFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             String nombre = listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)).getNombre();
-                            Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
                             interfaceComunicaFragments.enviarProducto2(listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)));
                         }
                     });
@@ -272,7 +271,7 @@ public class DetalleCategoriaFragment extends Fragment {
                         } else if (id.equalsIgnoreCase("8")) {
                             listaCategorias1.add(new ProductosDetalleCategoria(nombreProducto1, precio1 + " €", R.drawable.img8, descripcion1, otrosDatos1));
                         }
-                        Toast.makeText(actividad, "cat: " + opcion + " id: " + i, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(actividad, "cat: " + opcion + " id: " + i, Toast.LENGTH_SHORT).show();
                     } catch (JSONException e) {
                         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -285,7 +284,7 @@ public class DetalleCategoriaFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             String nombre = listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)).getNombre();
-                            Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
                             interfaceComunicaFragments.enviarProducto2(listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)));
                         }
                     });
@@ -318,7 +317,7 @@ public class DetalleCategoriaFragment extends Fragment {
                         } else if (id.equalsIgnoreCase("10")) {
                             listaCategorias1.add(new ProductosDetalleCategoria(nombreProducto1, precio1 + " €", R.drawable.img10, descripcion1, otrosDatos1));
                         }
-                        Toast.makeText(actividad, "cat: " + opcion + " id: " + i, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(actividad, "cat: " + opcion + " id: " + i, Toast.LENGTH_SHORT).show();
                     } catch (JSONException e) {
                         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -331,7 +330,7 @@ public class DetalleCategoriaFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             String nombre = listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)).getNombre();
-                            Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
                             interfaceComunicaFragments.enviarProducto2(listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)));
                         }
                     });
@@ -362,7 +361,7 @@ public class DetalleCategoriaFragment extends Fragment {
                         if (id.equalsIgnoreCase("11")) {
                             listaCategorias1.add(new ProductosDetalleCategoria(nombreProducto1, precio1 + " €", R.drawable.img11, descripcion1, otrosDatos1));
                         }
-                        Toast.makeText(actividad, "cat: " + opcion + " id: " + i, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(actividad, "cat: " + opcion + " id: " + i, Toast.LENGTH_SHORT).show();
                     } catch (JSONException e) {
                         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -375,7 +374,7 @@ public class DetalleCategoriaFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             String nombre = listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)).getNombre();
-                            Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
                             interfaceComunicaFragments.enviarProducto2(listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)));
                         }
                     });
@@ -406,7 +405,7 @@ public class DetalleCategoriaFragment extends Fragment {
                         if (id.equalsIgnoreCase("12")) {
                             listaCategorias1.add(new ProductosDetalleCategoria(nombreProducto1, precio1 + " €", R.drawable.img12, descripcion1, otrosDatos1));
                         }
-                        Toast.makeText(actividad, "cat: " + opcion + " id: " + i, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(actividad, "cat: " + opcion + " id: " + i, Toast.LENGTH_SHORT).show();
                     } catch (JSONException e) {
                         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -419,7 +418,7 @@ public class DetalleCategoriaFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             String nombre = listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)).getNombre();
-                            Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
                             interfaceComunicaFragments.enviarProducto2(listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)));
                         }
                     });
@@ -452,7 +451,7 @@ public class DetalleCategoriaFragment extends Fragment {
                         } else if (id.equalsIgnoreCase("14")) {
                             listaCategorias1.add(new ProductosDetalleCategoria(nombreProducto1, precio1 + " €", R.drawable.img14, descripcion1, otrosDatos1));
                         }
-                        Toast.makeText(actividad, "cat: " + opcion + " id: " + i, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(actividad, "cat: " + opcion + " id: " + i, Toast.LENGTH_SHORT).show();
                     } catch (JSONException e) {
                         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -465,7 +464,7 @@ public class DetalleCategoriaFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             String nombre = listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)).getNombre();
-                            Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
                             interfaceComunicaFragments.enviarProducto2(listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)));
                         }
                     });
@@ -496,7 +495,7 @@ public class DetalleCategoriaFragment extends Fragment {
                         if (id.equalsIgnoreCase("15")) {
                             listaCategorias1.add(new ProductosDetalleCategoria(nombreProducto1, precio1 + " €", R.drawable.img15, descripcion1, otrosDatos1));
                         }
-                        Toast.makeText(actividad, "cat: " + opcion + " id: " + i, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(actividad, "cat: " + opcion + " id: " + i, Toast.LENGTH_SHORT).show();
                     } catch (JSONException e) {
                         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -509,7 +508,7 @@ public class DetalleCategoriaFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             String nombre = listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)).getNombre();
-                            Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
                             interfaceComunicaFragments.enviarProducto2(listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)));
                         }
                     });
@@ -540,7 +539,7 @@ public class DetalleCategoriaFragment extends Fragment {
                         if (id.equalsIgnoreCase("16")) {
                             listaCategorias1.add(new ProductosDetalleCategoria(nombreProducto1, precio1 + " €", R.drawable.img16, descripcion1, otrosDatos1));
                         }
-                        Toast.makeText(actividad, "cat: " + opcion + " id: " + i, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(actividad, "cat: " + opcion + " id: " + i, Toast.LENGTH_SHORT).show();
                     } catch (JSONException e) {
                         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -553,7 +552,7 @@ public class DetalleCategoriaFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             String nombre = listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)).getNombre();
-                            Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "Selecciono: " + nombre, Toast.LENGTH_SHORT).show();
                             interfaceComunicaFragments.enviarProducto2(listaCategorias1.get(recyclerProducto1.getChildAdapterPosition(view)));
                         }
                     });

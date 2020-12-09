@@ -24,6 +24,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ejemplo.perfectmarket_tiendavirtual.R;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -107,7 +108,9 @@ public class ZonaUsuarioFragment extends Fragment {
                 email = edtEmail.getText().toString();
                 contrasegna = edtContrasegna.getText().toString();
                 if (email.isEmpty() || contrasegna.isEmpty()){
-                    Toast.makeText(getContext(), "No se permíten valores vacíos", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(view, "No se permíten campos vacíos", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    //Toast.makeText(getContext(), "No se permíten valores vacíos", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     validarUsuario(URLValidarUsuario);
@@ -125,7 +128,9 @@ public class ZonaUsuarioFragment extends Fragment {
                       Context.MODE_PRIVATE);
               preferencesDU.edit().clear().commit();
               recuperarPreferenciasDU();
-              Toast.makeText(getContext(), "Sesión cerrada", Toast.LENGTH_SHORT).show();
+                Snackbar.make(view, "Sesión Cerrada", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+              //Toast.makeText(getContext(), "Sesión cerrada", Toast.LENGTH_SHORT).show();
                 edtEmail.setEnabled(true);
                 edtContrasegna.setEnabled(true);
                 btnIniciarSesion.setEnabled(true);
@@ -149,7 +154,28 @@ public class ZonaUsuarioFragment extends Fragment {
                 emailR = edtEmailR.getText().toString();
                 edadR = edtEdadR.getText().toString();
                 contrasegnaR =edtContrasegnaR.getText().toString();
-                validarRegistro(URLValidarRegistro);
+
+                if (nombreR.length() > 100){
+                    edtNombreR.setError("Has escrito " + nombreR.length() + "/100 caracteres");
+                }
+                if (apellidoR.length() > 100){
+                    edtApellidoR.setError("Has escrito " + apellidoR.length() + "/100 caracteres");
+                }
+                if (emailR.length() > 255) {
+                    edtEmailR.setError("Has escrito " + emailR.length() + "/255 caracteres");
+                }
+                if (edadR.length() > 3){
+                    edtEdadR.setError("Has escrito " + edadR.length() + "/3 caracteres");
+                }
+                if (contrasegnaR.length() > 100){
+                    edtContrasegnaR.setError("Has escrito " + contrasegnaR.length() + "/100 caracteres");
+                }
+
+                if (nombreR.length() <= 100 && apellidoR.length() <= 100
+                && emailR.length() <= 255 && edadR.length() <= 3 && contrasegnaR.length() <= 100){
+                    validarRegistro(URLValidarRegistro);
+                }
+
             }
         });
 
@@ -162,7 +188,9 @@ public class ZonaUsuarioFragment extends Fragment {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(getContext(), "Usuario Registrado Correctamente", Toast.LENGTH_SHORT).show();
+                Snackbar.make(view, "Usuario Registrado Correctamente", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                //Toast.makeText(getContext(), "Usuario Registrado Correctamente", Toast.LENGTH_SHORT).show();
                 edtNombreR.setText("");
                 edtApellidoR.setText("");
                 edtEdadR.setText("");
@@ -195,11 +223,15 @@ public class ZonaUsuarioFragment extends Fragment {
             public void onResponse(String response) {
                 //Toast.makeText(getContext(), "Response: " + response, Toast.LENGTH_SHORT).show();
                 if(response.isEmpty()){
-                    Toast.makeText(getContext(), "Usuario y/o contraseña incorrecta/as", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(view, "Usuario y/o contraseña incorrecto/os", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    //Toast.makeText(getContext(), "Usuario y/o contraseña incorrecta/as", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     guardarPreferenciasLogin();
-                    Toast.makeText(getContext(), "Sesión iniciada correctamente", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(view, "Sesión iniciada correctamente", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    //Toast.makeText(getContext(), "Sesión iniciada correctamente", Toast.LENGTH_SHORT).show();
                     datos_usuario(URLBuscarUsuarioLogeado + email);
                     edtEmail.setText("");
                     edtContrasegna.setText("");
@@ -240,17 +272,28 @@ public class ZonaUsuarioFragment extends Fragment {
                 if(response.isEmpty()){
                     if (nombreR.isEmpty() || apellidoR.isEmpty() || emailR.isEmpty() || edadR.isEmpty()
                     || contrasegnaR.isEmpty()) {
-                        Toast.makeText(getContext(), "No se permiten campos vacíos", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(view, "No se permíten campos vacíos", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                        //Toast.makeText(getContext(), "No se permiten campos vacíos", Toast.LENGTH_SHORT).show();
                     }
                     else if(Integer.parseInt(edadR) < 18){
-                        Toast.makeText(getContext(), "Debes ser mayor de edad para registrate", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(view, "Debes ser mayor de edad para registrarte", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                        //Toast.makeText(getContext(), "Debes ser mayor de edad para registrate", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(Integer.parseInt(edadR) > 122){
+                        Snackbar.make(view, "Edad no válida", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                        //Toast.makeText(getContext(), "Debes ser mayor de edad para registrate", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         registrarUsuario(URLRegistro);
                     }
                 }
                 else {
-                    Toast.makeText(getContext(), "El Usuario ya existe", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(view, "El usuario ya existe", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    //Toast.makeText(getContext(), "El Usuario ya existe", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -272,7 +315,7 @@ public class ZonaUsuarioFragment extends Fragment {
     private void guardarPreferenciasLogin(){
         SharedPreferences preferences = getContext().getSharedPreferences("preferenciasLogin",
                 Context.MODE_PRIVATE);
-        Toast.makeText(getContext(), "emS: " + email + "\nConS: " + contrasegna, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "emS: " + email + "\nConS: " + contrasegna, Toast.LENGTH_SHORT).show();
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("email", email);
         editor.putString("contrasegna", contrasegna);
@@ -302,7 +345,7 @@ public class ZonaUsuarioFragment extends Fragment {
     private void recuperarPreferenciasDU(){
         SharedPreferences preferences = getContext().getSharedPreferences("preferenciasDU",
                 Context.MODE_PRIVATE);
-        Toast.makeText(getContext(), "nnnnn: " + preferences.getString("id", "1"), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "nnnnn: " + preferences.getString("id", "1"), Toast.LENGTH_SHORT).show();
         txtNombre.setText(preferences.getString("nombre", "Desconocido"));
         txtApellido.setText(preferences.getString("apellido", "Desconocido"));
         txtEmail.setText(preferences.getString("email", "Desconocido"));

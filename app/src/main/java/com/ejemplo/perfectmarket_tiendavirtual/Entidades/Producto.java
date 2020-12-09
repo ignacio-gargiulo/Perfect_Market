@@ -16,7 +16,7 @@ public class Producto implements Serializable {
     public Producto(String nombreCategoria, String precio, int imagenId) {
         this.nombre = nombreCategoria;
         this.precio = precio;
-        this.informacion = "Sin dato adicional";
+        this.informacion = precio;
         this.imagenId = imagenId;
     }
 
@@ -26,6 +26,8 @@ public class Producto implements Serializable {
         this.informacion = "Sin dato adicional";
         this.imagenId = imagenId;
     }
+
+
 
     public Producto(String nombreCategoria, String precio, String informacion, String otrosDatos, int imagenId) {
         this.nombre = nombreCategoria;

@@ -28,7 +28,7 @@ public class CategoriasFragment extends Fragment {
 
     AdapterRecycler adapterCategorias;
     RecyclerView recyclerCategorias;
-    ArrayList<Producto> listaProductos;
+    ArrayList<Producto> listaCategorias;
     FloatingActionButton fabRetroceder, fabPrincipal, fabCesta;
     FragmentTransaction fragmentTransaction;
     FragmentManager fm;
@@ -40,7 +40,7 @@ public class CategoriasFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_categorias, container, false);
         recyclerCategorias = view.findViewById(R.id.recyclerCategorias);
-        listaProductos = new ArrayList<>();
+        listaCategorias = new ArrayList<>();
         fm = getActivity().getSupportFragmentManager();
         fabRetroceder = view.findViewById(R.id.fabRetrocederCat);
         fabPrincipal = view.findViewById(R.id.fabPrincipalCat);
@@ -73,7 +73,7 @@ public class CategoriasFragment extends Fragment {
         fabPrincipal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "" + fm.getBackStackEntryCount(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "" + fm.getBackStackEntryCount(), Toast.LENGTH_SHORT).show();
                 if (fm.getBackStackEntryCount() == 1) {
                     fm.popBackStack();
                 } else {
@@ -87,28 +87,28 @@ public class CategoriasFragment extends Fragment {
 
 
     public void cargarLista() {
-        listaProductos.add(new Producto("Apps Móviles", R.drawable.apps));
-        listaProductos.add(new Producto("Comida", R.drawable.comida));
-        listaProductos.add(new Producto("Deporte", R.drawable.deporte));
-        listaProductos.add(new Producto("Electronica e informatica",
-                "Aquí encontraras productos de tecnología", R.drawable.electronica));
-        listaProductos.add(new Producto("Libros", R.drawable.libros));
-        listaProductos.add(new Producto("Moda", R.drawable.moda));
-        listaProductos.add(new Producto("Música", R.drawable.musica));
-        listaProductos.add(new Producto("Videojuegos", R.drawable.videojuegos));
+        listaCategorias.add(new Producto("Apps Móviles", "Encuentra apps de calidad",R.drawable.apps));
+        listaCategorias.add(new Producto("Comida", "Alimentación de calidad",R.drawable.comida));
+        listaCategorias.add(new Producto("Deporte", "Ponte en forma con nosotros",R.drawable.deporte));
+        listaCategorias.add(new Producto("Electronica e informatica",
+                "Los mejores productos de tecnología", R.drawable.electronica));
+        listaCategorias.add(new Producto("Libros", "Adentrate en miles de historias",R.drawable.libros));
+        listaCategorias.add(new Producto("Moda", "Ponte a la moda con nosotros",R.drawable.moda));
+        listaCategorias.add(new Producto("Música", "Vive la música, llenate de emociones",R.drawable.musica));
+        listaCategorias.add(new Producto("Videojuegos", "Los mejor para entretenerse",R.drawable.videojuegos));
     }
 
     public void mostrarDatosLista() {
         recyclerCategorias.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterCategorias = new AdapterRecycler(getContext(), listaProductos);
+        adapterCategorias = new AdapterRecycler(getContext(), listaCategorias);
         recyclerCategorias.setAdapter(adapterCategorias);
 
         adapterCategorias.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String nombre_categoria = listaProductos.get(recyclerCategorias.getChildAdapterPosition(view)).getNombre();
-                Toast.makeText(getContext(), "Selecciono: " + nombre_categoria, Toast.LENGTH_SHORT).show();
-                interfaceComunicaFragments.enviarCategoria(listaProductos.get(recyclerCategorias.getChildAdapterPosition(view)));
+                String nombre_categoria = listaCategorias.get(recyclerCategorias.getChildAdapterPosition(view)).getNombre();
+                //Toast.makeText(getContext(), "Selecciono: " + nombre_categoria, Toast.LENGTH_SHORT).show();
+                interfaceComunicaFragments.enviarCategoria(listaCategorias.get(recyclerCategorias.getChildAdapterPosition(view)));
             }
         });
     }
