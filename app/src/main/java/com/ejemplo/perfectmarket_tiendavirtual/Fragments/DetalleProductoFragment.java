@@ -376,10 +376,15 @@ public class DetalleProductoFragment extends Fragment {
         btnComprarYa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                if (edtCantidad.getText().toString().equalsIgnoreCase("")) {
+                if (preferences.getString("email", "Desconocido").equalsIgnoreCase("Desconocido")){
+                    Snackbar.make(view, "Debes iniciar sesión en 'Zona Usuario' para realizar esta acción", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+                else if (edtCantidad.getText().toString().equalsIgnoreCase("")) {
                     Snackbar.make(view, "Debes introducir una cantidad a comprar", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                } else {
+                }
+                else {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
                     alertDialog.setMessage("¿Seguro que quiere comprar " + edtCantidad.getText().toString() + " " + opcion + " por " + precioTotal.getText().toString() + "?").setCancelable(false)
                             .setPositiveButton("Si", new DialogInterface.OnClickListener() {
